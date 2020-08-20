@@ -1,0 +1,12 @@
+discord
+discord.ext
+asyncio
+random
+sys
+json
+requests
+re
+io
+math
+colorama
+lazyme.string
