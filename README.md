@@ -53,10 +53,7 @@ Here's what the config file should look like if it's expanded:
 {
 	"token": "your.bots.token",
 	"permissions": [
-		"TKperson#4883",
-		"cyxl#9986",
-		"a shout out to cyxl for helping me#3333",
-		"Add your discord name here and all the names of your friends!#1234"
+		"Put your name and discord tags here#1234"
 	],
 	"bomb_messages": {
 		"random": 10,
