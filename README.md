@@ -21,7 +21,7 @@ There are a few that are confusing for some people that I have tested with. I'm 
 
 IMPORT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
 
-### ".h" the most import one help command
+### ".h" the most important command, "help"
 * the bot's prefix is dot (.)
 * the help command has 2 opitional arguments, first argument can be "names", "all", or the command you want to know. "names" is the default arg and it will give you a list of commands without description like the above. "all" displays all the commands in pages, and the second arg is used for toggling between pages.
 
