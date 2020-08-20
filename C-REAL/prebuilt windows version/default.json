@@ -1,7 +1,7 @@
 {
 	"token": "your.bots.token",
 	"permissions": [
-		"Put your name and discord tags here#1234"
+		"Put your discord name and discord tags here#1234"
 	],
 	"bomb_messages": {
 		"random": 10,
