@@ -1,10 +1,7 @@
 {
 	"token": "your.bots.token",
 	"permissions": [
-		"TKperson#4883",
-		"cyxl#9986",
-		"a shout out to cyxl for helping me#3333",
-		"you can add more if you want to#1234"
+		"Put your name and discord tags here#1234"
 	],
 	"bomb_messages": {
 		"random": 10,
@@ -14,7 +11,7 @@
 			"rip",
 			"ezzzzz",
 			"c-real on top you are in the bottom",
-			"add more if you want to"
+			"add more messages if you want to"
 		]
 	},
 	"bot_permission": "2146958847",

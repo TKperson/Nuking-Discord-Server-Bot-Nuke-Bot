@@ -6,3 +6,4 @@ a config file, but it's not named default.json or some where else in the system,
 you can enter a full path or a local path to find the config file.
 
 For more info, view on my github page.
+If you still need help you can contact me on discord TKperson#4883
