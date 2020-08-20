@@ -1,0 +1,27 @@
+{
+	"token": "your.bots.token",
+	"permissions": [
+		"TKperson#4883",
+		"cyxl#9986",
+		"a shout out to cyxl for helping me#3333",
+		"you can add more if you want to#1234"
+	],
+	"bomb_messages": {
+		"random": 10,
+		"fixed": [
+			"fixed bomb",
+			"when you run any bomb like '.channelBomb 100 fixed' it'll randomly choose stuff from this array",
+			"rip",
+			"ezzzzz",
+			"c-real on top you are in the bottom",
+			"add more if you want to"
+		]
+	},
+	"bot_permission": "2146958847",
+	"after": [
+		["aCat", "RIP"],
+		["aChannel", "RIP", "RIP"],
+		["sn", "You are in the bottom"],
+		["si", "https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"]
+	]
+}
