@@ -13,7 +13,7 @@
 The bot's prefix is a dot (.)
 
 ## About the bot
-I got idea of creating a nuking discrod server bot from (Cerealwithnomilk)[https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ] and the bot is named after that guy.
+I got idea of creating a nuking discrod server bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ) and the bot is named after that guy.
 A shout out to cyxl#9986 for helping me.
 
 You can already tell most of the commands by its name.
