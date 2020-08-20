@@ -50,7 +50,6 @@ C-REAL will always try to look for the file "default.json" that is next to it, a
 Here's what the config file should look like if it's expanded:
 ```
 {
-{
 	"token": "your.bots.token",
 	"permissions": [
 		"Put your name and discord tags here#1234"
@@ -72,8 +71,6 @@ Here's what the config file should look like if it's expanded:
 		["aChannel", "RIP", "RIP"],
 		["sn", "You are in the bottom"],
 		["si", "https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"]
-	]
-}
 	]
 }
 ```
@@ -131,3 +128,15 @@ or
  4. Go to the bot tap in the application.
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
+
+## How to use the C-REAL
+* After you are done with setting up the config file, all you have to do is to open the executable.
+* You can choose to put the default.json next to the executable(so the bot will use the default.json everyone time you open, that way you don't have to write a path for the configuration file again.), or you can type the path-to-the configuration file when the bot asked.
+* After finishing everything, you'll see the all the information displayed in the console.
+* If you want to an invite link for the bot, there will always be a link displayed in the console when the bot is ready.
+![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
+
+## Problems/issues
+* If you are experiencing crushing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
+* If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
+* If you see a banch of white worded errors displaying in the console, that means you are using debugging mode. (the current windows prebuilt version is in debugging mode)
