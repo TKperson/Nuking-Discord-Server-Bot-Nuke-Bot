@@ -77,15 +77,17 @@ Here's what the config file should look like if it's expanded:
 	]
 }
 ```
-*token: Your bot's token.
-*Permissions: User that can use the bot.
-*Bomb messages:
- *random: random base64 characters with a length of 10(in this example).
- *fixed: randomly chose messages, while bombing.
+* token: Your bot's token.
+* Permissions: User that can use the bot.
+* Bomb messages:
+ * random: random base64 characters with a length of 10(in this example).
+ * fixed: randomly chose messages, while bombing.
 Available bomb commmands: ".channelBomb", ".catBomb", ".roleBomb", and ".kaboom". They all use the same arguments. example. ".kaboom 1000 fixed" this will create 1000 fixed name channels, categories, and roles. ".kaboom" is basically all bomb blow up at once.
-*bot permission: permission given to the bot when inviting the C-REAL to a server.
-*after: a part that runs during ".nuke" command. It'll run all the commands that is inside the array. NOTE: INSIDE "after" IT'S CASE SENSITIVE, and everything created with "after" part won't get deleted by the nuke command.
+* bot permission: permission given to the bot when inviting the C-REAL to a server.
+* after: a part that runs during ".nuke" command. It'll run all the commands that is inside the array. NOTE: INSIDE "after" IT'S CASE SENSITIVE, and everything created with "after" part won't get deleted by the nuke command.
+
 In this example of the after part:
+
 it creates a category called RIP
 next, it create an RIP channel in the RIP category
 then, it changes the server's name to "You are in the bottom"
