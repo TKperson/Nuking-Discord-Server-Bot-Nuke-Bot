@@ -1,5 +1,4 @@
 discord
-discord.ext
 asyncio
 random
 sys
@@ -9,4 +8,4 @@ re
 io
 math
 colorama
-lazyme.string
+lazyme
