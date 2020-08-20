@@ -1,6 +1,6 @@
 # Nuking Discord Server Bot/Nuke Bot
 ## C-REAL bot
- C-REAL bot has 36 commands here a list:
+ C-REAL bot has 36 commands:
 ```
 [aChannel] [aVC] [aCat] [auditLog] [aRole] 
 [banAll] [ban] [bans] [channels] [connect] 
@@ -112,7 +112,7 @@ If you entered ".kaboom 1000 random", it's equal to:
 what it does is to spam creating channels, categories, and roles 1000 times with random base64 names.
 
 ### ".aRole" there's a hidden feature.
-*If you add a " t"(space t) at the end, if the bot has permission to create admin role, then the bot will create a role with admin. And then you can use ".roleTo @TKperson the name or Id of the role"
+* If you add a " t"(space t) at the end, if the bot has permission to create admin role, then the bot will create a role with admin. And then you can use ".roleTo @TKperson the name or Id of the role"
 it'll look something like: ".aRole admin t"
 
 ### ".auditLog" command
