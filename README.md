@@ -50,7 +50,6 @@ C-REAL will always try to look for the file "default.json" that is next to it, a
 Here's what the config file should look like if it's expanded:
 ```
 {
-{
 	"token": "your.bots.token",
 	"permissions": [
 		"Put your name and discord tags here#1234"
@@ -72,8 +71,6 @@ Here's what the config file should look like if it's expanded:
 		["aChannel", "RIP", "RIP"],
 		["sn", "You are in the bottom"],
 		["si", "https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"]
-	]
-}
 	]
 }
 ```
