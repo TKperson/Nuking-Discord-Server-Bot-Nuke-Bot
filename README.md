@@ -50,12 +50,13 @@ C-REAL will always try to look for the file "default.json" that is next to it, a
 Here's what the config file should look like if it's expanded:
 ```
 {
-	"token": "your.bot's.token",
+{
+	"token": "your.bots.token",
 	"permissions": [
 		"TKperson#4883",
 		"cyxl#9986",
 		"a shout out to cyxl for helping me#3333",
-		"you can add more if you want to#1234"
+		"Add your discord name here and all the names of your friends!#1234"
 	],
 	"bomb_messages": {
 		"random": 10,
@@ -65,7 +66,7 @@ Here's what the config file should look like if it's expanded:
 			"rip",
 			"ezzzzz",
 			"c-real on top you are in the bottom",
-			"add more if you want to"
+			"add more messages if you want to"
 		]
 	},
 	"bot_permission": "2146958847",
@@ -74,6 +75,8 @@ Here's what the config file should look like if it's expanded:
 		["aChannel", "RIP", "RIP"],
 		["sn", "You are in the bottom"],
 		["si", "https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"]
+	]
+}
 	]
 }
 ```
