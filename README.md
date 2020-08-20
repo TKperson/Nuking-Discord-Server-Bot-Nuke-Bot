@@ -13,7 +13,7 @@
 The bot's prefix is a dot (.)
 
 ## About the bot
-I got idea of creating a nuking discrod server bot from cerealwithnomilk and the bot is named after that guy.
+I got idea of creating a nuking discrod server bot from (Cerealwithnomilk)[https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ] and the bot is named after that guy.
 A shout out to cyxl#9986 for helping me.
 
 You can already tell most of the commands by its name.
@@ -22,8 +22,8 @@ There are a few that are confusing for some people that I have tested with. I'm 
 IMPORT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
 
 ### ".h" the most import one help command
-*the bot's prefix is dot (.)
-*the help command has 2 opitional arguments, first argument can be "names", "all", or the command you want to know. "names" is the default arg and it will give you a list of commands without description like the above. "all" displays all the commands in pages, and the second arg is used for toggling between pages.
+* the bot's prefix is dot (.)
+* the help command has 2 opitional arguments, first argument can be "names", "all", or the command you want to know. "names" is the default arg and it will give you a list of commands without description like the above. "all" displays all the commands in pages, and the second arg is used for toggling between pages.
 
 ### Connections
 Connection is a special feature in C-REAL. Connection commands are for DM attacks. You can DM the bot to connect to a server that the bot is already in, and then use all the available commands in the DM.
@@ -36,14 +36,14 @@ Name            ID
 testing server  740457514281468024
 ```
 
-*Type the name or ID of that server after the command ".connect server name here".
+* Type the name or ID of that server after the command ".connect server name here".
 .connect testing server
 or
 .connect 740457514281468024
 The bot will tell you if you successfully connected to the server or not.
 
-*After connecting to it you can do want ever you want with the commands. Like ".nuke" or ".aChannel name category name"
-*".disconnect" is for faster reactions. The bot will do less checks if you are disconnected.
+* After connecting to it you can do want ever you want with the commands. Like ".nuke" or ".aChannel name category name"
+* ".disconnect" is for faster reactions. The bot will do less checks if you are disconnected.
 
 ### Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
@@ -95,14 +95,14 @@ and lastly, it changes the server icon to that link.
 
 ### ".nuke" command
 nuke command is one of the main feature in C-REAL. ".nuke" is basically ".dAllRoles" + ".dAllChannels" + "dAllCat" + ".banAll"(below the bot's role rank) + an "after" command.
-*the first 4 commands are easy to understand. They are just delete all roles, channels, categories, and ban everyone.
-*For the "after" part. It can be configured in the config(.json) file. This "part" is for during nuking it'll do all the commands that you configured in the config(.json) file. Note: everything created with "after" part won't get deleted.
+* the first 4 commands are easy to understand. They are just delete all roles, channels, categories, and ban everyone.
+* For the "after" part. It can be configured in the config(.json) file. This "part" is for during nuking it'll do all the commands that you configured in the config(.json) file. Note: everything created with "after" part won't get deleted.
 For example:
 ".si https://link.to/an/image.jpg" will change the server icon to "https://lin.to/an/image.jpg".
 ".sn you have been nuked" will change the server name to "you have been nuked"
 
 ### ".kaboom". What a loud sound...
-*Kaboom is another main feature. It's the combination of ".channelBomb", ".catBomb", and ".roleBomb".
+* Kaboom is another main feature. It's the combination of ".channelBomb", ".catBomb", and ".roleBomb".
 If you entered ".kaboom 1000 random", it's equal to:
 ".channelBomb 1000 random"
 ".roleBomb 1000 random"
@@ -114,18 +114,18 @@ what it does is to spam creating channels, categories, and roles 1000 times with
 it'll look something like: ".aRole admin t"
 
 ### ".auditLog" command
-*an audit log is a list that contains every server changing actions with the user, target, and action commands.
-*This command will save the current server's audit log into the host's pc with given path and given number of items.
-*Without giving a path it'll save in the local directory. Without giving a limit to save how much item it'll save all of the actions. (it took around 1min to save 5000 actions on my i5 core pc)
+* an audit log is a list that contains every server changing actions with the user, target, and action commands.
+* This command will save the current server's audit log into the host's pc with given path and given number of items.
+* Without giving a path it'll save in the local directory. Without giving a limit to save how much item it'll save all of the actions. (it took around 1min to save 5000 actions on my i5 core pc)
 examples:
 ".auditLog directory_min/audit.txt 1000"(you can't have a space in the directory name(I'll fix this in the future), and you don't have to create an output file)
 or
 ".auditLog" (output the file with a name of the server name and ID.txt)
 
 ## What is a token/how to setup a token
- The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
- Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
- Create a new application or use your created application
- Go to the bot tap in the application.
- Click on add bot.
- And then click on "Click to Reveal Token" or "Copy" to get your token.
+ 1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
+ 2. Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
+ 3. Create a new application or use your created application
+ 4. Go to the bot tap in the application.
+ 5. Click on add bot.
+ 6. And then click on "Click to Reveal Token" or "Copy" to get your token.
