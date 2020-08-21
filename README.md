@@ -19,7 +19,7 @@ A shout out to cyxl#9986 for helping me.
 You can already tell most of the commands by its name.
 There are a few that are confusing for some people that I have tested with. I'm also going to explain it from below.
 
-IMPORT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
+IMPORTANT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
 
 ## Check list for setting up everything
 1. Get a discord profile(token) for the bot.
