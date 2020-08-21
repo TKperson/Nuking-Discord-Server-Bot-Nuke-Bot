@@ -315,8 +315,9 @@ let fixedBombList = document.getElementById('fixed-bomb-list');
 function acceptFixedInput() {
 	let fixedBombInput = document.getElementById('fixed-bomb-input');
 	if(fixedBombInput.value.length == 0) showEr('error3', 'Please type something.');
-	else if(fixedBombInput.length > 1024) showEr('error3', 'Please keep the length at 1024 or less.')
+	else if(fixedBombInput.value.length > 1024) showEr('error3', 'Please keep the length at 1024 or less.')
 	else {
+		hideEr('error3');
 		fixedBombList.innerHTML += `<li onclick="discardFixedBomb(this, '${fixedBombInput.value}')">${fixedBombInput.value}</li>`;
 		fixedBomb.push(fixedBombInput.value);
 		fixedBombInput.value = '';
