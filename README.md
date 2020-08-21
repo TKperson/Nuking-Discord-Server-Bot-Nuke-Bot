@@ -78,7 +78,7 @@ Name            ID
 testing server  740457514281468024
 ```
 
-* Type the name or ID of that server after the command ".connect server name here".
+* Type the name or ID of that server after the command ".connect server name here". \n
 .connect testing server
 or
 .connect 740457514281468024
