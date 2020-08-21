@@ -24,9 +24,9 @@ IMPORT: While creating C-REAL, I have encounter many times that ".aRole" not wor
 ## Check list for setting up everything
 1. Get a discord profile(token) for the bot.
 2. Make a configuration file with builder.HTML
-3-1. Drag the configured json file next to the executable file(The prebuilt verison)
-3-2. If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
-4. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itselfs that means there's something wrong with the configuration file.
+3. Drag the configured json file next to the executable file(The prebuilt verison)
+4. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
+5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itselfs that means there's something wrong with the configuration file.
 
 ## What is a token/how to setup a token
  1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
