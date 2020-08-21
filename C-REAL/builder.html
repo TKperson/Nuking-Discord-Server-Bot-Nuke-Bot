@@ -418,7 +418,7 @@ function saveAll() {
 			}
 		}
 	}
-	let data = `{"token": "${token}", "permissions": ${JSON.stringify(userPerms)}, "bomb_messages": {"random": ${randomBomb}, "fixed": ${JSON.stringify(fixedBomb)}}, "after":${JSON.stringify(finalCommandArray)}}`;
+	let data = `{"token": "${token}", "permissions": ${JSON.stringify(userPerms)}, "bomb_messages": {"random": ${randomBomb}, "fixed": ${JSON.stringify(fixedBomb)}}, "bot_permission":"${total}", "after":${JSON.stringify(finalCommandArray)}}`;
 	let type = 'text/plain';
 	let fileName = document.getElementById('file-name').value;
 	if(fileName.length == 0) fileName = 'default';
