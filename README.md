@@ -85,7 +85,7 @@ or <br />
 The bot will tell you if you successfully connected to the server or not.
 
 * After connecting to it you can do want ever you want with the commands. Like ".nuke" or ".aChannel name category name"
-* ".disconnect" is for faster reactions. The bot will do less checks if you are disconnected.
+* ".disconnect" is for switching targeting server and faster reactions. The bot will do less checks if you are disconnected.
 
 ### Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
