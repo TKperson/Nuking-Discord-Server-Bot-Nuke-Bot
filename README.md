@@ -21,11 +21,53 @@ There are a few that are confusing for some people that I have tested with. I'm 
 
 IMPORT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
 
+## Check list for setting up everything
+1. Get a discord profile(token) for the bot.
+2. Make a configuration file with builder.HTML
+3-1. Drag the configured json file next to the executable file(The prebuilt verison)
+3-2. If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
+4. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itselfs that means there's something wrong with the configuration file.
+
+## What is a token/how to setup a token
+ 1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
+ 2. Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
+ 3. Create a new application or use your created application
+ 4. Go to the bot tap in the application.
+ 5. Click on add bot.
+ 6. And then click on "Click to Reveal Token" or "Copy" to get your token.
+ 
+## How to use builder.html
+ builder.html is a web page that can help you to make the configuration file for the bot.
+### Enter your bot's token
+ Enter the token you got from (how to setup a token)
+### Bot permission calculator
+ Bot permission calculator is used for permission that will give to the bot when inviting.
+### User permissions
+ The bot will check if the tag of the person that used (".something" command) matches the tags you put in the user permissions. If it matches, the bot will execute the command. If not, the bot will print out a line saying who and where is the person using the command.
+### Kaboom
+#### Random
+ Enter an positive integer that will tell the bot during any bomb commmands like ".kaboom 10 random" to spam with random base64 text with a give length.
+#### Fixed
+ Enter anything you want that will tell the bot during any bomb commands like ".kaboom 10 fixed" to spam with fixed text randomly.
+### After
+ After part, is executed during ".nuke" the channels, categories, and roles created in the after command will not get affected by ".nuke".
+ You can enter any C-REAL bot command that you can use in the discord chat in the after part.
+ If you are not experienced with all the commands, you can leave it blank.
+examples: IMPORTANT: inside the after part, everything will be case sensitive. And you don't need the bot's prefix in the after part.
+```
+aCat a category that is going to be added during .nuke
+aChannel a-channel-that-is-going-to-be-added-during-nuke-to-the-category
+sn this changes the server name to this during nuke
+si https://www.this.changes/the/server/icon/to/this/url.jpg
+kaboom 1000000000 random
+```
+
+## Some commands that might confuse you
 ### ".h" the most important command, "help"
 * the bot's prefix is dot (.)
 * the help command has 2 opitional arguments, first argument can be "names", "all", or the command you want to know. "names" is the default arg and it will give you a list of commands without description like the above. "all" displays all the commands in pages, and the second arg is used for toggling between pages.
 
-### Connections
+### Connections/DM attack
 Connection is a special feature in C-REAL. Connection commands are for DM attacks. You can DM the bot to connect to a server that the bot is already in, and then use all the available commands in the DM.
 Here's how to use connection commands.
 *Type ".servers", it'll give you a list of servers that the bot is in.
@@ -120,14 +162,6 @@ examples:
 ".auditLog directory_min/audit.txt 1000"(you can't have a space in the directory name(I'll fix this in the future), and you don't have to create an output file)
 or
 ".auditLog" (output the file with a name of the server name and ID.txt)
-
-## What is a token/how to setup a token
- 1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
- 2. Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
- 3. Create a new application or use your created application
- 4. Go to the bot tap in the application.
- 5. Click on add bot.
- 6. And then click on "Click to Reveal Token" or "Copy" to get your token.
 
 ## How to use the C-REAL
 * After you are done with setting up the config file, all you have to do is to open the executable.
