@@ -70,7 +70,7 @@ kaboom 1000000000 random
 ### Connections/DM attack
 Connection is a special feature in C-REAL. Connection commands are for DM attacks. You can DM the bot to connect to a server that the bot is already in, and then use all the available commands in the DM.
 Here's how to use connection commands.
-*Type ".servers", it'll give you a list of servers that the bot is in.
+* Type ".servers", it'll give you a list of servers that the bot is in. The output will be the list below.
 ```
 Servers
 Total count: 1
