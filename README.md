@@ -78,10 +78,10 @@ Name            ID
 testing server  740457514281468024
 ```
 
-* Type the name or ID of that server after the command ".connect server name here". \n
-.connect testing server
-or
-.connect 740457514281468024
+* Type the name or ID of that server after the command ".connect server name here". <br />  
+.connect testing server <br />  
+or <br />  
+.connect 740457514281468024 <br />  
 The bot will tell you if you successfully connected to the server or not.
 
 * After connecting to it you can do want ever you want with the commands. Like ".nuke" or ".aChannel name category name"
