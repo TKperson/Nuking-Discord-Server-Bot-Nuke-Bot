@@ -140,3 +140,17 @@ or
 * If you are experiencing crushing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a banch of white worded errors displaying in the console, that means you are using debugging mode. (the current windows prebuilt version is in debugging mode)
+
+## Checksum for windows prebuilt version
+* SHA256
+```
+A56EF84E4548B8EF845D330D21B683E5D567AF824E266DC3CE9D4EF2690DC42C
+```
+* SHA1
+```
+D145882E1E7CFB2DCC8BD28E799911DC23426A72
+```
+* MD5 (Not recommended)
+```
+8110FE15CC544F578468EC83317310B9
+```
