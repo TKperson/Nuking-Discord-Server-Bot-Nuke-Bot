@@ -43,6 +43,7 @@ IMPORTANT: While creating C-REAL, I have encounter many times that ".aRole" not 
 ### Bot permission calculator
  Bot permission calculator is used for permission that will give to the bot when inviting.
 ### User permissions
+##### C-REAL currectly doesn't support tags with special characters.
  The bot will check if the tag of the person that used (".something" command) matches the tags you put in the user permissions. If it matches, the bot will execute the command. If not, the bot will print out a line saying who and where is the person using the command.
 ### Kaboom
 #### Random
