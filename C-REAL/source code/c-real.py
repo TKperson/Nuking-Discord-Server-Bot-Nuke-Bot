@@ -143,7 +143,7 @@ def connect_server(ctx, path):
 class hero:
     pass
 
-#set up events ===============
+#set up events
 token, permissions, bomb_messages, bot_permission, after_attack = read_json()
 client = commands.Bot(command_prefix='.', case_insensitive=True)
 client.remove_command('help')
