@@ -1,5 +1,3 @@
-[POKI DISCORD](https://discord.gg/poki)
-
 # Nuking Discord Server Bot/Nuke Bot
 ## C-REAL bot
  C-REAL bot has 36 commands:
@@ -199,3 +197,7 @@ D145882E1E7CFB2DCC8BD28E799911DC23426A72
 ```
 8110FE15CC544F578468EC83317310B9
 ```
+
+
+
+[POKI DISCORD](https://discord.gg/poki)
