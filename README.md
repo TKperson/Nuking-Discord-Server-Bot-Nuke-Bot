@@ -166,6 +166,7 @@ or
 ".auditLog" (output the file with a name of the server name and ID.txt)
 
 ## How to use the C-REAL
+``` This is a BETA version```
 * After you are done with setting up the config file, all you have to do is to open the executable.
 * You can choose to put the default.json next to the executable(so the bot will use the default.json everyone time you open, that way you don't have to write a path for the configuration file again.), or you can type the path-to-the configuration file when the bot asked.
 * After finishing everything, you'll see the all the information displayed in the console.
