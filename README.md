@@ -1,3 +1,5 @@
+[POKI DISCORD](https://discord.gg/poki)
+
 # Nuking Discord Server Bot/Nuke Bot
 ## C-REAL bot
  C-REAL bot has 36 commands:
