@@ -26,7 +26,7 @@ number_of_bomb_default = 1000
 sorted_commands = []
 connected_server = None
 
-# normal functions==============
+# normal functions
 def read_json():
     temp = None
     try:
