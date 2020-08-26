@@ -173,6 +173,10 @@ or
 * If you want to an invite link for the bot, there will always be a link displayed in the console when the bot is ready.
 ![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
 
+## DISCLAIMER if you virus scan the exe it will show one virus. This is because it is looking for the default.json file nothing more. 
+## If you dont trust this look at the code.
+## If you don't know how to look at the code then you souldnt be downloading random stuff off of the internet
+
 ## Problems/issues
 * If you are experiencing crushing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
