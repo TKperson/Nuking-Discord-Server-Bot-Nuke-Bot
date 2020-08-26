@@ -173,7 +173,9 @@ or
 * If you want to an invite link for the bot, there will always be a link displayed in the console when the bot is ready.
 ![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
 
-* DISCLAIMER if you virus scan the exe it will show one virus. This is because it is looking for the default.json file nothing more. 
+
+## DISCLAIMER
+* If you virus scan the exe it will show one virus. This is because it is looking for the default.json file nothing more. 
 * If you dont trust this look at the code.
 * If you don't know how to look at the code then you souldnt be downloading random stuff off of the internet
 
