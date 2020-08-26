@@ -22,11 +22,12 @@ There are a few that are confusing for some people that I have tested with. I'm 
 IMPORTANT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, or a few hours or a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. It's probably around 500. When you are seeing "unable to" create something many times, that means it's either the don't have permissions to create or the server reached it's limit.
 
 ## Check list for setting up everything
-1. Get a discord profile(token) for the bot.
-2. Make a configuration file with builder.HTML
-3. Drag the configured json file next to the executable file(The prebuilt verison)
-4. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
-5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itselfs that means there's something wrong with the configuration file.
+1. Download the C-REAL file(or download the whole thing)
+2. Get a discord profile(token) for the bot.
+3. Make a configuration file with builder.HTML
+4. Drag the configured json file next to the executable file(The prebuilt verison)
+5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the configuration file.
+6. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
 
 ## What is a token/how to setup a token
  1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
