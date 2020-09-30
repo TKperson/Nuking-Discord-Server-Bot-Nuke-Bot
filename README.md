@@ -21,6 +21,8 @@ There are a few that are confusing for some people that I have tested with. I'm 
 
 IMPORTANT: While creating C-REAL, I have encounter many times that ".aRole" not working. It's not a bug, but I think it's probably discord's bug. So when ".aRole" is not working you'll have to wait for a few minutes, a few hours or up to a day to use it again. And during my testing, it seems like there's a limit of how much channels, categories, and roles you can create on a server. The limit is probably 250 roles, channels, and categories. When you are seeing "unable to" create something many times, that means it's either you don't have permissions to create or the server reached it's limit.
 
+#### We do not take any responsibility over whatever you are going to do with this bot.
+
 ## Check list for setting up everything
 1. Download the C-REAL file(or download the whole thing)
 2. Get a discord profile(token) for the bot.
@@ -170,7 +172,7 @@ or
 * After you are done with setting up the config file, all you have to do is to open the executable.
 * You can choose to put the default.json next to the executable(so the bot will use the default.json everyone time you open, that way you don't have to write a path for the configuration file again.), or you can type the path-to-the configuration file when the bot asked.
 * After finishing everything, you'll see the all the information displayed in the console.
-* If you want to an invite link for the bot, there will always be a link displayed in the console when the bot is ready.
+* The invite link for the bot will always be generated in the console when the bot is ready to run commands.
 ![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
 
 
