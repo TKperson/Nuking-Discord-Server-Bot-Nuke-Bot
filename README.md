@@ -35,7 +35,7 @@ IMPORTANT: While creating C-REAL, I have encounter many times that ".aRole" not 
  1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
  2. Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
  3. Create a new application or use your created application
- 4. Go to the bot tap in the application.
+ 4. Go to the bot tab in the application.
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
  
