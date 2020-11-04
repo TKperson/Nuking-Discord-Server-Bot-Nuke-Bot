@@ -1,7 +1,7 @@
 # Nuking Discord Server Bot/Nuke Bot
 ## C-REAL bot
- If you need extra help dm me on discord at cyxl#9986
- C-REAL bot has 36 commands:
+* If you need extra help dm me on discord at cyxl#9986
+* C-REAL bot has 36 commands:
 ```
 [aChannel] [aVC] [aCat] [auditLog] [aRole] 
 [banAll] [ban] [bans] [channels] [connect] 
