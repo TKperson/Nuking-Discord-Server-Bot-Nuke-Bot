@@ -2,7 +2,7 @@
 
 
 ### note update on this bot: We will be starting to work on this bot during thanksgiving (too much school in the last few months). I'm sorry if you are having problems with while using the bot. Once again, the bot is depended on wither if you configured the bot right or wrong.
-And remember to check if the bot has the permission to use the command you want it to permform. Good luck!
+And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
 
 ## C-REAL bot
 * There are many errors right now just dm me an error that you find and I will fix it when I have time 
