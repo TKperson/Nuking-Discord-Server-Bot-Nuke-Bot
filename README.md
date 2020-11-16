@@ -1,5 +1,6 @@
 # Nuking Discord Server Bot/Nuke Bot
 ## C-REAL bot
+* There are many errors right now just dm me an error that you find and I will fix it when I have time 
 * If you need extra help dm me on discord at cyxl#9986
 * C-REAL bot has 36 commands:
 ```
@@ -15,7 +16,7 @@ The bot's prefix is a dot (.)
 
 ## About the bot
 I got idea of creating a nuking discrod server bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ) and the bot is named after that guy.
-A shout out to cyxl#9986 for helping me.
+ A shout out to cyxl#9986 for helping me.
 
 You can already tell most of the commands by its name.
 There are a few that are confusing for some people that I have tested with. I'm also going to explain it from below.
