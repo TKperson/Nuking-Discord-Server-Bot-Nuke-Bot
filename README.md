@@ -1,7 +1,7 @@
 # Nuking Discord Server Bot/Nuke Bot
 
 
-### note update on this bot: We will be starting to work on this bot during thanksgiving (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
+### note update on this bot: We might start to work on the during breaks (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
 And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
 
 ## C-REAL bot
