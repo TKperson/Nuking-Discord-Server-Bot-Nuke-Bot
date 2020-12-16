@@ -193,9 +193,6 @@ or
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, that means you are using debugging mode. (the current windows prebuilt version is in debugging mode)
 
-## Contibute
-* If you are looking to contribute first git clone or download and then open it up in your ide/editor then make a pull request!
-
 ## Checksum for windows prebuilt version
 * SHA256
 ```
