@@ -15,6 +15,7 @@ manual.md (instead of putting all the description into the code; We've decided t
 unban command
 Emoji commands
 command aliases
+and some bug fixes
 ```
 ## C-REAL bot
 * There are many errors right now just dm me an error that you find and I will fix it when I have time 
