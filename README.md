@@ -4,6 +4,7 @@
 And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
 
 Update 12/20/2020: C-REAL V2 is coming out soon.
+```
 Webhooks features are going to be added
 10 times faster bombs and nukes
 added in error dections
@@ -14,7 +15,7 @@ manual.md (instead of putting all the description into the code; We've decided t
 unban command
 Emoji commands
 command aliases
-
+```
 ## C-REAL bot
 * There are many errors right now just dm me an error that you find and I will fix it when I have time 
 * If you need extra help dm me on discord at cyxl#9986
