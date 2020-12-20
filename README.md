@@ -8,8 +8,8 @@ Update 12/20/2020: C-REAL V2 is coming out soon.
 Webhooks features are going to be added
 10 times faster bombs and nukes
 added in error dections
-support selfbots
-change command prefix
+supports selfbots
+being able to change command prefix
 webhook spam
 manual.md (instead of putting all the description into the code; We've decided to put it inside a file)
 unban command
