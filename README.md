@@ -1,8 +1,19 @@
 # Nuking Discord Server Bot/Nuke Bot
 
-
 ### note update on this bot: We might start to work on the during breaks (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
 And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
+
+Update 12/20/2020: C-REAL V2 is coming out soon.
+Webhooks features are going to be added
+10 times faster bombs and nukes
+added in error dections
+support selfbots
+change command prefix
+webhook spam
+manual.md (instead of putting all the description into the code; We've decided to put it inside a file)
+unban command
+Emoji commands
+command aliases
 
 ## C-REAL bot
 * There are many errors right now just dm me an error that you find and I will fix it when I have time 
