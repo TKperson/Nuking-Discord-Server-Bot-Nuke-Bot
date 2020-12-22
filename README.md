@@ -27,7 +27,7 @@ I got idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtub
 You can already tell most of the commands by its name.
 But if you are still confused with the command: go read manual.md.
 
-Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
+Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot makes a lot of requests on creating and deleting.)
 
 Currently, for selfbots, it will not be able to see all members with a command. Which means selfbots won't be able to ban everyone, see every members with `.members` or any commands that have something to do with members will not be able to function correctly.
 
