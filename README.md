@@ -29,6 +29,8 @@ But if you are still confused with the command: go read manual.md.
 
 Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 
+Currently, for selfbots, it will not be able to see all members with a command. Which means selfbots won't be able to ban everyone, see every members with `.members` or any commands that have something to do with members will not be able to function correctly.
+
 #### IMPORTANT: We will not take any responsibility over whatever you are going to do with this bot. This script is created with to test anti nuke/anti spam bots.
 
 ## Check list for setting up everything
