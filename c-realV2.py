@@ -98,7 +98,7 @@ def read_json():
                 exit()
 
     except decoder.JSONDecodeError:
-        print('Unreadable in the configuration file. Make sure the formats are correct.')
+        print('Unreadable json formatting in the given configuration file. Make sure the formats are correct.')
         exit()
     try:
         return temp['token'], temp['permissions'], temp['bomb_messages'], temp['webhook_spam'], str(temp['bot_permission']), temp['command_prefix'], temp['bot_status'], temp['verbose'], temp['after']
