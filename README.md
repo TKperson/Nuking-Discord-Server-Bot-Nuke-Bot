@@ -69,7 +69,7 @@ examples: IMPORTANT: inside the after part, everything will be case sensitive. A
 ### How to turn on discord intents?
 * Go to discord developer portal
 * Login
-* Navigate to application > bot's tab (the place you get the your bot's token) > scroll down a little bit > and turn on the 2 buttons that is right under "Privileged Gateway Intents".
+* Navigate to your bot application > "bot" tab (the place you get your bot token from) > scroll down a little bit > and turn on the 2 buttons that is right under "Privileged Gateway Intents".
  ![Image of a screenshot](https://snipboard.io/U04VLE.jpg)
 
 ### Configuration file
