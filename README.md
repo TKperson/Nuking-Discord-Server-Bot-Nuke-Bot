@@ -5,6 +5,7 @@ And remember to check if the bot has the permission to use the command you want 
 
 Update 12/20/2020: C-REAL V2 is coming out soon.
 ```
+Things that will be added
 Webhooks features are going to be added
 10 times faster bombs and nukes
 added in error dections
