@@ -1,11 +1,3 @@
 discord
-asyncio
-random
-sys
-json
+packaging
 requests
-re
-io
-math
-colorama
-lazyme
