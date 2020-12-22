@@ -3,7 +3,7 @@
 ### note update on this bot: We might start to work on the during breaks (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
 And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
 
-Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
+Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon. builder.html is also getting an update; it will be added to the github page soon. For now you have to configurate the .json files manually :). 
 
 ## C-REAL bot
 * If you need extra help dm cyxl#9986 on discord.
