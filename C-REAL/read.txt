@@ -1,9 +1,0 @@
-Builder HTML can help you to build a config file that is need for the bot.
-if the config file is called default.json and its in the same directory as the bot
-the bot will always try to look for that file first and open it. If the bot can't find
-default.json next to it., then the bot will ask you for a config file. If you already have
-a config file, but it's not named default.json or some where else in the system, then
-you can enter a full path or a local path to find the config file.
-
-For more info, view on my github page.
-If you still need help you can contact us on discord TKperson#4883 cyxl#9986
