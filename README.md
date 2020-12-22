@@ -79,7 +79,7 @@ C-REAL will always try to look for the file "default.json" that is next to it, a
 Here's what the config file should look like if it's expanded (not in a single line):
 ```json
 {
-    "token": "<bot tokens or selfbot tokens> here",
+    "token": "<bot token or selfbot token> here",
     "permissions": [
         "TKperson#2348",
         "cyxl#9986",
