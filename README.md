@@ -66,14 +66,11 @@ Note: in discord, there are rate limitings. You will see a lot of rate limiting 
  You can enter any C-REAL bot command that you can use in the discord chat in the after part.
  If you are not experienced with all the commands, you can leave it blank.
 examples: IMPORTANT: inside the after part, everything will be case sensitive. And you don't need the bot's prefix in the after part. -->
-
-```
-aCat a category that is going to be added during .nuke
-aChannel a-channel-that-is-going-to-be-added-during-nuke-to-the-category
-sn this changes the server name to this during nuke
-si https://www.this.changes/the/server/icon/to/this/url.jpg
-kaboom 1000000000 random
-```
+### How to turn on discord intents?
+* Go to discord developer portal
+* Login
+* Navigate to application > bot's tab (the place you get the your bot's token) > scroll down a little bit > and turn on the 2 buttons that is right under "Privileged Gateway Intents".
+ ![Image of a screenshot](https://snipboard.io/U04VLE.jpg)
 
 ### Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
