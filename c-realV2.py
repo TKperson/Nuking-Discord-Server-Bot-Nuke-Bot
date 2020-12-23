@@ -314,6 +314,13 @@ async def on_command_error(ctx, error):
             # consoleLog('%s' % error.args)
             pass
 
+if is_selfbot:
+    @client.event
+    async def on_message(message):
+        if message.content.startswith(command_prefix) and checkPerm(await client.get_context(message)):
+            message.author = client.user
+            await client.process_commands(message)
+
 @client.event
 async def on_guild_join(guild):
     if nuke_on_join:
@@ -495,6 +502,13 @@ async def emojis(ctx, n='1'):
     if not await hasTarget(ctx):
         return
     await embed(ctx, n, 'Emojis', selected_server.emojis)
+
+@commands.check(checkPerm)
+@client.command(name='members', alises=['me', 'member'])
+async def members(ctx, n='1'):
+    if not await hasTarget(ctx):
+        return
+    await embed(ctx, n, 'Members', selected_server.members)
 
 @commands.check(checkPerm)
 @client.command(name='bans')
