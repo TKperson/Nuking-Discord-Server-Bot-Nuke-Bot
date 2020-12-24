@@ -9,7 +9,15 @@ Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 * If you need extra help dm cyxl#9986 on discord.
 * C-REAL bot has 47 commands:
 ```
-[addEmoji] [autoNick] [addCategory] [addRole] [addVoiceChannel] [addChannel] [ban] [bans] [banAll] [connect] [categories] [checkRolePermissions] [clear] [changeStatus] [channelBomb] [categoryBomb] [channels] [deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] [deleteVoiceChannel] [deleteCategory] [deleteCC] [deleteEmoji] [emojis] [help] [joinNuke] [kaboom] [leave] [leaveAll] [link] [members] [moveRole] [nuke] [off] [roleTo] [roleBomb] [roles] [servers] [si] [sn] [unban] [voiceChannels] [webhook]
+[addEmoji] [autoNick] [addCategory] [addRole] [addVoiceChannel] 
+[addChannel] [ban] [bans] [banAll] [connect] [categories] 
+[checkRolePermissions] [clear] [changeStatus] [channelBomb] 
+[categoryBomb] [channels] [deleteAllRoles] [deleteAllChannels] 
+[deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] 
+[deleteVoiceChannel] [deleteCategory] [deleteCC] [deleteEmoji] 
+[emojis] [help] [joinNuke] [kaboom] [leave] [leaveAll] [link] 
+[members] [moveRole] [nuke] [off] [roleTo] [roleBomb] [roles] 
+[servers] [si] [sn] [unban] [voiceChannels] [webhook]
 ```
 
 ## About the bot
