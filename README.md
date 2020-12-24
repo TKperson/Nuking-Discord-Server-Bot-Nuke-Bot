@@ -33,7 +33,7 @@ Note: in discord, there are rate limitings. You will see a lot of rate limiting 
 ## Check list for setting up everything
 1. Download the C-REAL file(or download the whole thing)
 2. Get a discord profile(token) for the bot.
-3. Make a configuration file with builder.HTML
+3. Make a configuration file with builder.HTML (Currently builder.html is not available. It still needs an update to match with V2.)
 4. Drag the configured json file next to the executable file(The prebuilt verison)
 5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the configuration file.
 6. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
