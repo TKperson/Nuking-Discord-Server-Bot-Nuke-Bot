@@ -127,14 +127,15 @@ Here's what the config file should look like if it's expanded (not in a single l
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
 
 ## Guids
-[![config](https://i9.ytimg.com/vi/ovEj9Rjq2sQ/mq3.jpg?sqp=COjYlv8F&rs=AOn4CLCe2Hjo50IDSSk6M2HlrOX274sHrA&retry=2)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "config")
-
+### Setup/config
+[![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
+### Nuke and kaboom commands
 [![nuke/kaboom](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "nuke/kaboom")
-
+### How to perform webhook spams
 [![webhooks](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "webhooks")
-
+### check permission command and some other commands
 [![other1](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "other1")
-
+### Other commands part 2
 [![other2](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other2")
 
 ## How to use the C-REAL
