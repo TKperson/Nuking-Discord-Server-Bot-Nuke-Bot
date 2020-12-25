@@ -112,12 +112,12 @@ Here's what the config file should look like if it's expanded (not in a single l
 * token: Your bot's token or an user account token.
 * permissions: This is for allowing the people/bot that is in it to use __any__ C-REAL commands.
 * bomb_messages: `an`, `b64`, and `fixed` are the only bomb types that are supported currently.
- * random: The positive integer that is in this will tell the bot how long the length of random bomb should be for base64 and alphanumeric characters. usage example: `.kaboom 10 an` or `.kaboom 10 b64`
- * fixed: The texts that are in it will be randomly choosed when running a fixed bomb commands. EX. `.kaboom 10 fixed` (this will create 10 channels, categories, and roles [only if it has permissions] with names that is randomly chosen from `fixed` texts.)
+  * random: The positive integer that is in this will tell the bot how long the length of random bomb should be for base64 and alphanumeric characters. usage example: `.kaboom 10 an` or `.kaboom 10 b64`
+  * fixed: The texts that are in it will be randomly choosed when running a fixed bomb commands. EX. `.kaboom 10 fixed` (this will create 10 channels, categories, and roles [only if it has permissions] with names that is randomly chosen from `fixed` texts.)
 * webhook_spam: None of the webhook things below can leave be empty
- * pfp_urls: Put `null` if you don't want the spammers to have a pfp. Put a link to an image if you want that image to be on one of your spammer.
- * usernames: Put `\u200b`(ZERO WIDTH SPACE) if you don't want the spammers to have a name.
- * contents: Put messages that you want the spammer to say. Note: keep the messages under 2000 unicode characters because that's the limit to how much you characters you can send in 1 message.
+  * pfp_urls: Put `null` if you don't want the spammers to have a pfp. Put a link to an image if you want that image to be on one of your spammer.
+  * usernames: Put `\u200b`(ZERO WIDTH SPACE) if you don't want the spammers to have a name.
+  * contents: Put messages that you want the spammer to say. Note: keep the messages under 2000 unicode characters because that's the limit to how much you characters you can send in 1 message.
 * bot permission: permissions that will be asked when the bot is getting invited to a server.
 * command_prefix: Put a command prefix that you like in there.
 * bot_status: When the script is connected to a profile, it will change the status of the current profile to whatever you put in there. Note: things you can put in there are `offline`, `invisible`, `dnd` (or `do_not_disturb`), `online`, or `idle`.
