@@ -127,13 +127,13 @@ Here's what the config file should look like if it's expanded (not in a single l
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
 
 ## Guids
-[![cofig](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "config")
+[![config](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "config")
 
-[![nuke/kabbom](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "nuke/kabbom")
+[![kaboom/nuke](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "kaboom/nuke")
 
-[![webhook](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "webhook")
+[![webhooks](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "webhooks")
 
-[![other](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "other")
+[![other](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other")
 
 ## How to use the C-REAL
 ``` This image is from a BETA version of v1```
