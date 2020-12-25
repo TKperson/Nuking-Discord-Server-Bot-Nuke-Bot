@@ -127,13 +127,15 @@ Here's what the config file should look like if it's expanded (not in a single l
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
 
 ## Guids
-[![config](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "config")
+[![config](https://i9.ytimg.com/vi/ovEj9Rjq2sQ/mq3.jpg?sqp=COjYlv8F&rs=AOn4CLCe2Hjo50IDSSk6M2HlrOX274sHrA&retry=2)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "config")
 
-[![kaboom/nuke](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "kaboom/nuke")
+[![nuke/kaboom](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "nuke/kaboom")
 
 [![webhooks](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "webhooks")
 
-[![other](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other")
+[![other1](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "other1")
+
+[![other2](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other2")
 
 ## How to use the C-REAL
 ``` This image is from a BETA version of v1```
