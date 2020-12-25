@@ -45,8 +45,6 @@ Note: in discord, there are rate limitings. You will see a lot of rate limiting 
  4. Go to the bot tab in the application.
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
- 
-
 ```
 aCat a category that is going to be added during .nuke
 aChannel a-channel-that-is-going-to-be-added-during-nuke-to-the-category
@@ -127,6 +125,15 @@ Here's what the config file should look like if it's expanded (not in a single l
 * after: commands that are in the "after" will be run after `.nuke` command. You can put the commands that you normally use in discord on there with the format showed in this example. And it's case insensitive.
 
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
+
+## Guids
+[![cofig](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "config")
+
+[![nuke/kabbom](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "nuke/kabbom")
+
+[![webhook](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "webhook")
+
+[![other](http://img.youtube.com/vi/iM8TEYHwN9k/0.jpg)](http://www.youtube.com/watch?v=iM8TEYHwN9k "other")
 
 ## How to use the C-REAL
 ``` This image is from a BETA version of v1```
