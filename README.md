@@ -126,7 +126,7 @@ Here's what the config file should look like if it's expanded (not in a single l
 
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
 
-## Guids
+## Guides
 ### Setup/config
 [![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
 ### Nuke and kaboom commands
