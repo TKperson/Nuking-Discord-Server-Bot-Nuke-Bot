@@ -7,17 +7,19 @@ Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
 ## C-REAL bot
 * If you need extra help dm cyxl#9986 on discord.
-* C-REAL bot has 47 commands:
+* C-REAL bot has 48 commands:
 ```
-[addEmoji] [autoNick] [addCategory] [addRole] [addVoiceChannel] 
-[addChannel] [ban] [bans] [banAll] [connect] [categories] 
-[checkRolePermissions] [clear] [changeStatus] [channelBomb] 
-[categoryBomb] [channels] [deleteAllRoles] [deleteAllChannels] 
-[deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] 
-[deleteVoiceChannel] [deleteCategory] [deleteCC] [deleteEmoji] 
-[emojis] [help] [joinNuke] [kaboom] [leave] [leaveAll] [link] 
-[members] [moveRole] [nuke] [off] [roleTo] [roleBomb] [roles] 
-[servers] [si] [sn] [unban] [voiceChannels] [webhook]
+[addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
+[addCategory] [addRole] [addChannel] [banAll] [ban] 
+[bans] [categoryBomb] [checkRolePermissions] [clear] 
+[changeStatus] [channels] [categories] [connect] 
+[channelBomb] [deleteCategory] [deleteCC] [deleteEmoji] 
+[deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] 
+[deleteAllWebhooks] [deleteRole] [deleteChannel] 
+[deleteVoiceChannel] [emojis] [help] [joinNuke] 
+[kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
+[nuke] [off] [roleTo] [roles] [roleBomb] [si] [sn] 
+[servers] [unban] [voiceChannels] [webhook] 
 ```
 
 ## About the bot
@@ -33,7 +35,7 @@ Note: in discord, there are rate limitings. You will see a lot of rate limiting 
 ## Check list for setting up everything
 1. Download the C-REAL file(or download the whole thing)
 2. Get a discord profile(token) for the bot.
-3. Make a configuration file with builder.HTML (Currently builder.html is not available. It still needs an update to match with V2.)
+3. Make a configuration file with `builder.html`.
 4. Drag the configured json file next to the executable file(The prebuilt verison)
 5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the configuration file.
 6. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
@@ -80,15 +82,15 @@ Here's what the config file should look like if it's expanded (not in a single l
         ]
     },
     "webhook_spam": {
-        "pfp_urls": [
-            null,
-            "link to image",
-            "link to image2",
-        ],
         "usernames": [
             "\u200b",
             "more names",
             "more names2"
+        ],
+        "pfp_urls": [
+            null,
+            "link to image",
+            "link to image2",
         ],
         "contents": [
             "@TKperson Hello C-real was here",
