@@ -20,16 +20,16 @@
         ]
     },
     "webhook_spam": {
+        "usernames": [
+            "\u200b",
+            "more names",
+            "more names2"
+        ],
         "pfp_urls": [
             null,
             "link to image",
             "link to image2",
             "right now, there's only a 1/4 chance for one of the spammer to not have a pfp"
-        ],
-        "usernames": [
-            "\u200b",
-            "more names",
-            "more names2"
         ],
         "contents": [
             "@TKperson Hello C-real was here",

