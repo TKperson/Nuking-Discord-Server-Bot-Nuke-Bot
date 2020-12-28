@@ -247,6 +247,10 @@
             color: #9b9b9b;
         }
 
+        .special-character {
+            color: #ff9900;
+        }
+
         body {
             background: var(--black);
             display: flex;
@@ -369,23 +373,24 @@
     <h1 class="title">Tab</h1><p>Navigate forwards</p>
     <h1 class="title">Shift + Tab</h1><p>Navigate backwards</p>
     <br />
-    <p>If you want <i style="color: #ff9900;">null</i>(s) in any of the lists, just press enter or click the arrow button in any list input boxes that doesn't any character(s) in it.</p>
+    <p>If you want <i class="special-character">null</i>(s) in any of the lists, just press enter or click the arrow button in any list input boxes that doesn't any character(s) in it.</p>
     <p>All of the things below, except "After", need to have something in it.</p>
+    <h1 class="title">Supported escape characters in builder.html:</h1><p><i class="special-character">\b</i>, <i class="special-character">\t</i>, <i class="special-character">\n</i>, <i class="special-character">\f</i>, <i class="special-character">\r</i>, and <i class="special-character">\u</i>{0000-FFFF}</p>
     <br />
     <h1 class="title">Token</h1><p>You can insert either an user token or a bot token.</p>
     <br />
-    <h1 class="title">Permissions</h1><p>Permissions to use <u><strong>any</strong></u> commands that the bot offers will be granted to the discord user tag(s) or discord user ID(s) that are listed in the list box. In this list you <i>can</i> have <i style="color: #ff9900;">null</i>(s), but it will become an unnecessary item for the script to check.</p>
+    <h1 class="title">Permissions</h1><p>Permissions to use <u><strong>any</strong></u> commands that the bot offers will be granted to the discord user tag(s) or discord user ID(s) that are listed in the list box. In this list you <i>can</i> have <i class="special-character">null</i>(s), but it will become an unnecessary item for the script to check.</p>
     <br />
     <h1 class="title">Bomb messages</h1>
     <br />
     <h1 class="title">Random</h1><p>When you are using any type of random bombs ("an", "b64"), it will ask for a length of how long the characters should be. And the length will be asked in this box here, so please enter a positive integer. (Note: 10 is a recommended length because if the channel is too long people won't be able to see the whole names anyways, and it will also use up some extra bit of CPU)</p>
-    <h1 class="title">Fixed</h1><p>Items that are inside this list is used by the "fixed" bomb command. You cannot have any <i style="color: #ff9900;">null</i> in here.</p>
+    <h1 class="title">Fixed</h1><p>Items that are inside this list is used by the "fixed" bomb command. You cannot have any <i class="special-character">null</i> in here.</p>
     <br />
     <h1 class="title">Webhook spams</h1>
     <br />
-    <h1 class="title">Usernames</h1><p>The bot will randomly pick an item that is entered in the list, and use it as the username of the webhook request during webhook attack. You cannot have <i style="color: #ff9900;">null</i>(s) in this list or leave it empty. If you want "No name", then enter <i style="color: #ff9900;">\200B</i> (ZERO-WIDTH space) as the username.</p>
-    <h1 class="title">Profile pictures</h1><p>The bot will randomly choose an image link from the list during webhook attack. You <i><b>CAN</b></i> have <i style="color: #ff9900;">null</i>(s) in this list, which will be used as "No pfp" during the webhook attack. Anything that is not an image link will result the bot in an error. (The script won't tell you which one has error, but if you did "webhook attack start 50" and there are less than 50 messages that got sent, then that means there's something wrong with this configuration file.)</p>
-    <h1 class="title">Contents</h1><p>The bot will randomly choose a message from the list during webhook attack. You CANNOT have any <i style="color: #ff9900;">null</i>(s) in this list. The messages that are sent are going to be formatted just like how you usually send messages in discord. Which means you can send messages like **Bold Text** for <b style="font-weight: 1000;">Bold Text</b>, and you cannot send more than 2000 charaters.</p>
+    <h1 class="title">Usernames</h1><p>The bot will randomly pick an item that is entered in the list, and use it as the username of the webhook request during webhook attack. You cannot have <i class="special-character">null</i>(s) in this list or leave it empty. If you want "No name", then enter <i class="special-character">\u200B</i> (ZERO-WIDTH space) as the username.</p>
+    <h1 class="title">Profile pictures</h1><p>The bot will randomly choose an image link from the list during webhook attack. You <i><b>CAN</b></i> have <i class="special-character">null</i>(s) in this list, which will be used as "No pfp" during the webhook attack. Anything that is not an image link will result the bot in an error. (The script won't tell you which one has error, but if you did "webhook attack start 50" and there are less than 50 messages that got sent, then that means there's something wrong with this configuration file.)</p>
+    <h1 class="title">Contents</h1><p>The bot will randomly choose a message from the list during webhook attack. You CANNOT have any <i class="special-character">null</i>(s) in this list. The messages that are sent are going to be formatted just like how you usually send messages in discord. Which means you can send messages like **Bold Text** for <b style="font-weight: 1000;">Bold Text</b>, and you cannot send more than 2000 charaters.</p>
     <br />
     <h1 class="title">Bot permissions</h1><p>The bot will ask for the permissions that you have chosen in the given options, when someone used the bot's invite generated by the script. These options are not required if you are using the script on an user account.</p>
     <br />
@@ -478,20 +483,90 @@ let allLists = {
     'contents': []
 }
 
+// let u_escapeRegex = [
+//     /\\u[0-F]{4}/g, 4
+    // /\\[0-7]{3}/g, 3
+// ];
+
+let escapeRegex = [
+    /\\b/g, '\b',
+    /\\t/g, '\t',
+    /\\n/g, '\n',
+    /\\f/g, '\f',
+    /\\r/g, '\r'
+]
+
 function acceptInput(ID, listName) {
     let input = document.getElementById(ID);
     if(input.value.length == 0) {
         allLists[ID].push(null)
-        input.value = `<i style="color: #ff9900;">null</i>`;
+        input.value = `<i class="special-character">null</i>`;
     } else {
-        allLists[ID].push(input.value);
-        let buffer = [];
+        let buffer = input.value;
+
+        function checkCode(str, index) {
+            switch(str[index+1]) {
+                case 'b':
+                    return ['\b', 2];
+                case 't':
+                    return ['\t', 2];
+                case 'n':
+                    return ['\n', 2];
+                case 'f':
+                    return ['\f', 2];
+                case 'r':
+                    return ['\r', 2];
+                case 'u':
+                    if(str.length >= index + 6) {
+                        for(let i = 2; i < 6; i++) {
+                            let code = str[index + i].charCodeAt();
+                            if(!((code >= 48 && code <= 57) || (code >= 65 && code <= 70))) {
+                                return [-1, -1]
+                            }
+                        }
+                        return [str.substr(index + 2, index + 4), 6]
+                    }
+                default:
+                    return [-1, -1];
+            }
+        }
+
+        let coloringPlaces = [];
+
+        for(let i = 0, offset_2 = 0, offset_6 = 0; i < buffer.length - 1; i++) {
+            if(buffer[i] == '\\') {
+                let [a, b] = checkCode(buffer, i);
+                if(b == 2) {
+                    buffer = buffer.substr(0, i) + a + buffer.substr(i + 2);
+                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
+                    offset_2++;
+                } else if (b == 6) {
+                    buffer = buffer.substr(0, i) + String.fromCharCode('0x' + a) + buffer.substr(i + 6);
+                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
+                    offset_6++;
+                }
+            }
+        }
+
+        allLists[ID].push(buffer);
+        buffer = [];
         // XSS is really buggy to the lists so just put a simple patch to it will increase the user experience
-        for(let i = 0, str=input.value[i]; i < input.value.length; i++, str=input.value[i])
-            if(str == '<' || str == '>' || str == '\\' || str == '"' || str == "'" || str == '/' || str == '=')
-                buffer.push(['&#', str.charCodeAt(), ';'].join(''));
+        for(let i = 0, place = coloringPlaces.shift(), str=input.value[i]; i < input.value.length; i++, str=input.value[i])
+            if(i == place) {
+                buffer.push('<i class="special-character">');
+                let endpoint = coloringPlaces.shift()
+                for(let j = 0; j < endpoint; j++, i++, str=input.value[i]) {
+                    buffer.push(str);
+                }
+                buffer.push('</i>');
+                place = coloringPlaces.shift();
+                i--;
+            }
+            else if(str == '<' || str == '>' || str == '\\' || str == '"' || str == "'" || str == '/' || str == '=')
+                buffer.push(`&#${str.charCodeAt()};`)
             else
                 buffer.push(str);
+        
         input.value = buffer.join('');
     }
     let list = document.getElementById(listName);
