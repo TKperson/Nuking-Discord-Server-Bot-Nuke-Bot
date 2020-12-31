@@ -1,7 +1,7 @@
 ---
 name: Need help
 about: Stuck some where during setup or using a command?
-title: 'Getting help.'
+title: 'Why is _____ happening?'
 labels: ''
 assignees: ''
 
