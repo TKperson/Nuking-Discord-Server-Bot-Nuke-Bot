@@ -1,7 +1,7 @@
 ---
-name: Bug report
-about: Create a report to help C-REAL to improve
-title: 'Any crashes (console disappeared), unexpected outcome, and unusable commands?'
+name: Need help
+about: Stuck some where during setup or using a command?
+title: 'Getting help.'
 labels: ''
 assignees: ''
 
