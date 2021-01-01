@@ -3,6 +3,8 @@ C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. 
 
 We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
+Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
+
 Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
 ## C-REAL bot
