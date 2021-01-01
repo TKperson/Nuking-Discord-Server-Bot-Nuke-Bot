@@ -30,7 +30,8 @@ But if you are still confused with the command: go read manual.md.
 
 Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 
-#### IMPORTANT: We will not take any responsibility over whatever you are going to do with this bot. This script is created to test anti nuke/anti spam bots.
+# IMPORTANT: 
+We will not take any responsibility over whatever you are going to do with this bot.
 
 ## Check list for setting up everything
 1. Download the C-REAL file(or download the whole thing)
