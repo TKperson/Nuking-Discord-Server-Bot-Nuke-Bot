@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
 MIT License
@@ -46,7 +47,7 @@ except ImportError:
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.2.0"
+__VERSION__ = "2.2.1"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -62,6 +63,7 @@ saved_ctx = None
 nuke_on_join = False
 auto_nick = False
 auto_status = False
+selfbot_has_perm = False
 
 ''' #### Not planning to use regex
 Super expensive regex if used to check long strings
@@ -115,9 +117,10 @@ def read_json():
         exit()
 
 def banner():
+    # Some consoles are **** so I don't know why they are so **** so so so so I used std::cout
     sys.stdout.buffer.write(f'''\
  ██████╗                  ██████╗ ███████╗ █████╗ ██╗     
-██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {Fore.BLUE}{__VERSION__}{Fore.RESET}
+██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {__VERSION__}
 ██║         █████╗        ██████╔╝█████╗  ███████║██║     Made by:
 ██║         ╚════╝        ██╔══██╗██╔══╝  ██╔══██║██║       TKperson
 ╚██████╗                  ██║  ██║███████╗██║  ██║███████╗    and
@@ -157,19 +160,41 @@ try:
 except requests.exceptions.ConnectionError:
     print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
     exit()
+
+### check updates
+print('Checking update...', end='\r')
+github_version = requests.get('https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/VERSION.txt').text
+if version.parse(github_version) > version.parse(__VERSION__):
+    print(f'New C-REAL update has been launched -> {version} <- :party:')
+
 print('Loading scripts...' + ' ' * 15, end='\r')
+
 
 """
 command_prefix   - command prefix
 case_insensitive - commands will be callable without case retrictions if this is set to true
-self_bot         - If this is set to true then the bot will be able to see all message coming from itself and ignore other messages
-intents          - permissions on the server side for reading the full members/heavy list.
+self_bot         - self_bot: :class:`bool`
+                        If ``True``, the bot will only listen to commands invoked by itself rather
+                        than ignoring itself. If ``False`` (the default) then the bot will ignore
+                        itself. This cannot be changed once initialised.
+intents          - intents: :class:`Intents`
+                        The intents that you want to enable for the session. This is a way of
+                        disabling and enabling certain gateway events from triggering and being sent.
+                        If not given, defaults to a regularly constructed :class:`Intents` class.
 """
-client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=is_selfbot, intents=discord.Intents().all())
+client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=True, intents=discord.Intents().all())
 client.remove_command('help')
 ######### Events #########
 @client.event
 async def on_connect():
+    if is_selfbot:
+        for user in permissions:
+            if str(client.user.id) == user or f'{client.user.name}#{client.user.discriminator}' == user:
+                global selfbot_has_perm
+                selfbot_has_perm = True
+                print('lo')
+        permissions.append(str(client.user.id))
+
     global sorted_commands
     sorted_commands = sorted(client.commands, key=lambda e: e.name[0])
     if bot_status == 'offline':
@@ -228,6 +253,15 @@ async def on_ready():
     # # requests.get('https://httpbin.org/headers')
     # await selected_server.create_text_channel('lol')
 
+@client.event
+async def on_disconnect():
+    '''
+    on_disconnect - when the script is disconnected with the profile the bot will run this command
+                    usage:    reset status
+    '''
+
+    await changeStatus(None, 'offline')
+
 ### logs ###
 async def log(ctx, message):
 
@@ -253,7 +287,6 @@ async def log(ctx, message):
                 consoleLog(message)
 
 def consoleLog(message, print_time=False):
-    TIME = ''
     if want_log_console:
         if print_time:
             TIME = f'{Fore.MAGENTA}[{time.strftime("%H:%M:%S", time.localtime())}] {Fore.RESET}'
@@ -265,6 +298,8 @@ def consoleLog(message, print_time=False):
 
 @client.event
 async def on_command_error(ctx, error):
+    raise
+    return
     # source: https://gist.github.com/AileenLumina/510438b241c16a2960e9b0b014d9ed06
     # source: https://github.com/Rapptz/discord.py/blob/master/discord/errors.py
     """
@@ -338,13 +373,17 @@ async def on_command_error(ctx, error):
             await log(ctx, '%s' % error.args)
         except discord.errors.NotFound: # When ctx.channel is deleted 
             pass
-        except: # When there's a charater that can't be logged into discord. Like if error.args contains a tuple which can't be automatically turned into a string.
+        except TypeError: # When there's a charater that can't be logged into discord. Like if error.args contains a tuple which can't be automatically turned into a string.
             consoleLog(f'{Fore.RED}Error -> {error.args}: {Fore.YELLOW}When to using "{ctx.message.content}".', True)
 
 if is_selfbot:
     @client.event
     async def on_message(message):
         if message.content.startswith(command_prefix) and checkPerm(await client.get_context(message)):
+            if message.author.id == client.user.id and not selfbot_has_perm:
+                consoleLog(f'{Fore.YELLOW}Account owner {Fore.LIGHTBLUE_EX}"{client.user.name}#{client.user.discriminator}" {Fore.YELLOW}tried to use {Fore.LIGHTBLUE_EX}"{message.content}"{Fore.BLUE}. Too bad, he/she doesn\'t of the power to use this bot.', True)
+                return
+
             message.author = client.user
             await client.process_commands(message)
 
@@ -360,7 +399,6 @@ def isDM(ctx):
     No args
     Checking if the ctx is whether from DM or in a server. There are different handlers for handling some commands. 
     """
-
     if isinstance(ctx.channel, discord.channel.DMChannel):
         return True # in dm
     return False # in server            
@@ -455,9 +493,9 @@ def checkPerm(ctx):
         if str(ctx.author.id) == user or f'{ctx.author.name}#{ctx.author.discriminator}' == user:
             return True
     if not isDM(ctx):
-        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in server "{ctx.guild.name}", at channel "{ctx.channel.name}".', True)
+        consoleLog(f'{Fore.LIGHTRED_EX}{ctx.author.name}#{ctx.author.discriminator} {Fore.RESET}tried to use {Fore.LIGHTYELLOW_EX}"{ctx.message.content}" {Fore.RESET}in server {Fore.LIGHTYELLOW_EX}"{ctx.guild.name}"{Fore.RESET}, at channel {Fore.LIGHTYELLOW_EX}"{ctx.channel.name}"{Fore.RESET}.', True)
     else:
-        consoleLog(f'{ctx.author.name}#{ctx.author.discriminator} tried to use "{ctx.message.content}" in the bot\'s direct message.', True)
+        consoleLog(f'{Fore.LIGHTRED_EX}{ctx.author.name}#{ctx.author.discriminator} {Fore.RESET}tried to use {Fore.LIGHTYELLOW_EX}"{ctx.message.content}" {Fore.RESET}in {Fore.LIGHTYELLOW_EX}the bot\'s direct message{Fore.RESET}.', True)
     return False
 
 def fixedChoice():
@@ -578,7 +616,7 @@ async def connect(ctx, *, server=None):
     global selected_server, selected_server_member_bot
     selected_server = server
     selected_server_member_bot = containing(selected_server.members, str(client.user.id))
-    await log(ctx, f'Successfully connected to {server.name}.')
+    await log(ctx, f'Successfully connected to `{server.name}`.')
 
 #########  Unities  ##########
 @commands.check(checkPerm)
@@ -591,16 +629,18 @@ async def addChannel(ctx, channel_name, *, category=None):
         temp = category
         category = containing(selected_server.categories, category)
         if category is None:
-            await log(ctx, f'Unable to find category: {temp}')
+            await log(ctx, f'Unable to find category `{temp}`.')
             return
 
     try:
         await selected_server.create_text_channel(channel_name, category=category)
         if category is None:
             category = 'No category.'
-        await log(ctx, f'Successfully added channel: {channel_name}')
+        else:
+            category = category.name
+        await log(ctx, f'Successfully added channel `{channel_name}` to category `{category}`.')
     except:
-        await log(ctx, f'Unable to add channel: {channel_name}')
+        await log(ctx, f'Unable to add channel `{channel_name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -613,16 +653,18 @@ async def addVoiceChannel(ctx, voice_channel, *, category=None):
         temp = category
         category = containing(selected_server.categories, category)
         if category is None:
-            await log(ctx, f'Unable to find category: {temp}')
+            await log(ctx, f'Unable to find category `{temp}`.')
             return
 
     try:
         await selected_server.create_voice_channel(voice_channel, category=category)
         if category is None:
             category = 'No category.'
-        await log(ctx, f'Successfully added VC: {voice_channel} to category: {category}')
+        else:
+            category = category.name
+        await log(ctx, f'Successfully added VC `{voice_channel}` to category `{category}`.')
     except:
-        await log(ctx, f'Unable to add: VC: {voice_channel}')
+        await log(ctx, f'Unable to add VC `{voice_channel}`.')
         raise
 
 @commands.check(checkPerm)
@@ -709,7 +751,7 @@ async def moveRole(ctx, *, name):
         if role is None:
             await log(ctx, f'Unable to find role `{name}`.')
         await role.edit(position=int(position))
-        await log(ctx, 'Role moved.`')
+        await log(ctx, f'Successfully moved role {role.name} to position `{str(position)}`.')
     except:
         await log(ctx, f'Unable to move role `{name}` to position `{position}`.')
         raise
@@ -740,7 +782,7 @@ async def deleteChannel(ctx, channel_name):
     channel = containing(selected_server.text_channels, channel_name)
 
     if channel is None:
-        await log(f'Unable to find text channel "`{channel_name}`".')
+        await log(f'Unable to find text channel `{channel_name}`.')
 
     try:
         await channel.delete(reason=None)
@@ -780,9 +822,9 @@ async def deleteCategory(ctx, *, category_name):
 
     try:
         await channel.delete(reason=None)
-        await log(ctx, f'Category "{channel.name}" is deleted.')
+        await log(ctx, f'Category `{channel.name}` is deleted.')
     except:
-        await log(ctx, f'Unable to delete category "{channel.name}".')
+        await log(ctx, f'Unable to delete category `{channel.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -799,9 +841,9 @@ async def deleteCC(ctx, *, name):
 
     try:
         await channel.delete(reason=None)
-        await log(ctx, f'Channel "{channel.name}" is removed from the server.')
+        await log(ctx, f'Channel `{channel.name}` is removed from `{selected_server.name}`.')
     except:
-        await log(ctx, f'Unable to delete channel "{channel.name}".')
+        await log(ctx, f'Unable to delete channel `{channel.name}`.')
         raise
 
 @commands.check(checkPerm)
@@ -943,7 +985,7 @@ async def channelBomb(ctx, n, method='fixed'):
         await log(ctx, f'Unable to find choice "{method}".')
         return
 
-    consoleLog('Channel bombing has started.')
+    consoleLog('Channel bombing has started.', True)
     for i in range(n):
         payload = {
             'type': 0,
@@ -953,7 +995,7 @@ async def channelBomb(ctx, n, method='fixed'):
         q.put((requests.post, f'https://discord.com/api/v8/guilds/{selected_server.id}/channels', headers, payload))
 
     q.join()
-    consoleLog('Done text channel bombing.')
+    consoleLog('Done text channel bombing.', True)
 
 @commands.check(checkPerm)
 @client.command(name='categoryBomb')
@@ -975,7 +1017,7 @@ async def categoryBomb(ctx, n, method):
         await log(ctx, f'Unable to find choice "{method}".')
         return
 
-    consoleLog('Channel bombing has started.')
+    consoleLog('Channel bombing has started.', True)
     for i in range(n):
         payload = {
             'type': 4,
@@ -985,7 +1027,7 @@ async def categoryBomb(ctx, n, method):
         q.put((requests.post, f'https://discord.com/api/v8/guilds/{selected_server.id}/channels', headers, payload))
 
     q.join()
-    consoleLog('Done category bombing.')
+    consoleLog('Done category bombing.', True)
 
 @commands.check(checkPerm)
 @client.command(name='roleBomb')
@@ -1007,7 +1049,7 @@ async def roleBomb(ctx, n, method):
         await log(ctx, f'Unable to find choice "{method}".')
         return
 
-    consoleLog('Role bombing has started.')
+    consoleLog('Role bombing has started.', True)
     for i in range(n):
         payload = {
             'name': method()
@@ -1015,7 +1057,7 @@ async def roleBomb(ctx, n, method):
         q.put((requests.post, f'https://discord.com/api/v8/guilds/{selected_server.id}/roles', headers, payload))
 
     q.join()
-    consoleLog('Done role bombing.')
+    consoleLog('Done role bombing.', True)
 
 ######### webhooks ##########
 @commands.check(checkPerm)
@@ -1419,7 +1461,10 @@ async def changeStatus(ctx, status):
 @commands.check(checkPerm)
 @client.command(name='link', aliases=['l'])
 async def link(ctx):
-    await ctx.channel.send(f'https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+    if not is_selfbot:
+        await ctx.channel.send(f'https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+    else:
+        await log(f'This account is not a bot :). You can join servers with invite codes.')
 
 @commands.check(checkPerm)
 @client.command(name='autoNick', aliases=['an'])
@@ -1489,7 +1534,7 @@ try:
 #     print('Invalid token is being used.')
 #     exit()
 except discord.PrivilegedIntentsRequired:
-    print('PrivilegedIntentsRequired: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application\'s page. If this is not possible, then consider disabling the privileged intents in the bot\'s source code instead. Go visit https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot to see how to properly add privileged intents.')
+    print('PrivilegedIntentsRequired: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application\'s page. If this is not possible, then consider disabling the privileged intents in the bot\'s source code instead. Or go visit https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot to see how to properly add privileged intents.')
     exit()
 finally:
     print('Exiting...')
