@@ -124,7 +124,7 @@ Here's what the config file should look like if it's expanded (not in a single l
 * verbose: Things that will be logged to you when you are running the bot. `0` is nothing will be logged to you. `15` is everything. Use builder.html to change verbose levels.
 * after: commands that are in the "after" will be run after `.nuke` command. You can put the commands that you normally use in discord on there with the format showed in this example. And it's case insensitive.
 
-* Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with builder.html.
+* Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with `builder.html`.
 
 ## Guides
 ### Setup/config
