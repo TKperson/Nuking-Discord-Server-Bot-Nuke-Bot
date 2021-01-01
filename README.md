@@ -1,6 +1,8 @@
 # Nuking Discord Server Bot/Nuke Bot
 C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
+We have combined threaded requests and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because __it runs too fast__.
+
 Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
 ## C-REAL bot
