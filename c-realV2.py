@@ -47,7 +47,7 @@ except ImportError:
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.2.1"
+__VERSION__ = "2.2.2"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -182,7 +182,7 @@ intents          - intents: :class:`Intents`
                         disabling and enabling certain gateway events from triggering and being sent.
                         If not given, defaults to a regularly constructed :class:`Intents` class.
 """
-client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=True, intents=discord.Intents().all())
+client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=is_selfbot, intents=discord.Intents().all())
 client.remove_command('help')
 ######### Events #########
 @client.event
@@ -192,7 +192,6 @@ async def on_connect():
             if str(client.user.id) == user or f'{client.user.name}#{client.user.discriminator}' == user:
                 global selfbot_has_perm
                 selfbot_has_perm = True
-                print('lo')
         permissions.append(str(client.user.id))
 
     global sorted_commands
@@ -298,8 +297,6 @@ def consoleLog(message, print_time=False):
 
 @client.event
 async def on_command_error(ctx, error):
-    raise
-    return
     # source: https://gist.github.com/AileenLumina/510438b241c16a2960e9b0b014d9ed06
     # source: https://github.com/Rapptz/discord.py/blob/master/discord/errors.py
     """
