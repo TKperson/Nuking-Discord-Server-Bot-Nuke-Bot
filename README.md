@@ -1,7 +1,5 @@
 # Nuking Discord Server Bot/Nuke Bot
-
-### note update on this bot: We might start to work on the during breaks (too much school in the last few months). I'm sorry if you are having problems while using this bot. Once again, the bot is depended on whether if you configured the bot right or wrong.
-And remember to check if the bot has the permission to use the command you want it to perform. Good luck!
+C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here.
 
 Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
@@ -23,8 +21,6 @@ Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 ```
 
 ## About the bot
-C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here.
-
 I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy. And a shout out to cyxl#9986 for helping me making C-REAL.
 
 You can already tell most of the commands by its name.
