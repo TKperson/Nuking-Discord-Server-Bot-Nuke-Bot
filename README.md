@@ -53,7 +53,7 @@ We will not take any responsibility over whatever you are going to do with this 
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
 
-### Configuration file
+## Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
 Here's what the config file should look like if it's expanded (not in a single line):
 ```json
@@ -147,6 +147,6 @@ Here's what the config file should look like if it's expanded (not in a single l
 ![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
 
 ## Problems/issues
-* If you are experiencing crushing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
+* If you are experiencing crashing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, and then crashed that means it's 90% a bug. So please make a new issue about it.
