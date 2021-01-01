@@ -40,7 +40,7 @@ We will not take any responsibility over whatever you are going to do with this 
 2. Get a discord profile(token) for the bot.
 3. Make a configuration file with `builder.html`.
 4. Drag the configured json file next to the executable file(The prebuilt verison)
-5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the configuration file.
+5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the code and please report the issue to this github page.
 6. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
 
 ## What is a token/how to setup a token
