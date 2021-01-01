@@ -165,7 +165,7 @@ except requests.exceptions.ConnectionError:
 print('Checking update...', end='\r')
 github_version = requests.get('https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/VERSION.txt').text
 if version.parse(github_version) > version.parse(__VERSION__):
-    print(f'New C-REAL update has been launched -> {version} <- :party:')
+    print(f'New C-REAL update has been launched -> {github_version} <- :party:')
 
 print('Loading scripts...' + ' ' * 15, end='\r')
 
