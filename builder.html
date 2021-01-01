@@ -239,11 +239,19 @@
         }
 
         .nav-guides {
+            min-width: 300px;
             font-size: 1.5em;
             padding: 2em;
         }
 
+        .inv {
+            /* Prevent the browser to load all the text again*/
+            opacity: 0; 
+            cursor: default;
+        }
+
         .nav-guides p {
+            font-size: 1.3rem;
             color: #9b9b9b;
         }
 
@@ -369,7 +377,8 @@
         <button class="button" onclick="saveAll()">Save all</button>
     </div>
 </div>
-<div class="nav-guides">
+<div class="nav-guides" onclick="toggleHide(this)">
+    <div>
     <h1 class="title">Tab</h1><p>Navigate forwards</p>
     <h1 class="title">Shift + Tab</h1><p>Navigate backwards</p>
     <br />
@@ -401,10 +410,17 @@
     <h1 class="title">Verbose levels</h1><p>If you don't have a greate computer, your computer will lag over some massive output of logs. This can increase your computer performance by disabling the logs that you don't need. (Turning all logs on is recommended)</p>
     <br />
     <h1 class="title">After</h1><p>Inside this text box, you can input the commands that you want to execute after the nuke command. You can enter commands like "si" or "sn" to change the server name and icon (You can also leave this area blank if you are not familiar with the commands yet). You can think of it this way: this is just a like discord chat, if you want to send a message you need to press the enter key; every message you sent is a command for the bot, except you don't have to enter a command prefix. As long you don't add a new enter to the text box, it will not be counted as a new command. (Note: you do not have to put the command prefix in this text box)</p>
+</div>
 
 </div>
 
 <script type="text/javascript">
+function toggleHide(ele){
+    if(ele.classList.contains('inv'))
+        ele.classList.remove('inv');
+    else
+        ele.classList.add('inv');
+}
 //init
 let allPermissions = {
     // General
@@ -483,18 +499,18 @@ let allLists = {
     'contents': []
 }
 
-// let u_escapeRegex = [
-//     /\\u[0-F]{4}/g, 4
-    // /\\[0-7]{3}/g, 3
-// ];
+/*let u_escapeRegex = [
+    /\\u[0-F]{4}/g, 4
+    /\\[0-7]{3}/g, 3
+];*/
 
-let escapeRegex = [
+/*let escapeRegex = [
     /\\b/g, '\b',
     /\\t/g, '\t',
     /\\n/g, '\n',
     /\\f/g, '\f',
     /\\r/g, '\r'
-]
+]*/
 
 function acceptInput(ID, listName) {
     let input = document.getElementById(ID);
