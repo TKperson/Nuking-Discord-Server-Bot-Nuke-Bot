@@ -131,8 +131,8 @@ Here's what the config file should look like if it's expanded (not in a single l
 ## Guides
 ### Setup/config
 [![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
-### Setup with builder.html
-[![Setting with builder.html](http://img.youtube.com/vi/Czgan5Q_TOU/0.jpg)](http://www.youtube.com/watch?v=Czgan5Q_TOU "Setting with builder.html")
+<!-- ### Setup with builder.html
+[![Setting with builder.html](http://img.youtube.com/vi/Czgan5Q_TOU/0.jpg)](http://www.youtube.com/watch?v=Czgan5Q_TOU "Setting with builder.html") -->
 ### Nuke and kaboom commands
 [![nuke/kaboom](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "nuke/kaboom")
 ### How to perform webhook spams
