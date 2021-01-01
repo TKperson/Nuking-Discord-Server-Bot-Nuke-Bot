@@ -50,13 +50,6 @@ We will not take any responsibility over whatever you are going to do with this 
  4. Go to the bot tab in the application.
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
-```
-aCat a category that is going to be added during .nuke
-aChannel a-channel-that-is-going-to-be-added-during-nuke-to-the-category
-sn this changes the server name to this during nuke
-si https://www.this.changes/the/server/icon/to/this/url.jpg
-kaboom 1000000000 random
-```
 
 ### Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
