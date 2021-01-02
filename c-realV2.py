@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 MIT License
@@ -38,16 +38,12 @@ from json import load, dumps, decoder
 from io import BytesIO
 from math import ceil
 # style
-try:
-    from colorama import init, Fore
-    if sys.platform == 'win32':
-            init(autoreset=True)
-except ImportError: 
-    pass 
+from colorama import init, Fore
+init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.2.2"
+__VERSION__ = "2.2.3"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -162,7 +158,7 @@ except requests.exceptions.ConnectionError:
     exit()
 
 ### check updates
-print('Checking update...', end='\r')
+print('Checking update...           ', end='\r')
 github_version = requests.get('https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/VERSION.txt').text
 if version.parse(github_version) > version.parse(__VERSION__):
     print(f'New C-REAL update has been launched -> {github_version} <- :party:')
@@ -287,6 +283,7 @@ async def log(ctx, message):
 
 def consoleLog(message, print_time=False):
     if want_log_console:
+        TIME = ''
         if print_time:
             TIME = f'{Fore.MAGENTA}[{time.strftime("%H:%M:%S", time.localtime())}] {Fore.RESET}'
 
