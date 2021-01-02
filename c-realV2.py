@@ -34,16 +34,19 @@ from packaging import version
 from random import randint, choice, randrange, random
 from threading import Thread
 from queue import Queue
-from json import load, dumps, decoder
 from io import BytesIO
 from math import ceil
+if sys.platform == 'linux':
+    import simplejson as json
+else:
+    import json
 # style
 from colorama import init, Fore
 init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.2.3"
+__VERSION__ = "2.2.4"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -86,7 +89,7 @@ def read_json():
     from pathlib import Path
     try:
         if os.path.isfile(Path().absolute().__str__() + '/default.json'):
-            temp = load(open(Path().absolute().__str__() + '/default.json'))
+            temp = json.load(open(Path().absolute().__str__() + '/default.json'))
         else:
             try:
                 print('Cannot find side-by-side default.json file for configuration. Try entering a full path or local path to the configuration file.')
@@ -98,12 +101,12 @@ def read_json():
                 exit()
 
             if os.path.isfile(uinput):
-                temp = load(open(uinput))
+                temp = json.load(open(uinput))
             else:
                 print(f'{uinput} file doesn\'t exist.')
                 exit()
 
-    except decoder.JSONDecodeError:
+    except json.decoder.JSONDecodeError:
         print('Unreadable json formatting in the given configuration file. Make sure the formats are correct.')
         exit()
     try:
@@ -937,7 +940,7 @@ def requestMaker():
     while True:
         requesting, url, headers, payload = q.get()
         try:
-            r = requesting(url, data=dumps(payload), headers=headers).json()
+            r = requesting(url, data=json.dumps(payload), headers=headers).json()
             if 'retry_after' in r:
                 if want_log_request:
                     if isinstance(r['retry_after'], int): # Discord will return all integer time if the retry after is less then 10 seconds which is in miliseconds.
@@ -951,7 +954,7 @@ def requestMaker():
             elif want_log_request and 'code' in r:
                 consoleLog('Request cancelled due to -> ' + r['message'])
 
-        except decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError:
             pass
         q.task_done()
 
