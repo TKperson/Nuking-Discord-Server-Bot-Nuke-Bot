@@ -2,7 +2,7 @@
 
 All commands are not case sensitive.
 
-Descriptions will be written out soon...
+# Descriptions will be written out soon...
 
 ### `addChannel`
 
