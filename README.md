@@ -42,7 +42,7 @@ Note: in discord, there are rate limitings. You will see a lot of rate limiting 
 We will not take any responsibility over whatever you are going to do with this bot.
 
 ## Check list for setting up everything
-1. [Download](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/releases/download/2.2.5/c-realV2.zip) the C-REAL file(or download the [whole thing](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/archive/master.zip))
+1. [Download](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/releases/latest/download/c-realV2.zip) the C-REAL file(or download the [whole thing](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/archive/master.zip))
 2. Get a discord profile(token) for the bot.
 3. Make a configuration file with `builder.html`.
 4. Drag the configured json file next to the executable file(The prebuilt verison)
