@@ -34,6 +34,8 @@ I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.yo
 You can already tell most of the commands by its name.
 But if you are still confused with the command: go read manual.md.
 
+The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) here.
+
 Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 
 # IMPORTANT: 
