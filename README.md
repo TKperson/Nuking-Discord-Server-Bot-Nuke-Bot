@@ -28,8 +28,6 @@ Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 [servers] [unban] [voiceChannels] [webhook] 
 ```
 
-## About the bot
-I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy. And a shout out to cyxl#9986 for helping me making C-REAL.
 
 You can already tell most of the commands by its name.
 But if you are still confused with the command: go read manual.md.
