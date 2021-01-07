@@ -12,7 +12,7 @@ PS: woah, 100+ commits, never thought I would even have something passing 10 com
 Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
 ## C-REAL bot
-* If you need extra help dm cyxl#9986 on discord.
+* If you need extra help dm cyxl#0001 on discord.
 * C-REAL bot has 48 commands:
 ```
 [addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
