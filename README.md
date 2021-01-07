@@ -7,7 +7,7 @@ Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL 
 
 Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
-PS: woah, 100+ commits, never thought I would even have something passing 10 commits.
+PS: woah, 100+ commits, never thought I would even have something passing 10 commits also 16 stars. You guys are amazing thanks for all the support.
 
 Update 12/22/2020: C-REAL V2 is here. More descriptions will be added soon.
 
