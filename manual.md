@@ -1,3 +1,7 @@
+# Known issues
+
+null
+
 # Commands documnet
 
 All commands are not case sensitive.
