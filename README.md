@@ -90,7 +90,7 @@ Here's what the config file should look like if it's expanded (not in a single l
         "pfp_urls": [
             null,
             "link to image",
-            "link to image2",
+            "link to image2"
         ],
         "contents": [
             "@TKperson Hello C-real was here",
