@@ -12,7 +12,6 @@ PS: woah, 150+ commits, never thought I would even have something passing 10 com
 Update 01/19/2021: C-REAL V3 is almost here: More/Faster commands, proxy support, New help if I ever stop procrastinating...
 
 ## C-REAL bot
-* If you need extra help dm cyxl#0001 on discord.
 * C-REAL bot has 48 commands:
 ```
 [addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
@@ -154,3 +153,4 @@ Here's what the config file should look like if it's expanded (not in a single l
 * If you are experiencing crashing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, and then crashed that means it's 90% a bug. So please make a new issue about it.
+* If you need extra help dm cyxl#0001 on discord.
