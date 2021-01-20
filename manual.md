@@ -1,7 +1,7 @@
 # Add
 
-* -Add Params to manual.md and help command
-* -Add Proxy support
+* Add Params to manual.md and help command
+* Add Proxy support
 
 # Known issues
 
