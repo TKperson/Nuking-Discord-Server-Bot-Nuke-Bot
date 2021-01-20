@@ -83,4 +83,4 @@ Here's what the config file should look like if it's expanded (not in a single l
 
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
-* Could we make it to 20 stars on the next update?
+* Can we make it to 20 stars on the next update?
