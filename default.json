@@ -1,0 +1,51 @@
+{
+    "token": "token",
+    "permissions": [
+        "TKperson#2348",
+        "cyxl#0001",
+        "713936815022932079",
+        "349338062485979136"
+    ],
+    "bomb_messages": {
+        "random": 10,
+        "fixed": [
+            "fixed 1",
+            "fixed 2",
+            "fixed 3",
+            "ezzzzz",
+            "TKperson",
+            "fixed 4",
+            "fixed 5",
+            "fixed 6",
+            "fixed 7"
+        ]
+    },
+    "webhook_spam": {
+        "usernames": [
+            "\u200b",
+            "more names",
+            "more names2"
+        ],
+        "pfp_urls": [
+            null,
+            "link to image",
+            "link to image2"
+        ],
+        "contents": [
+            "@TKperson Hello C-real was here",
+            "C-REAL on top",
+            "Keep this under 2000 characters",
+            ":The_bot_can_use_any_emojis_in_all_the_servers_that_the_bot_is_in: <- that is not 1 character keep that in mind"
+        ]
+    },
+    "bot_permission": "2146958847",
+    "command_prefix": ".",
+    "bot_status": "offline",
+    "verbose": 15,
+    "after": [
+        "aCat something",
+        "aChannel some-channel-to something",
+        "sn nuked",
+        "si https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"
+    ]
+}
