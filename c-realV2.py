@@ -583,7 +583,7 @@ async def help(ctx, s='names', n=1):
     embed = discord.Embed(
         title='Commands',
         description='Total count: ' + str(item_length),
-        color=discord.Color.green()
+        color=discord.Color.red()
     )
 
     if s.lower() == 'all':
