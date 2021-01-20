@@ -9,27 +9,12 @@ Message to those coding masters out there, if you see something we can improve i
 
 PS: woah, 150+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
 
-Update 01/19/2021: C-REAL 2.3 is almost here: More/Faster commands, proxy support, New help if I ever stop procrastinating...
+* If you want the updates that have been happening click [here](news.md)
 
 ## C-REAL bot
 * C-REAL bot has 48 commands:
-```
-[addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
-[addCategory] [addRole] [addChannel] [banAll] [ban] 
-[bans] [categoryBomb] [checkRolePermissions] [clear] 
-[changeStatus] [channels] [categories] [connect] 
-[channelBomb] [deleteCategory] [deleteCC] [deleteEmoji] 
-[deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] 
-[deleteAllWebhooks] [deleteRole] [deleteChannel] 
-[deleteVoiceChannel] [emojis] [help] [joinNuke] 
-[kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
-[nuke] [off] [roleTo] [roles] [roleBomb] [si] [sn] 
-[servers] [unban] [voiceChannels] [webhook] 
-```
 
-
-You can already tell most of the commands by its name.
-But if you are still confused with the command: go read manual.md.
+All commands can be found [here](manual.md)
 
 The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) here.
 
