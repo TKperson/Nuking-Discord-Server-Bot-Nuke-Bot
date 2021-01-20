@@ -9,7 +9,7 @@ Message to those coding masters out there, if you see something we can improve i
 
 PS: woah, 150+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
 
-Update 01/19/2021: C-REAL V3 is almost here: More/Faster commands, proxy support, New help if I ever stop procrastinating...
+Update 01/19/2021: C-REAL 2.3 is almost here: More/Faster commands, proxy support, New help if I ever stop procrastinating...
 
 ## C-REAL bot
 * C-REAL bot has 48 commands:
