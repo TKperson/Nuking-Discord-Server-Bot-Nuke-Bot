@@ -3,7 +3,7 @@
 
 * We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your consol while using this script, then that is simply because <ins>it runs too fast</ins>.
 
-* If you want the updates that have been happening click [here](news.md)
+* If you want the updates that have been happening click [here](news.txt)
 
 * All 48 commands can be found [here](manual.md)
 
