@@ -4,4 +4,4 @@
 
 # Want To Add
 
-* Params to help command 
+* Params to help command and manual.md
