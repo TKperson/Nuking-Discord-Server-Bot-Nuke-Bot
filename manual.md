@@ -13,269 +13,269 @@ All commands are not case sensitive.
 
 * aliases: `aCh`, `aChannel`
 * description: Adds a channel to the server you are connected to.
-* Params
+* Params: 
 
 ### `addRole`
 
 * aliases: `aRole`, `aR`
 * description: Adds a role to the server you are connected to.
-* Params
+* Params: 
 
 ### `addEmoji`
 
 * aliases: `aEmoji`, `aEm`
 * description: Adds an emoji to the server you are connected to.
-* Params
+* Params: 
 
 ### `addVoiceChannel`
 
 * aliases: `aVoiceChannel`, `aVC`
 * description: Adds a voiceChannel to the server you are connected to.
-* Params
+* Params: 
 
 ### `addCategory`
 
 * aliases: `aCat`, `aCa`
 * description: Adds a category to the server you are connected to.
-* Params
+* Params: 
 
 ### `ban`
 
 * aliases: No command * aliases provided.
 * description: Bans someone in the server you are connected to.
-* Params
+* Params: 
 
 ### `banAll`
 
 * aliases: No command * aliases provided.
 * description: bans everyone it can in the connected server.
-* Params
+* Params: 
 
 ### `bans`
 
 * aliases: No command * aliases provided.
 * description: Shows all the bans in the server that you are connected to.
-* Params
+* Params: 
 
 ### `channelBomb`
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random channels in the connected server.
-* Params
+* Params: 
 
 ### `categoryBomb`
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random categorys in the connected server.
-* Params
+* Params: 
 
 ### `channels`
 
 * aliases: `tc`, `textchannels`, `textchannel`, `channel`
 * description: Shows the channels that are in the server you are connected to.
-* Params
+* Params: 
 
 ### `checkRolePermissions`
 
 * aliases: `check`, `crp`
 * description: Checks a roles permissions.
-* Params
+* Params: 
 
 ### `categories`
 
 * aliases: `cat`, `category`
 * description: Shows the categories that are in the server you are connected to.
-* Params
+* Params: 
 
 ### `clear`
 
 * aliases: `purge`
 * description: Deletes a certain number of messages in a connected server
-* Params
+* Params: 
 
 ### `changeStatus`
 
 * aliases: `cs`
 * description: Changes the status of the bot.
-* Params
+* Params: 
 
 ### `connect`
 
 * aliases: `con`
 * description: Connects the bot to a server.
-* Params
+* Params: 
 
 ### `deleteRole`
 
 * aliases: `dRole`, `dR`
 * description: Deletes a role in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteChannel`
 
 * aliases: `dChannel`, `dCh`
 * description: Deletes a channel in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteVoiceChannel`
 
 * aliases: `dVC`, `dVoiceChannel`
 * description: Deletes a voiceChannel in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteCategory`
 
 * aliases: `dCat`, `dCategory`
 * description: Deletes a category in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteCC`
 
 * aliases: `dCC`
 * description: Deletes a CC in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteEmoji`
 
 * aliases: `dEm`
 * description: Deletes a emoji in the server you are connected to.
-* Params
+* Params: 
 
 ### `deleteAllRoles`
 
 * aliases: `dar`, `dAllRoles`
 * description: Deletes all roles in the connected server.
-* Params
+* Params: 
 
 ### `deleteAllChannels`
 
 * aliases: `dac`, `dAllChannels`
 * description: Deletes all channels in the connected server.
-* Params
+* Params: 
 
 ### `deleteAllEmojis`
 
 * aliases: `dae`, `dAllEmoji`
 * description: Deletes all emojis in the connected server.
-* Params
+* Params: 
 
 ### `deleteAllWebhooks`
 
 * aliases: `daw`, `dAllWebhooks`
 * description: Deletes akk webhooks in the connected server.
-* Params
+* Params: 
 
 ### `emojis`
 
 * aliases: No command * aliases provided.
 * description: Shows the emojis that are in the server you are connected to.
-* Params
+* Params: 
 
 ### `help`
 
 * aliases: `h`, `commands`
 * description: Display all the commands. args: [Optional: type: all/names/command: default=names] [Optional: n: n of page]
-* Params
+* Params: 
 
 ### `joinNuke`
 
 * aliases: `nukeOnJoin`, `join nuke`
 * description: When it joins the server it nukes immediately.
-* Params
+* Params: 
 
 ### `kaboom`
 
 * aliases: No command * aliases provided.
 * description: Combines the channelBomb, categoryBomb, and the categoryBomb all into one command.
-* Params
+* Params: 
 
 ### `leave`
 
 * aliases: No command * aliases provided.
 * description: Leaves the server you choose to leave.
-* Params
+* Params: 
 
 ### `leaveAll`
 
 * aliases: No command * aliases provided.
 * description: Leaves all servers it is in.
-* Params
+* Params: 
 
 ### `link`
 
 * aliases: `l`
 * description: Sends an invite code for the bot.
-* Params
+* Params: 
 
 ### `moveRole`
 
 * aliases: `mRole`, `mR`
 * description: Moves any role in the server you are connected to.
-* Params
+* Params: 
 
 ### `nuke`
 
 * aliases: No command * aliases provided.
 * description: combines the banAll, deleteAllChannels, deleteAllEmojis, deleteAllRoles, deleteAllWebhooks commands into one big command. Also changes the connected servers name and icon.
-* Params
+* Params: 
 
 ### `off`
 
 * aliases: `logout`, `logoff`, `shutdown`, `stop`
 * description: Turns off the bot.
-* Params
+* Params: 
 
 ### `roleBomb`
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random roles in the connected server.
-* Params
+* Params: 
 
 ### `roles`
 
 * aliases: `ro`, `role`
 * description: Shows the roles that are in the server you are connected to.
-* Params
+* Params: 
 
 ### `roleTo`
 
 * aliases: No command * aliases provided.
 * description: Gives a role to someone in the connected server.
-* Params
+* Params: 
 
 ### `si`
 
 * aliases: `serverIcon`, `changeServerIcon`
 * description: Changes the server icon in the connected server.
-* Params
+* Params: 
 
 ### `servers`
 
 * aliases: `se`, `server`
 * description: Shows the servers the bot is in.
-* Params
+* Params: 
 
 ### `sn`
 
 * aliases: `serverName`, `changeServerName`
 * description: Changes the server name in the connected server.
-* Params
+* Params: 
 
 ### `unban`
 
 * aliases: No command * aliases provided.
 * description: Unbans someone in the server you are connected to.
-* Params
+* Params: 
 
 ### `voiceChannels`
 
 * aliases: `vc`, `voicechannel`
 * description: Shows the voiceChannels that are in the server you are conencted to.
-* Params
+* Params: 
 
 ### `webhook`
 
 * aliases: `webhooks`, `wh`
 * description: Creates, Attacks, Lists all of the weebhooks in the connected server.
-* Params
+* Params: 
 
