@@ -5,3 +5,5 @@
 # Want To Add
 
 * Params to help command 
+* Add proxy support
+* Add DM spammer
