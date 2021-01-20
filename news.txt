@@ -1,9 +1,9 @@
 # Added
 
-* Made new and better help command 1/19
+  -Made new and better help command 1/19
 
 # Want To Add
 
-* Params to help command 
-* Add proxy support
-* Add DM spammer
+  -Params to help command 
+  -Add proxy support
+  -Add DM spammer
