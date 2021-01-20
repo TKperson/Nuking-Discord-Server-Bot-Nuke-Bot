@@ -1,27 +1,18 @@
 # Nuking Discord Server Bot/Nuke Bot
-C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
+* C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
-We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
-
-Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
-
-Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
-
-PS: woah, 150+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
+* We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your consol while using this script, then that is simply because <ins>it runs too fast</ins>.
 
 * If you want the updates that have been happening click [here](news.md)
 
-## C-REAL bot
-* C-REAL bot has 48 commands:
+* All 48 commands can be found [here](manual.md)
 
-All commands can be found [here](manual.md)
-
-The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) here.
-
-Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 
 # IMPORTANT: 
-We will not take any responsibility over whatever you are going to do with this bot.
+* We will not take any responsibility over whatever you are going to do with this bot.
+* The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) here.
+* Note: in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
+* Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
 
 ## Check list for setting up everything
 1. [Download](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/releases/latest/download/c-realV2.zip) the C-REAL file(or download the [whole thing](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/archive/master.zip))
@@ -87,3 +78,8 @@ Here's what the config file should look like if it's expanded (not in a single l
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, and then crashed that means it's 90% a bug. So please make a new issue about it.
 * If you need extra help dm cyxl#0001 on discord.
+
+### Extra
+* PS: woah, 150+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
+
+* Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
