@@ -57,59 +57,7 @@ We will not take any responsibility over whatever you are going to do with this 
 ## Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
 Here's what the config file should look like if it's expanded (not in a single line):
-```json
-{
-    "token": "<bot tokens or selfbot tokens> here",
-    "permissions": [
-        "TKperson#2348",
-        "cyxl#9986",
-        "739547265059913759",
-        "349338062485979136"
-    ],
-    "bomb_messages": {
-        "random": 10,
-        "fixed": [
-            "fixed 1",
-            "fixed 2",
-            "fixed 3",
-            "ezzzzz",
-            "TKperson",
-            "fixed 4",
-            "fixed 5",
-            "fixed 6",
-            "fixed 7"
-        ]
-    },
-    "webhook_spam": {
-        "usernames": [
-            "\u200b",
-            "more names",
-            "more names2"
-        ],
-        "pfp_urls": [
-            null,
-            "link to image",
-            "link to image2"
-        ],
-        "contents": [
-            "@TKperson Hello C-real was here",
-            "C-REAL on top",
-            "Keep this under 2000 characters",
-            ":The_bot_can_use_any_emojis_in_all_the_servers_that_the_bot_is_in: <- that is not 1 character keep that in mind"
-        ]
-    },
-    "bot_permission": "2146958847",
-    "command_prefix": ".",
-    "bot_status": "offline",
-    "verbose": 15,
-    "after": [
-        "aCat something",
-        "aChannel some-channel-to something",
-        "sn nuked",
-        "si https://ih1.redbubble.net/image.788111706.5520/st,small,507x507-pad,600x600,f8f8f8.u2.jpg"
-    ]
-}
-```
+
 * token: Your bot's token or an user account token.
 * permissions: This is for allowing the people/bot that is in it to use __any__ C-REAL commands.
 * bomb_messages: `an`, `b64`, and `fixed` are the only bomb types that are supported currently.
