@@ -7,230 +7,229 @@ None
 All commands are not case sensitive.
 
 # Descriptions will be written out soon...
-
 ### `addChannel`
 
 aliases: `aCh`, `aChannel`
-param: 
+description: Adds a channel to the server you are connected to.
+
 
 ### `addRole`
 
 aliases: `aRole`, `aR`
-param: 
+description: Adds a role to the server you are connected to.
 
 ### `addEmoji`
 
 aliases: `aEmoji`, `aEm`
-param: 
+description: Adds an emoji to the server you are connected to.
 
 ### `addVoiceChannel`
 
 aliases: `aVoiceChannel`, `aVC`
-param: 
+description: Adds a voiceChannel to the server you are connected to.
 
 ### `addCategory`
 
 aliases: `aCat`, `aCa`
-param: 
+description: Adds a category to the server you are connected to.
 
 ### `ban`
 
 aliases: No command aliases provided.
-param: 
+description: Bans someone in the server you are connected to.
 
 ### `banAll`
 
 aliases: No command aliases provided.
-param: No arguments are required.
+description: bans everyone it can in the connected server.
 
 ### `bans`
 
 aliases: No command aliases provided.
-param: 
+description: Shows all the bans in the server that you are connected to.
 
 ### `channelBomb`
 
 aliases: No command aliases provided.
-param: 
+description: Makes a ton of random channels in the connected server.
 
 ### `categoryBomb`
 
 aliases: No command aliases provided.
-param: 
+description: Makes a ton of random categorys in the connected server.
 
 ### `channels`
 
 aliases: `tc`, `textchannels`, `textchannel`, `channel`
-param: 
+description: Shows the channels that are in the server you are connected to.
 
 ### `checkRolePermissions`
 
 aliases: `check`, `crp`
-param: 
+description: Checks a roles permissions.
 
 ### `categories`
 
 aliases: `cat`, `category`
-param: 
+description: Shows the categories that are in the server you are connected to.
 
 ### `clear`
 
 aliases: `purge`
-param: 
+description: Deletes a certain number of messages in a connected server
 
 ### `changeStatus`
 
 aliases: `cs`
-param: 
+description: Changes the status of the bot.
 
 ### `connect`
 
 aliases: `con`
-param: 
+description: Connects the bot to a server.
 
 ### `deleteRole`
 
 aliases: `dRole`, `dR`
-param: 
+description: Deletes a role in the server you are connected to
 
 ### `deleteChannel`
 
 aliases: `dChannel`, `dCh`
-param: 
+description: Deletes a channel in the server you are connected to
 
 ### `deleteVoiceChannel`
 
 aliases: `dVC`, `dVoiceChannel`
-param: 
+description: Deletes a voiceChannel in the server you are connected to
 
 ### `deleteCategory`
 
 aliases: `dCat`, `dCategory`
-param: 
+description: Deletes a category in the server you are connected to.
 
 ### `deleteCC`
 
 aliases: `dCC`
-param: 
+description: Deletes a CC in the server you are connected to.
 
 ### `deleteEmoji`
 
 aliases: `dEm`
-param: 
+description: Deletes a emoji in the server you are connected to
 
 ### `deleteAllRoles`
 
 aliases: `dar`, `dAllRoles`
-param: No arguments are required.
+description: Deletes all roles in the connected server.
 
 ### `deleteAllChannels`
 
 aliases: `dac`, `dAllChannels`
-param: No arguments are required.
+description: Deletes all channels in the connected server.
 
 ### `deleteAllEmojis`
 
 aliases: `dae`, `dAllEmoji`
-param: No arguments are required.
+description: Deletes all emojis in the connected server.
 
 ### `deleteAllWebhooks`
 
 aliases: `daw`, `dAllWebhooks`
-param: No arguments are required.
+description: Deletes akk webhooks in the connected server.
 
 ### `emojis`
 
 aliases: No command aliases provided.
-param: 
+description: Shows the emojis that are in the server you are connected to.
 
 ### `help`
 
 aliases: `h`, `commands`
-param: 
+description: Display all the commands. args: [Optional: type: all/names/command: default=names] [Optional: n: n of page]
 
 ### `joinNuke`
 
 aliases: `nukeOnJoin`, `join nuke`
-param: 
+description: When it joins the server it nukes immediately.
 
 ### `kaboom`
 
 aliases: No command aliases provided.
-param: 
+description: Combines the channelBomb, categoryBomb, and the categoryBomb all into one command.
 
 ### `leave`
 
 aliases: No command aliases provided.
-param: 
+description: Leaves the server you choose to leave.
 
 ### `leaveAll`
 
 aliases: No command aliases provided.
-param: No arguments are required.
+description: Leaves all servers it is in
 
 ### `link`
 
 aliases: `l`
-param: No arguments are required.
+description: Sends an invite code for the bot.
 
 ### `moveRole`
 
 aliases: `mRole`, `mR`
-param: 
+description: Moves any role in the server you are connected to.
 
 ### `nuke`
 
 aliases: No command aliases provided.
-param: No arguments are required.
+description: combines the banAll, deleteAllChannels, deleteAllEmojis, deleteAllRoles, deleteAllWebhooks commands into one big command. Also changes the connected servers name and icon.
 
 ### `off`
 
 aliases: `logout`, `logoff`, `shutdown`, `stop`
-param: No arguments are required.
+description: Turns off the bot.
 
 ### `roleBomb`
 
 aliases: No command aliases provided.
-param: 
+description: Makes a ton of random roles in the connected server.
 
 ### `roles`
 
 aliases: `ro`, `role`
-param: 
+description: Shows the roles that are in the server you are connected to.
 
 ### `roleTo`
 
 aliases: No command aliases provided.
-param: 
+description: Gives a role to someone in the connected server.
 
 ### `si`
 
 aliases: `serverIcon`, `changeServerIcon`
-param: 
+description: Changes the server icon in the connected server.
 
 ### `servers`
 
 aliases: `se`, `server`
-param: 
+description: Shows the servers the bot is in.
 
 ### `sn`
 
 aliases: `serverName`, `changeServerName`
-param: 
+description: Changes the server name in the connected server.
 
 ### `unban`
 
 aliases: No command aliases provided.
-param: 
+description: Unbans someone in the server you are connected to.
 
 ### `voiceChannels`
 
 aliases: `vc`, `voicechannel`
-param: 
+description: Shows the voiceChannels that are in the server you are conencted to.
 
 ### `webhook`
 
 aliases: `webhooks`, `wh`
-param: 
+description: Creates, Attacks, Lists all of the weebhooks in the connected server.
 
-asdf
