@@ -7,7 +7,7 @@
 
 * All 48 commands documentation can be found [here](manual.md)
 
-```[addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
+`[addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
 [addCategory] [addRole] [addChannel] [banAll] [ban] 
 [bans] [categoryBomb] [checkRolePermissions] [clear] 
 [changeStatus] [channels] [categories] [connect] 
@@ -17,7 +17,7 @@
 [deleteVoiceChannel] [emojis] [help] [joinNuke] 
 [kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
 [nuke] [off] [roleTo] [roles] [roleBomb] [si] [sn] 
-[servers] [unban] [voiceChannels] [webhook] ```
+[servers] [unban] [voiceChannels] [webhook]`
 
 # IMPORTANT: 
 * We will not take any responsibility over whatever you are going to do with this bot.
