@@ -18,8 +18,6 @@ All commands are not case sensitive.
 
 \[] - no arguement is needed
 
-Spaces are usually allowed at the end of all the arguments.
-
 # descriptions will be written out soon...
 ### `addChannel`
 
