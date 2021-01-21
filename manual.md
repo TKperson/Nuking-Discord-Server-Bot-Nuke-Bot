@@ -23,7 +23,7 @@ All commands are not case sensitive.
 
 * aliases: `aCh`, `aChannel`
 * description: Adds a channel to the server you are connected to.
-* params: \[ChannelName#No spaces allowed] {CategoryName#Spaces allowed} 
+* params: \[name#No spaces allowed] {category=None#Spaces allowed} 
 
 ### `addRole`
 
@@ -35,97 +35,97 @@ All commands are not case sensitive.
 
 * aliases: `aEmoji`, `aEm`
 * description: Adds an emoji to the server you are connected to.
-* params: 
+* params: \[item#You can use a link, discord custom emojis, or your computer file path] {name#No spaces; this is only required when you are using a link in the first arg}
 
 ### `addVoiceChannel`
 
 * aliases: `aVoiceChannel`, `aVC`
 * description: Adds a voiceChannel to the server you are connected to.
-* params: 
+* params: \[name#No spaces] {category=None#Spaces allowed}
 
 ### `addCategory`
 
 * aliases: `aCat`, `aCa`
 * description: Adds a category to the server you are connected to.
-* params: 
+* params: \[name#Spaces allowed]
 
 ### `ban`
 
 * aliases: No command * aliases provided.
 * description: Bans someone in the server you are connected to.
-* params: 
+* params: \[user#Ping, id, or just username. If there are 2 or more same usernames, the script will always pick the one that comes first]
 
 ### `banAll`
 
 * aliases: No command * aliases provided.
 * description: bans everyone it can in the connected server.
-* params: 
+* params: \[]
 
 ### `bans`
 
 * aliases: No command * aliases provided.
 * description: Shows all the bans in the server that you are connected to.
-* params: 
+* params: {pageNumber=1}
 
 ### `channelBomb`
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random channels in the connected server.
-* params: 
+* params: \[numberOfBombs#The number of channels you want to create] \[bombType#It can only be b64, an, or fixed]
 
 ### `categoryBomb`
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random categorys in the connected server.
-* params: 
+* params: \[numberOfBombs#The number of categories you want to create] \[bombType#It can only be b64, an, or fixed]
 
 ### `channels`
 
 * aliases: `tc`, `textchannels`, `textchannel`, `channel`
 * description: Shows the channels that are in the server you are connected to.
-* params: 
+* params: {pageNumber=1}
 
 ### `checkRolePermissions`
 
 * aliases: `check`, `crp`
-* description: Checks a roles permissions.
-* params: 
+* description: Checks the total roles permission you have.
+* params: \[user#Ping, id, or just username. If there are 2 or more same usernames, the script will always pick the one that comes first]
 
 ### `categories`
 
 * aliases: `cat`, `category`
 * description: Shows the categories that are in the server you are connected to.
-* params: 
+* params: {pageNumber=1}
 
 ### `clear`
 
 * aliases: `purge`
-* description: Deletes a certain number of messages in a connected server
-* params: 
+* description: Deletes a certain number of messages in a the channel you are using this command in.
+* params: {numberOfMessages=All#Leave this blank if you want all message in that channel to be deleted, but seriously deleting the channel would be much easier}
 
 ### `changeStatus`
 
 * aliases: `cs`
 * description: Changes the status of the bot.
-* params: 
+* params: \[status#offline, invisible, dnd (or do_not_disturb), online, or idle.]
 
 ### `connect`
 
 * aliases: `con`
 * description: Connects the bot to a server.
-* params: 
+* params: \{server#id or server name, and unicode username is allowed. If you are using this command in the server you want to connect to, you don't have to put an argument here if that's the case}
 
 ### `deleteRole`
 
 * aliases: `dRole`, `dR`
 * description: Deletes a role in the server you are connected to.
-* params: 
+* params: \[role#name or id]
 
 ### `deleteChannel`
 
 * aliases: `dChannel`, `dCh`
 * description: Deletes a channel in the server you are connected to.
-* params: 
+* params: \[channel#name or id]
 
 ### `deleteVoiceChannel`
 
@@ -142,14 +142,14 @@ All commands are not case sensitive.
 ### `deleteCC`
 
 * aliases: `dCC`
-* description: Deletes a CC in the server you are connected to.
-* params: 
+* description: Deletes a channel, voice channel, or category in the server you are connected to.
+* params: \[name#or id]
 
 ### `deleteEmoji`
 
 * aliases: `dEm`
 * description: Deletes a emoji in the server you are connected to.
-* params: 
+* params: \[emoji#name or id]
 
 ### `deleteAllRoles`
 
@@ -179,31 +179,31 @@ All commands are not case sensitive.
 
 * aliases: No command * aliases provided.
 * description: Shows the emojis that are in the server you are connected to.
-* params: 
+* params: {pageNumber=1}
 
 ### `help`
 
 * aliases: `h`, `commands`
 * description: Display all the commands. args: [Optional: type: all/names/command: default=names] [Optional: n: n of page]
-* params: 
+* params: {type=all#all/names/command just play around with this one. It should be very easy to understand.} {pageNumber=1#for type command}
 
 ### `joinNuke`
 
 * aliases: `nukeOnJoin`, `join nuke`
-* description: When it joins the server it nukes immediately.
-* params: 
+* description: Nuke command will get executed in the next server the bot joins.
+* params: [boolean#True or false. True means turn it on. And false means turn it off]
 
 ### `kaboom`
 
 * aliases: No command * aliases provided.
 * description: Combines the channelBomb, categoryBomb, and the categoryBomb all into one command.
-* params: 
+* params: \[numberOfBombs#The number of channels, categories, and roles you want to create] \[bombType#It can only be b64, an, or fixed]
 
 ### `leave`
 
 * aliases: No command * aliases provided.
 * description: Leaves the server you choose to leave.
-* params: 
+* params: {server#name or id. If no arg is provided then the bot will leave the server it's connecting to}
 
 ### `leaveAll`
 
@@ -220,14 +220,14 @@ All commands are not case sensitive.
 ### `moveRole`
 
 * aliases: `mRole`, `mR`
-* description: Moves any role in the server you are connected to.
-* params: 
+* description: Moves the given role in hierarchy(If you have the permissions) in the server you are connected to.
+* params: \[role#name or id. Spaces are allowed] \[position#position in hierarchy. The last space separated argument will be counted has the position]
 
 ### `nuke`
 
 * aliases: No command * aliases provided.
 * description: combines the banAll, deleteAllChannels, deleteAllEmojis, deleteAllRoles, deleteAllWebhooks commands into one big command. Also changes the connected servers name and icon. Plus, it runs commands inside of "after" after nuking.  
-* params: 
+* params: {useAfter=True#True or false. If you don't want to execute the after commands you entered in the config file you can set this to false}
 
 ### `off`
 
@@ -239,53 +239,53 @@ All commands are not case sensitive.
 
 * aliases: No command * aliases provided.
 * description: Makes a ton of random roles in the connected server.
-* params: 
+* params: \[numberOfBombs#The number of roles you want to create] \[bombType#It can only be b64, an, or fixed]
 
 ### `roles`
 
 * aliases: `ro`, `role`
 * description: Shows the roles that are in the server you are connected to.
-* params: 
+* params: {pageNumber=1}
 
 ### `roleTo`
 
 * aliases: No command * aliases provided.
 * description: Gives a role to someone in the connected server.
-* params: 
+* params: \[user#id or ping only] \[role#name or id]
 
 ### `si`
 
 * aliases: `serverIcon`, `changeServerIcon`
 * description: Changes the server icon in the connected server.
-* params: 
+* params: \[item#You can use a link, discord custom emojis, or your computer file path]
 
 ### `servers`
 
 * aliases: `se`, `server`
 * description: Shows the servers the bot is in.
-* params: 
+* params: {pageNumber=1}
 
 ### `sn`
 
 * aliases: `serverName`, `changeServerName`
 * description: Changes the server name in the connected server.
-* params: 
+* params: \[name#Unicode is allowed]
 
 ### `unban`
 
 * aliases: No command * aliases provided.
 * description: Unbans someone in the server you are connected to.
-* params: 
+* params: \[user#name, id, or ping]
 
 ### `voiceChannels`
 
 * aliases: `vc`, `voicechannel`
 * description: Shows the voiceChannels that are in the server you are conencted to.
-* params: 
+* params: {pageNumber=1}
 
 ### `webhook`
 
 * aliases: `webhooks`, `wh`
 * description: Creates, Attacks, Lists all of the weebhooks in the connected server.
-* params: 
+* params: {pageNumber=1}
 
