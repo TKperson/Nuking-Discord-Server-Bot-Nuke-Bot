@@ -7,11 +7,17 @@ Selfbot - unable to detect all of the members in the server. Fetch members comma
 # Commands documnet
 
 All commands are not case sensitive.
+
 \[a] - required argument
+
 {a} - optional argument
+
 \[a='1'] or {a='1'} - a is set to '1' by default.
+
 [a#This is a comment] or {a#This is a comment}
+
 \[] - no arguement is needed
+
 # descriptions will be written out soon...
 ### `addChannel`
 
