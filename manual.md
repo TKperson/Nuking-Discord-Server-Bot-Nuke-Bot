@@ -18,18 +18,20 @@ All commands are not case sensitive.
 
 \[] - no arguement is needed
 
+Spaces are usually allowed at the end of all the arguments.
+
 # descriptions will be written out soon...
 ### `addChannel`
 
 * aliases: `aCh`, `aChannel`
 * description: Adds a channel to the server you are connected to.
-* Params: \[Channel]
+* Params: \[ChannelName#No spaces allowed] {CategoryName#Spaces allowed} 
 
 ### `addRole`
 
 * aliases: `aRole`, `aR`
 * description: Adds a role to the server you are connected to.
-* Params: 
+* Params: \[roleName#Spaces allowed but you cannot of names end with numbers] {rolePermissions#Use a role permissions calculator, there's one provided in builder.html, and put it at the end of the roleName separated with space}
 
 ### `addEmoji`
 
@@ -155,25 +157,25 @@ All commands are not case sensitive.
 
 * aliases: `dar`, `dAllRoles`
 * description: Deletes all roles in the connected server.
-* Params: 
+* Params: \[]
 
 ### `deleteAllChannels`
 
 * aliases: `dac`, `dAllChannels`
 * description: Deletes all channels in the connected server.
-* Params: 
+* Params: \[]
 
 ### `deleteAllEmojis`
 
 * aliases: `dae`, `dAllEmoji`
 * description: Deletes all emojis in the connected server.
-* Params: 
+* Params: \[]
 
 ### `deleteAllWebhooks`
 
 * aliases: `daw`, `dAllWebhooks`
 * description: Deletes akk webhooks in the connected server.
-* Params: 
+* Params: \[]
 
 ### `emojis`
 
@@ -209,13 +211,13 @@ All commands are not case sensitive.
 
 * aliases: No command * aliases provided.
 * description: Leaves all servers it is in.
-* Params: 
+* Params: \[]
 
 ### `link`
 
 * aliases: `l`
 * description: Sends an invite code for the bot.
-* Params: 
+* Params: \[]
 
 ### `moveRole`
 
@@ -226,14 +228,14 @@ All commands are not case sensitive.
 ### `nuke`
 
 * aliases: No command * aliases provided.
-* description: combines the banAll, deleteAllChannels, deleteAllEmojis, deleteAllRoles, deleteAllWebhooks commands into one big command. Also changes the connected servers name and icon.
+* description: combines the banAll, deleteAllChannels, deleteAllEmojis, deleteAllRoles, deleteAllWebhooks commands into one big command. Also changes the connected servers name and icon. Plus, it runs commands inside of "after" after nuking.  
 * Params: 
 
 ### `off`
 
 * aliases: `logout`, `logoff`, `shutdown`, `stop`
 * description: Turns off the bot.
-* Params: 
+* Params: \[]
 
 ### `roleBomb`
 
