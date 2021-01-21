@@ -2,18 +2,22 @@
 
 # Known issues
 
-None
+Selfbot - unable to detect all of the members in the server. Fetch members command will be added in 2.3 including mass DM.
 
 # Commands documnet
 
 All commands are not case sensitive.
-
+\[a] - required argument
+{a} - optional argument
+\[a='1'] or {a='1'} - a is set to '1' by default.
+[a#This is a comment] or {a#This is a comment}
+\[] - no arguement is needed
 # descriptions will be written out soon...
 ### `addChannel`
 
 * aliases: `aCh`, `aChannel`
 * description: Adds a channel to the server you are connected to.
-* Params: 
+* Params: \[Channel]
 
 ### `addRole`
 
