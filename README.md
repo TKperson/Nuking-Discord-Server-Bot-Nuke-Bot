@@ -12,7 +12,7 @@
 [bans] [categoryBomb] [checkRolePermissions] [clear] 
 [changeStatus] [channels] [categories] [connect] 
 [channelBomb] [deleteCategory] [deleteCC] [deleteEmoji] 
-[deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] 
+[deleteAllRoles] [deletehttps://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-BotAllChannels] [deleteAllEmojis] 
 [deleteAllWebhooks] [deleteRole] [deleteChannel] 
 [deleteVoiceChannel] [emojis] [help] [joinNuke] 
 [kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
