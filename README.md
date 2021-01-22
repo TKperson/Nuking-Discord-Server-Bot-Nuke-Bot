@@ -26,6 +26,14 @@
 * The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) because of that in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 * Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
 
+## TK
+
+* PS: woah, 200+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
+
+* Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
+
+* TKperson: I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy. And a shout out to cyxl#9986 for helping me making C-REAL.
+
 ## Check list for setting up everything
 1. [Download](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/releases/latest/download/c-realV2.zip) the C-REAL file(or download the [whole thing](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/archive/master.zip))
 2. Get a discord profile(token) for the bot.
@@ -90,10 +98,3 @@ Here's what the config file should look like if it's expanded (not in a single l
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
 * If you see a bunch of white worded errors displaying in the console, and then crashed that means it's 90% a bug. So please make a new issue about it.
 * If you need extra help dm cyxl#0001 on discord.
-
-### Extra
-* PS: woah, 200+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
-
-* Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
-
-* Can we make it to 20 stars on the next update?
