@@ -5,7 +5,7 @@
 
 * Update log: [here](news.txt)
 
-* All 48 commands documentation can be found [here](manual.md)
+* [All 48 commands](manual.md)
 
 ```
 [addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
