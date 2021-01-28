@@ -7,5 +7,6 @@
   -Params to help command 
   -Add proxy support
   -Add DM spammer
+  -Update readme.md
 
 If you have any ideas with new modules/commands or anything else that we can add make an issue named idea or dm me on discord at cyxl#0001
