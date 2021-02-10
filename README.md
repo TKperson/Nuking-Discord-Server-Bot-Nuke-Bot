@@ -28,7 +28,7 @@
 
 ## TK
 
-* PS: woah, 200+ commits, never thought I would even have something passing 10 commits also 18 stars. You guys are amazing thanks for all the support.
+* cyxl: woah, 200+ commits, never thought I would even have something passing 10 commits also 24 stars. You guys are amazing thanks for all the support.
 
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
