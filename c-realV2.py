@@ -46,7 +46,7 @@ init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.3.0"
+__VERSION__ = "2.3.1"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -705,8 +705,6 @@ async def connect(ctx, *, server=None):
 
     global selected_server, server_members
     selected_server = server
-    for user in server.members:
-        server_members.append(discordMember(user.name, user.id, user.discriminator))
     await log(ctx, f'Successfully connected to `{server.name}`.')
 
 #########  Unities  ##########
