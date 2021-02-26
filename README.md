@@ -85,14 +85,6 @@ Here's what the config file should look like if it's expanded (not in a single l
 ### Other commands part 2
 [![other2](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other2")
 
-## How to use the C-REAL
-``` This image is from a BETA version of v1```
-* After you are done with setting up the config file, all you have to do is to open the executable.
-* You can choose to put the default.json next to the executable(so the bot will use the default.json everyone time you open, that way you don't have to write a path for the configuration file again.), or you can type the path-to-the configuration file when the bot asked.
-* After finishing everything, you'll see the all the information displayed in the console.
-* The invite link for the bot will always be generated in the console when the bot is ready to run commands.
-![Image of a screenshot](https://snipboard.io/p4EjKZ.jpg)
-
 ## Problems/issues
 * If you are experiencing crashing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
 * If the bot doesn't respond to any of the commands, check if the console is in highlighting/mark mode. If it's highlighting/mark mode, click the console then press any key on your keyboard, and it'll resolve.
