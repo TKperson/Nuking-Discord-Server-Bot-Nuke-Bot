@@ -1,12 +1,12 @@
 # Added
 
   -Made new and better help command 1/19
+  -Add proxy support
+  -Update readme.md
 
 # Want To Add
 
   -Params to help command 
-  -Add proxy support
   -Add DM spammer
-  -Update readme.md
 
 If you have any ideas with new modules/commands or anything else that we can add make an issue named idea or dm me on discord at cyxl#0001
