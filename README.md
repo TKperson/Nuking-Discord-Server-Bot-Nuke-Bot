@@ -52,19 +52,16 @@
 
 ## Common errors
 
-1. PrivilegedIntentsRequired
+1. PrivilegedIntentsRequired (non-selfbot users only)
 [![9977.png](https://i.postimg.cc/9fjCQNsh/9977.png)](https://postimg.cc/gx4fM4YS)
-
-Solution: Watch https://youtu.be/DXnEFoHwL1A?t=44 starting from 0:44 on turning on the required 2 buttons. (In the future, I'm going to make this requirement optional)
+Solution: Watch https://youtu.be/DXnEFoHwL1A?t=44 starting from 0:44 to turn on the required 2 buttons. (In the future, I'm going to make this requirement optional)
 
 2. Unreadable json formatting
 [![886.png](https://i.postimg.cc/766cH3P4/886.png)](https://postimg.cc/PLgKK88V)
-
 Solution: This error means that you have an/multiple error(s) in your default.json file, it can be caused by missing/extra commas, brakets, quotes, and the like. You can use https://jsonlint.com/?code= to check your `default.json` file.
 
 3. Litterary crashed when opening c-realv2.py or c-realv2.exe
 Causes: It might be caused by anti virus that quarantined this program, old versions of python (needs to be v3.8.0 or higher), old versions of packages (update your discord.py with pip!), didn't install any required packages at all.
-
 Solution: Update everything to the latest version, and try turning off anti virus. If you are still having an issue, you should report it in this github page right away.
 
 <!--
