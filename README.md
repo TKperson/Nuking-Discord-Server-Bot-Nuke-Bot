@@ -50,10 +50,27 @@
  5. Click on add bot.
  6. And then click on "Click to Reveal Token" or "Copy" to get your token.
 
+## Common errors
+
+1. PrivilegedIntentsRequired
+[![9977.png](https://i.postimg.cc/9fjCQNsh/9977.png)](https://postimg.cc/gx4fM4YS)
+
+Solution: Watch https://youtu.be/DXnEFoHwL1A?t=44 starting from 0:44 on turning on the required 2 buttons. (In the future, I'm going to make this requirement optional)
+
+2. Unreadable json formatting
+[![886.png](https://i.postimg.cc/766cH3P4/886.png)](https://postimg.cc/PLgKK88V)
+
+Solution: This error means that you have an/multiple error(s) in your default.json file, it can be caused by missing/extra commas, brakets, quotes, and the like. You can use https://jsonlint.com/?code= to check your `default.json` file.
+
+3. Litterary crashed when opening c-realv2.py or c-realv2.exe
+Causes: It might be caused by anti virus that quarantined this program, old versions of python (needs to be v3.8.0 or higher), old versions of packages (update your discord.py with pip!), didn't install any required packages at all.
+
+Solution: Update everything to the latest version, and try turning off anti virus. If you are still having an issue, you should report it in this github page right away.
+
+<!--
 ## Configuration file
 C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
 Here's what the config file should look like if it's expanded (not in a single line):
-
 * token: Your bot's token or an user account token.
 * permissions: This is for allowing the people/bot that is in it to use __any__ C-REAL commands.
 * bomb_messages: `an`, `b64`, and `fixed` are the only bomb types that are supported currently.
@@ -68,8 +85,8 @@ Here's what the config file should look like if it's expanded (not in a single l
 * bot_status: When the script is connected to a profile, it will change the status of the current profile to whatever you put in there. Note: things you can put in there are `offline`, `invisible`, `dnd` (or `do_not_disturb`), `online`, or `idle`.
 * verbose: Things that will be logged to you when you are running the bot. `0` is nothing will be logged to you. `15` is everything. Use builder.html to change verbose levels.
 * after: commands that are in the "after" will be run after `.nuke` command. You can put the commands that you normally use in discord on there with the format showed in this example. And it's case insensitive.
-
 * Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with `builder.html`.
+-->
 
 ## Guides
 ### Setup/config
