@@ -263,16 +263,16 @@ async def log(ctx, message):
     - coming soon
     """
     if want_log_message:
-        if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server.me.guild_permissions.value == 0:
-            consoleLog(message, True)
-        else:
-            try:
-                await ctx.send(message)
-            except discord.errors.HTTPException:
-                for i in range(ceil(len(message) / 2000)):
-                    await log(ctx, message[2000 * i:2000 * (i + 1)])
-            except:
-                consoleLog(message)
+        # if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server.me.guild_permissions.value == 0:
+        #     consoleLog(message, True)
+        # else:
+        try:
+            await ctx.send(message)
+        except discord.errors.HTTPException:
+            for i in range(ceil(len(message) / 2000)):
+                await log(ctx, message[2000 * i:2000 * (i + 1)])
+        except:
+            consoleLog(message)
 
 def consoleLog(message, print_time=False):
     if want_log_console:
@@ -621,7 +621,7 @@ async def members(ctx, command='1', *, args=None):
     #         args = args.split()
 
     #         if not is_selfbot:
-    #             await log(f'Fetch command is only made for selfbot; since you are using normal bots, all members in the server `{selected_server.name}` has already be fetched. Try `{command_prefix}members` to see all the fetched members.')
+    #             await log(ctx, f'Fetch command is only made for selfbot; since you are using normal bots, all members in the server `{selected_server.name}` has already be fetched. Try `{command_prefix}members` to see all the fetched members.')
     #             return
 
     #         if args[0].lower() == 'auto':
@@ -698,8 +698,8 @@ async def bans(ctx, n='1'):
 @commands.check(checkPerm)
 @client.command(name='connect', aliases=['con'])
 async def connect(ctx, *, server=None):
-    if server is None:
-        await log('Providing a server name is required.')
+    if server is None and ctx.guild is None:
+        await log(ctx, f'Providing a server name is required.')
         return
 
     if server is None and not isDM(ctx):
@@ -879,7 +879,7 @@ async def deleteChannel(ctx, channel_name):
     channel = containing(selected_server.text_channels, channel_name)
 
     if channel is None:
-        await log(f'Unable to find text channel `{channel_name}`.')
+        await log(ctx, f'Unable to find text channel `{channel_name}`.')
 
     try:
         await channel.delete(reason=None)
@@ -897,7 +897,7 @@ async def deleteVoiceChannel(ctx, VC_name):
     channel = containing(selected_server.voice_channels, VC_name)
 
     if channel is None:
-        await log(f'Unable to find voice channel `{VC_name}`.')
+        await log(ctx, f'Unable to find voice channel `{VC_name}`.')
 
     try:
         await channel.delete(reason=None)
@@ -1543,14 +1543,23 @@ async def clear(ctx, n=None):
 
     consoleLog('Purging messages...', True)
 
-    if not n.isdigit() or (n := int(n)) < 1:
+    if n is not None and (not n.isdigit() or (n := int(n)) < 1):
         await log(ctx, 'Please enter a positive integer.')
         return
 
     to_delete_messages = await ctx.channel.history(limit=n).flatten()
     consoleLog('Due to discord ratelimitings purging messages cannot be run in a fast pace. After every message the bot will timeout for 3 seconds', True)
+    delay_time = 0
     for message in to_delete_messages:
-        consoleLog(requests.delete(f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/{message.id}', headers=headers).content)
+        while True:
+            await asyncio.sleep(delay_time)
+            r = requests.delete(f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/{message.id}', headers=headers)
+            if r.status_code == 429:
+                delay_time = r.json()['retry_after']
+                consoleLog(f'ratelimiting reached. Purging delay has been set to -> {str(delay_time)} seconds')
+            else:
+                break
+
 
 
 @commands.check(checkPerm)
