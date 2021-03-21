@@ -3,6 +3,8 @@
 
 * We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
+* Python version 3.8.0 or higher is required if you are going to run the file from source code.
+
 * Update log: [here](news.txt)
 
 * [All 48 commands](manual.md)
@@ -25,7 +27,6 @@
 * We will not take any responsibility over whatever you are going to do with this bot.
 * The bot will still have to obey the [server limitings](https://discordia.me/en/server-limits) because of that in discord, there are rate limitings. You will see a lot of rate limiting in the console while using some commands. (because the bot is too fast on creating or deleting.)
 * Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
-* You need python version 3.8.0 or above to run this from the source code.
 
 ## Messages
 
