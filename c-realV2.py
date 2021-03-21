@@ -27,26 +27,32 @@ Don't use the bot on real servers or use it to spam because this is breaking
 discord's ToS, and you will be resulted in an account deletion.
 """
 # discord
-import discord, sys, requests, os, time
-from discord.ext import commands
-import asyncio
-from packaging import version
-from random import randint, choice, randrange, random
-from threading import Thread
-from queue import Queue
-from io import BytesIO
-from math import ceil
-if sys.platform == 'linux':
-    import simplejson as json
-else:
-    import json
-# style
-from colorama import init, Fore
+try:
+    import discord, sys, requests, os, time
+    from discord.ext import commands
+    import asyncio
+    from packaging import version
+    from random import randint, choice, randrange, random
+    from threading import Thread
+    from queue import Queue
+    from io import BytesIO
+    from math import ceil
+    if sys.platform == 'linux':
+        import simplejson as json
+    else:
+        import json
+    # style
+    from colorama import init, Fore
+except Exception as e:
+    print(e)
+    exit()
+
+
 init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.3.1"
+__VERSION__ = "2.3.2"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -69,9 +75,7 @@ fetching_members = False
 def exit():
     try:
         input('Press enter to exit...')
-    except KeyboardInterrupt:
-        pass
-    except EOFError:
+    except (EOFError, KeyboardInterrupt):
         pass
     sys.exit(1)
 
@@ -694,6 +698,10 @@ async def bans(ctx, n='1'):
 @commands.check(checkPerm)
 @client.command(name='connect', aliases=['con'])
 async def connect(ctx, *, server=None):
+    if server is None:
+        await log('Providing a server name is required.')
+        return
+
     if server is None and not isDM(ctx):
         server = ctx.guild
     else:
@@ -703,7 +711,7 @@ async def connect(ctx, *, server=None):
             await log(ctx, f'Unable to find {temp_name} server.')
             return
 
-    global selected_server, server_members
+    global selected_server
     selected_server = server
     await log(ctx, f'Successfully connected to `{server.name}`.')
 
@@ -1533,9 +1541,17 @@ async def clear(ctx, n=None):
     if not await hasTarget(ctx):
         return
 
-    consoleLog('Starting to delete all types of channels...')
-    for channel in ctx.history(limit=n):
-        q.put((requests.delete, f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/788936893084729364', headers))
+    consoleLog('Purging messages...', True)
+
+    if not n.isdigit() or (n := int(n)) < 1:
+        await log(ctx, 'Please enter a positive integer.')
+        return
+
+    to_delete_messages = await ctx.channel.history(limit=n).flatten()
+    consoleLog('Due to discord ratelimitings purging messages cannot be run in a fast pace. After every message the bot will timeout for 3 seconds', True)
+    for message in to_delete_messages:
+        consoleLog(requests.delete(f'https://discord.com/api/v8/channels/{ctx.channel.id}/messages/{message.id}', headers=headers).content)
+
 
 @commands.check(checkPerm)
 @client.command(name='leave')
@@ -1668,7 +1684,6 @@ try:
 #     print('Invalid token is being used.')
 #     exit()
 except discord.PrivilegedIntentsRequired:
-    print('PrivilegedIntentsRequired: Shard ID None is requesting privileged intents that have not been explicitly enabled in the developer portal. It is recommended to go to https://discord.com/developers/applications/ and explicitly enable the privileged intents within your application\'s page. If this is not possible, then consider disabling the privileged intents in the bot\'s source code instead. Or go visit https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot to see how to properly add privileged intents.')
-    exit()
+    print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
 finally:
     print('Exiting...')
