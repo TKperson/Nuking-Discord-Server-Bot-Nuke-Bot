@@ -153,7 +153,7 @@ All commands are not case sensitive.
 
 ### `disableCommunityMode`
 
-* aliases: `dCM`, `dCommunityMode
+* aliases: `dCM`, `dCommunityMode`
 * description: Disables community mode in the server you are connected to.
 * params: None
 
