@@ -1019,7 +1019,7 @@ async def roleTo(ctx, member_name, *, role_name):
             raise
 
 @commands.check(checkPerm)
-@client.command(name='disableCommunityMode')
+@client.command(name='disableCommunityMode', aliases=['dCM', 'dCommunityMode'])
 async def disableCommunityMode(ctx):
     if not await hasTarget(ctx):
         return
