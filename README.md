@@ -7,7 +7,7 @@
 
 * Update log: [here](news.txt)
 
-* [All 48 commands](manual.md)
+* [All 49 commands](manual.md)
 
 ```
 [addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
@@ -15,8 +15,8 @@
 [bans] [categoryBomb] [checkRolePermissions] [clear] 
 [changeStatus] [channels] [categories] [connect] 
 [channelBomb] [deleteCategory] [deleteCC] [deleteEmoji] 
-[deleteAllRoles] [deleteAllChannels] [deleteAllEmojis] 
-[deleteAllWebhooks] [deleteRole] [deleteChannel] 
+[disableCommunityMode] [deleteAllRoles] [deleteAllChannels] 
+[deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] 
 [deleteVoiceChannel] [emojis] [help] [joinNuke] 
 [kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
 [nuke] [off] [roleTo] [roles] [roleBomb] [si] [sn] 
