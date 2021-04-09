@@ -151,6 +151,12 @@ All commands are not case sensitive.
 * description: Deletes a emoji in the server you are connected to.
 * params: \[emoji#name or id]
 
+### `disableCommunityMode`
+
+* aliases: `dCM`, `dCommunityMode`
+* description: Disables community mode in the server you are connected to.
+* params: None
+
 ### `deleteAllRoles`
 
 * aliases: `dar`, `dAllRoles`
