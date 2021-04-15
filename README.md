@@ -30,7 +30,7 @@
 
 ## Messages
 
-* cyxl: WTF 40 stars 16 more then the last time I checked that is insane guys.
+* cyxl: Hi!
 
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
