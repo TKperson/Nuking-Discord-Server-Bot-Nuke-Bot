@@ -167,9 +167,10 @@ def setUp():
         settings.update(config)
     else:
         try:
-            from getpass import getpass
-            settings['token'] = getpass('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
-            settings['permissions'].append(input('\nEnter your discord tag or user ID. It is recommended to use discord user ID because same unicode names are hard for the code to check.\n>> '))
+            # from getpass import getpass
+            # settings['token'] = getpass('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
+            settings['token'] = input('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
+            settings['permissions'].append(input('\nEnter your discord tag or user ID. It is recommended to use discord user ID because some unicode names are hard for the code to check.\n>> '))
         except KeyboardInterrupt:
             sys.exit(0)
         except EOFError:
@@ -233,6 +234,9 @@ def checkToken(token=None):
     #     exit()
     except requests.exceptions.ConnectionError:
         print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
+        exit()
+    except (requests.exceptions.InvalidHeader, json.decoder.JSONDecodeError):
+        print('Invalid token is being used.')
         exit()
 
 checkToken()
@@ -543,7 +547,6 @@ def random_an():
 
 def sendMessagePerm(ctx):
     pass
-    
 
 def checkTalkPerm(ctx):
     if isDM(ctx): # you can always talk in dm
