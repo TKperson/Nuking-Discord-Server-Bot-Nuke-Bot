@@ -29,31 +29,13 @@
 * Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
 
 ## Messages
-
 * cyxl: Hi!
 
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
 * TKperson: I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy.
 
-## Check list for setting up everything
-1. [Download](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/releases/latest/download/c-realV2.zip) the C-REAL file(or download the [whole thing](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/archive/master.zip))
-2. Get a discord profile(token) for the bot.
-3. Make a configuration file with `builder.html`.
-4. Drag the configured json file next to the executable file(The prebuilt verison)
-5. Run the executable, and it should give you a bot invite link after the bot is ready. If the console closed by itself that means there's something wrong with the code and please report the issue to this github page.
-6. (Optional) If the bot is asking for a path-to-the configuration file, you enter a local path or full path for the config file.
-
-## What is a token/how to setup a token
- 1. The token for a bot is the profile for the bot. You'll need a profile for the bot to join servers.
- 2. Go to [Discord developers site](https://discord.com/developers/applications), login or sign up.
- 3. Create a new application or use your created application
- 4. Go to the bot tab in the application.
- 5. Click on add bot.
- 6. And then click on "Click to Reveal Token" or "Copy" to get your token.
-
 ## Common errors
-
 1. PrivilegedIntentsRequired (non-selfbot users only)
 [![9977.png](https://i.postimg.cc/9fjCQNsh/9977.png)](https://postimg.cc/gx4fM4YS)
 Solution: Watch https://youtu.be/DXnEFoHwL1A?t=44 starting from 0:44 to turn on the required 2 buttons. (In the future, I'm going to make this requirement optional)
@@ -66,28 +48,16 @@ Solution: This error means that you have an/multiple error(s) in your default.js
 Causes: It might be caused by anti virus that quarantined this program, old versions of python (needs to be v3.8.0 or higher), old versions of packages (update your discord.py with pip!), didn't install any required packages at all.
 Solution: Update everything to the latest version, and try turning off anti virus. If you are still having an issue, you should report it in this github page right away.
 
-<!--
-## Configuration file
-C-REAL will always try to look for the file "default.json" that is next to it, after finding the file it'll use that file. If you don't have a config file, the bot will ask you to enter a path for the config file. This feature is made for multiple nukes.
-Here's what the config file should look like if it's expanded (not in a single line):
-* token: Your bot's token or an user account token.
-* permissions: This is for allowing the people/bot that is in it to use __any__ C-REAL commands.
-* bomb_messages: `an`, `b64`, and `fixed` are the only bomb types that are supported currently.
-  * random: The positive integer that is in this will tell the bot how long the length of random bomb should be for base64 and alphanumeric characters. usage example: `.kaboom 10 an` or `.kaboom 10 b64`
-  * fixed: The texts that are in it will be randomly choosed when running a fixed bomb commands. EX. `.kaboom 10 fixed` (this will create 10 channels, categories, and roles [only if it has permissions] with names that is randomly chosen from `fixed` texts.)
-* webhook_spam: None of the webhook things below can leave be empty
-  * pfp_urls: Put `null` if you don't want the spammers to have a pfp. Put a link to an image if you want that image to be on one of your spammer.
-  * usernames: Put `\u200b`(ZERO WIDTH SPACE) if you don't want the spammers to have a name.
-  * contents: Put messages that you want the spammer to say. Note: keep the messages under 2000 unicode characters because that's the limit to how much you characters you can send in 1 message.
-* bot permission: permissions that will be asked when the bot is getting invited to a server.
-* command_prefix: Put a command prefix that you like in there.
-* bot_status: When the script is connected to a profile, it will change the status of the current profile to whatever you put in there. Note: things you can put in there are `offline`, `invisible`, `dnd` (or `do_not_disturb`), `online`, or `idle`.
-* verbose: Things that will be logged to you when you are running the bot. `0` is nothing will be logged to you. `15` is everything. Use builder.html to change verbose levels.
-* after: commands that are in the "after" will be run after `.nuke` command. You can put the commands that you normally use in discord on there with the format showed in this example. And it's case insensitive.
-* Although, if you don't what to configurate or use the one that I provided you can change it or make a new one with `builder.html`.
--->
+## Immigrate from verision 2.3.x to 2.4.0
+1. Make a new folder named "data" next to your c-realv2.exe or c-realV2.py file
+2. put your old default.json into the data folder
+3. start running the bot again.
 
-## Guides
+## Setting up 2.4
+* If you have any question about what to do about 2.4 when setting up you can make a new issue in the github page.
+* Version 2.4.0 should be very easy to understand, all you have to do in this version is to be able to run the c-realv2.py/exe file. And for configuration just use the .config command for more information.
+
+## Guides for versions below 2.4.0 only. No guides for version 2.4 yet.
 ### Setup/config
 [![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
 ### Setup with GUI (if you don't like setting up with a text editor)
