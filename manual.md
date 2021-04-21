@@ -259,9 +259,9 @@ All commands are not case sensitive.
 * description: Gives a role to someone in the connected server.
 * params: \[user#id or ping only] \[role#name or id]
 
-### `si`
+### `serverIcon`
 
-* aliases: `serverIcon`, `changeServerIcon`
+* aliases: `si`, `changeServerIcon`
 * description: Changes the server icon in the connected server.
 * params: \[item#You can use a link, discord custom emojis, or your computer file path]
 
@@ -271,9 +271,9 @@ All commands are not case sensitive.
 * description: Shows the servers the bot is in.
 * params: {pageNumber=1}
 
-### `sn`
+### `serverName`
 
-* aliases: `serverName`, `changeServerName`
+* aliases: `sn`, `changeServerName`
 * description: Changes the server name in the connected server.
 * params: \[name#Unicode is allowed]
 
