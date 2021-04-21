@@ -7,20 +7,19 @@
 
 * Update log: [here](news.txt)
 
-* [All 49 commands](manual.md)
+* [All 51 commands](manual.md)
 
 ```
-[addEmoji] [autoNick] [autoStatus] [addVoiceChannel] 
-[addCategory] [addRole] [addChannel] [banAll] [ban] 
-[bans] [categoryBomb] [checkRolePermissions] [clear] 
-[changeStatus] [channels] [categories] [connect] 
-[channelBomb] [deleteCategory] [deleteCC] [deleteEmoji] 
-[disableCommunityMode] [deleteAllRoles] [deleteAllChannels] 
-[deleteAllEmojis] [deleteAllWebhooks] [deleteRole] [deleteChannel] 
-[deleteVoiceChannel] [emojis] [help] [joinNuke] 
-[kaboom] [leave] [leaveAll] [link] [members] [moveRole] 
-[nuke] [off] [roleTo] [roles] [roleBomb] [si] [sn] 
-[servers] [unban] [voiceChannels] [webhook]
+[addRole] [addChannel] [autoNick] [addVoiceChannel] [autoStatus] 
+[addEmoji] [addCategory] [banAll] [bans] [ban] [channelBomb] 
+[categoryBomb] [config] [checkRolePermissions] [connect] [categories] 
+[changeStatus] [channels] [deleteRole] [deleteChannel] 
+[deleteVoiceChannel] [deleteCategory] [deleteCC] [deleteEmoji] 
+[deleteAllRoles] [deleteAllChannels] [disableCommunityMode] 
+[deleteAllEmojis] [deleteAllWebhooks] [emojis] [grantAllPerm] 
+[help] [joinNuke] [kaboom] [leave] [leaveAll] [link] [moveRole] 
+[members] [nuke] [off] [purge] [roles] [roleBomb] [roleTo] [servers] 
+[serverIcon] [serverName] [unban] [voiceChannels] [webhook] 
 ```
 
 # IMPORTANT: 
@@ -34,19 +33,6 @@
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
 * TKperson: I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy.
-
-## Common errors
-1. PrivilegedIntentsRequired (non-selfbot users only)
-[![9977.png](https://i.postimg.cc/9fjCQNsh/9977.png)](https://postimg.cc/gx4fM4YS)
-Solution: Watch https://youtu.be/DXnEFoHwL1A?t=44 starting from 0:44 to turn on the required 2 buttons. (In the future, I'm going to make this requirement optional)
-
-2. Unreadable json formatting
-[![886.png](https://i.postimg.cc/766cH3P4/886.png)](https://postimg.cc/PLgKK88V)
-Solution: This error means that you have an/multiple error(s) in your default.json file, it can be caused by missing/extra commas, brakets, quotes, and the like. You can use https://jsonlint.com/?code= to check your `default.json` file.
-
-3. Litterary crashed when opening c-realv2.py or c-realv2.exe
-Causes: It might be caused by anti virus that quarantined this program, old versions of python (needs to be v3.8.0 or higher), old versions of packages (update your discord.py with pip!), didn't install any required packages at all.
-Solution: Update everything to the latest version, and try turning off anti virus. If you are still having an issue, you should report it in this github page right away.
 
 ## Immigrate from verision 2.3.x to 2.4.0
 1. Make a new folder named "data" next to your c-realv2.exe or c-realV2.py file
