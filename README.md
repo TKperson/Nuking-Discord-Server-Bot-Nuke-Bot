@@ -5,8 +5,6 @@
 
 * Python version 3.8.0 or higher is required if you are going to run the file from source code.
 
-* Update log: [here](news.txt)
-
 * [All 51 commands](manual.md)
 
 ```
