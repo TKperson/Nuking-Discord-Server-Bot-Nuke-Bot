@@ -2,3 +2,4 @@ discord
 packaging
 requests
 colorama
+inputimeout
