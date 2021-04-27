@@ -41,7 +41,16 @@
 * If you have any question about what to do about 2.4 when setting up you can make a new issue in the github page.
 * Version 2.4.0 should be very easy to understand, all you have to do in this version is to be able to run the c-realv2.py/exe file. And for configuration just use the .config command for more information.
 
-## Guides for versions below 2.4.0 only. No guides for version 2.4 yet.
+## Guides for versions below 2.4.0 only. Only text guides for version 2.4.
+### 2.4 setup
+* Run the .exe or the .py
+* You will see the "Enter token" message. You can enter a selfbot token or normal bot token
+* Next you will see "Enter user ID or tag", you should enter the user ID or tag that you wanted to command the bot with. All command permissions will be granted to the user with the ID or tag you entered here.
+* If you want to know what commmands are there, then run `.help`
+* If you want to config any settings like the after commands or the webhook spam commands, you have to use `.config`. For more information on how to config will be in the `.config` command.
+* If you are having problems, feel free to make a issue in this github page.  
+
+
 ### Setup/config
 [![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
 ### Setup with GUI (if you don't like setting up with a text editor)
