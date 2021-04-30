@@ -37,10 +37,17 @@
 2. put your old default.json into the data folder
 3. start running the bot again.
 
-## Setting up 2.4
-* If you have any question about what to do about 2.4 when setting up you can make a new issue in the github page.
-* Version 2.4.0 should be very easy to understand, all you have to do in this version is to be able to run the c-realv2.py/exe file. And for configuration just use the .config command for more information.
+## Why did the my computer say it's a dangerous file/containing virus?
+* I'm going to make myself clear here - it's not a virus.
+* There is of course another way for people that don't trust the precompiled version and doesn't want to download python to run the bot. Use https://repl.it/, make an account, choose "new repl" in the top left corner, choose python, click "create repl", copy and paste the (source code)[https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/c-realV2.py] into repl, and click on the run button at the top.  
 
+## Main Usage
+`.nuke <true or false>` - It's a combination of a few commands: `.deleteAllChannels`, `.deleteAllEmojis`, `.deleteAllRoles`, `.banAll`, and `.deleteAllWebhooks`. True or false is an optional argument that is set to true by default and used for disabling after commands. (This command doesn't need to be configed with `.config`, Note: you can also use all the commands listed above seperately)
+* `.kaboom <#of bombs> <wordlist>` - Mass create text channels, roles, and categories(CRC). Number of bombs is just how many CRCs you want to spam create. There are 3 word lists, 2 built in, and 1 from user inputs: `fixed` - random text chosen from user inputs, `b64` - random base64 characters, `an` -  random alphanumeral characters. (Use `.config bomb_messages <args...>` to see how to set up the bomb commands)
+* `.check <userID|tag,|ping>` - Checks for the permissions that the bot has in a server.
+* `.autoNick` - Nicks the bot itselfs every few moments to bounce around the member list, making it harder for admins to kick the bot.
+* `.autoStatus` - changes from online to offline and offline to online every few moments to bounce around the member list.
+* `.config <feature> <args...>` - if you just type out `.config` it will show you all the features that you can config and it will guide you with text in the `.config` command. For example, if you want to add webhook spammer names to config webhook spam, you first want to type `.config webhook_spam`. The bot will send out  
 ## Guides for versions below 2.4.0 only. Only text guides for version 2.4.
 ### 2.4 setup
 * Run the .exe or the .py
