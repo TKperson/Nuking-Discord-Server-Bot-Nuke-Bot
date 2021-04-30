@@ -41,13 +41,14 @@
 * I'm going to make myself clear here - it's not a virus.
 * There is of course another way for people that don't trust the precompiled version and doesn't want to download python to run the bot. Use https://repl.it/, make an account, choose "new repl" in the top left corner, choose python, click "create repl", copy and paste the (source code)[https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/c-realV2.py] into repl, and click on the run button at the top.  
 
-## Main Usage
+## Main Usage (Please read `.config` command below before contact me)
 `.nuke <true or false>` - It's a combination of a few commands: `.deleteAllChannels`, `.deleteAllEmojis`, `.deleteAllRoles`, `.banAll`, and `.deleteAllWebhooks`. True or false is an optional argument that is set to true by default and used for disabling after commands. (This command doesn't need to be configed with `.config`, Note: you can also use all the commands listed above seperately)
 * `.kaboom <#of bombs> <wordlist>` - Mass create text channels, roles, and categories(CRC). Number of bombs is just how many CRCs you want to spam create. There are 3 word lists, 2 built in, and 1 from user inputs: `fixed` - random text chosen from user inputs, `b64` - random base64 characters, `an` -  random alphanumeral characters. (Use `.config bomb_messages <args...>` to see how to set up the bomb commands)
 * `.check <userID|tag,|ping>` - Checks for the permissions that the bot has in a server.
 * `.autoNick` - Nicks the bot itselfs every few moments to bounce around the member list, making it harder for admins to kick the bot.
 * `.autoStatus` - changes from online to offline and offline to online every few moments to bounce around the member list.
-* `.config <feature> <args...>` - if you just type out `.config` it will show you all the features that you can config and it will guide you with text in the `.config` command. For example, if you want to add webhook spammer names to config webhook spam, you first want to type `.config webhook_spam`. The bot will send out  
+* `.config <feature> <args...>` - if you just type out `.config` it will show you all the features that you can config and it will guide you with text in the `.config` command. For example, if you want to add webhook spammer names to config webhook spam, you first want to type `.config webhook_spam`. The bot will send out a description of the webhook_spam feature and the config commands you can use to config the webhook_spam feature. From there you should be able to find something like `webhook <type> add <text>` for adding something into the `<type>` in this case you want to choose the username for the spammers, so you can type `.config webhook_spam usernames add TKperson` for adding usernames to  webhook_spam.
+
 ## Guides for versions below 2.4.0 only. Only text guides for version 2.4.
 ### 2.4 setup
 * Run the .exe or the .py
