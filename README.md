@@ -59,9 +59,9 @@
 * If you are having problems, feel free to make a issue in this github page.  
 
 ### 2.4 tutorials
-* (Setting up)[https://youtu.be/4kBLi9t3oww]
-* (kaboom and nuke)[https://youtu.be/t6rkj3EPJt8]
-* (How to use the config command)[https://youtu.be/kAoYNtWj5ks]
+* [Setting up](https://youtu.be/4kBLi9t3oww)
+* [kaboom and nuke](https://youtu.be/t6rkj3EPJt8)
+* [How to use the config command](https://youtu.be/kAoYNtWj5ks)
 
 
 ### 2.3 tutorials
