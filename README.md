@@ -49,7 +49,7 @@
 * `.autoStatus` - changes from online to offline and offline to online every few moments to bounce around the member list.
 * `.config <feature> <args...>` - if you just type out `.config` it will show you all the features that you can config and it will guide you with text in the `.config` command. For example, if you want to add webhook spammer names to config webhook spam, you first want to type `.config webhook_spam`. The bot will send out a description of the webhook_spam feature and the config commands you can use to config the webhook_spam feature. From there you should be able to find something like `webhook <type> add <text>` for adding something into the `<type>` in this case you want to choose the username for the spammers, so you can type `.config webhook_spam usernames add TKperson` for adding usernames to  webhook_spam.
 
-## Guides for versions below 2.4.0 only. Only text guides for version 2.4.
+## Guides
 ### 2.4 setup
 * Run the .exe or the .py
 * You will see the "Enter token" message. You can enter a selfbot token or normal bot token
@@ -58,7 +58,13 @@
 * If you want to config any settings like the after commands or the webhook spam commands, you have to use `.config`. For more information on how to config will be in the `.config` command.
 * If you are having problems, feel free to make a issue in this github page.  
 
+### 2.4 tutorials
+* (Setting up)[https://youtu.be/4kBLi9t3oww]
+* (kaboom and nuke)[https://youtu.be/t6rkj3EPJt8]
+* (How to use the config command)[https://youtu.be/kAoYNtWj5ks]
 
+
+### 2.3 tutorials
 ### Setup/config
 [![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
 ### Setup with GUI (if you don't like setting up with a text editor)
