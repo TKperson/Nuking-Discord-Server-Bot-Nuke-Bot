@@ -1082,7 +1082,7 @@ async def disableCommunityMode(ctx):
             'preferred_locale': 'en-US', 
             'public_updates_channel_id': None, 'rules_channel_id': None})
 
-        consoleLog(f'Disabling cummunity mode response -> {r.text}', True)
+        consoleLog(f'Disabling community mode response -> {r.text}', True)
 
         await log(ctx, f'{Fore.GREEN}Disabled community mode.')
 
@@ -1427,7 +1427,7 @@ async def nuke(ctx):
         return
 
     await log(ctx, f'A nuke has been launched to `{selected_server.name}`.')
-    tasks = [deleteAllChannels(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx), deleteAllEmojis(ctx)]
+    tasks = [disableCommunityMode(ctx), deleteAllChannels(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx), deleteAllEmojis(ctx)]
     await asyncio.gather(*tasks)
 
     if len(settings['after']) > 0:
