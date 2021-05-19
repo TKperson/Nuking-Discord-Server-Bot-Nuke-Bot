@@ -1,12 +1,13 @@
 # Nuking Discord Server Bot/Nuke Bot
-## [Discord](https://discord.gg/REMwN7s68S)
-* C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
+C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
-* We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
+Join our discord if you need help or update: [https://discord.gg/REMwN7s68S](https://discord.gg/REMwN7s68S)
 
-* Python version 3.8.0 or higher is required if you are going to run the file from source code.
+We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
-* [All 51 commands](manual.md)
+Python version 3.8.0 or higher is required if you are going to run the file from source code.
+
+[All 51 commands](manual.md)
 
 ```
 [addRole] [addChannel] [autoNick] [addVoiceChannel] [autoStatus] 
