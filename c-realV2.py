@@ -181,6 +181,7 @@ def setUp():
     print('The default command_prefix is: .')
     print(f'Your currect command_prefix is: {settings["command_prefix"]}')
     print(f'Use {settings["command_prefix"]}config to config the settings and more info about how to config.\n')
+    
     print('Join our discord https://discord.gg/REMwN7s68S')
 
     settings_copy = deepcopy(settings)
@@ -234,8 +235,7 @@ def checkToken(token=None):
     #     print(f'Proxy reached maximum load time: timeout is {timeout} seconds long.')
     #     exit()
     except requests.exceptions.ConnectionError:
-        print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/
-              person/Nuking-Discord-Server-Bot-Nuke-Bot.')
+        print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
         exit()
     except (requests.exceptions.InvalidHeader, json.decoder.JSONDecodeError):
         print('Invalid token is being used.')
