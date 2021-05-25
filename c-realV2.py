@@ -655,6 +655,7 @@ async def emojis(ctx, n='1'):
 async def members(ctx, command='1', *, args=None):
     if not await hasTarget(ctx):
         return
+    print(len(selected_server.members))
     await embed(ctx, command, 'Members', selected_server.members)
 
     # global server_members
@@ -1050,7 +1051,7 @@ async def roleTo(ctx, member_name, *, role_name):
         return
     # discord.utils.get is useless don't use it it's way slower than "containing"
     member_ = containing(selected_server.members, nameIdHandler(member_name))
-    if member is None:
+    if member_ is None:
         await log(ctx, f'Unable to find user `{member_name}`.')
         return
 
