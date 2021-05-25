@@ -181,6 +181,8 @@ def setUp():
     print('The default command_prefix is: .')
     print(f'Your currect command_prefix is: {settings["command_prefix"]}')
     print(f'Use {settings["command_prefix"]}config to config the settings and more info about how to config.\n')
+    
+    print('Join our discord https://discord.gg/REMwN7s68S')
 
     settings_copy = deepcopy(settings)
 
