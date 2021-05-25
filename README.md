@@ -1,11 +1,13 @@
 # Nuking Discord Server Bot/Nuke Bot
-* C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
+C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
-* We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
+Join our discord if you need help, see plans for the future updates, suggestions, or beta testing a newer version of the bot: [https://discord.gg/REMwN7s68S](https://discord.gg/REMwN7s68S)
 
-* Python version 3.8.0 or higher is required if you are going to run the file from source code.
+We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
-* [All 51 commands](manual.md)
+Python version 3.8.0 or higher is required if you are going to run the file from source code.
+
+[All 51 commands](manual.md)
 
 ```
 [addRole] [addChannel] [autoNick] [addVoiceChannel] [autoStatus] 
@@ -26,7 +28,7 @@
 * Also, since we are using HTTP requests, unlike other nuke bot out there, C-REAL spam creating channel, role, and category(CRC) can create beyond the 250 limit for CRC that the old nuking bots have.
 
 ## Messages
-* cyxl: **Should we make a discord?**
+* cyxl: wow.
 
 * Message to those coding masters out there, if you see something we can improve in our code, feel free to make a pull request. This will really help us a lot. ╰(✿´⌣\`✿)╯♡
 
@@ -37,9 +39,9 @@
 2. put your old default.json into the data folder
 3. start running the bot again.
 
-## Why did the my computer say it's a dangerous file/containing virus?
+## Why did my computer say it's a dangerous file/containing virus?
 * I'm going to make myself clear here - it's not a virus.
-* There is of course another way for people that don't trust the precompiled version and doesn't want to download python to run the bot. Use https://repl.it/, make an account, choose "new repl" in the top left corner, choose python, click "create repl", copy and paste the (source code)[https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/c-realV2.py] into repl, and click on the run button at the top.  
+* There is another way for people that don't trust the released versions, and dont't want to download python to run the bot. Use https://repl.it/, make an account, choose "new repl" in the top left corner, choose python, click "create repl", copy and paste the (source code)[https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/c-realV2.py] into repl, and click on the run button at the top.  
 
 ## Main Usage (Please read `.config` command below before contacting me)
 `.nuke <true or false>` - It's a combination of a few commands: `.deleteAllChannels`, `.deleteAllEmojis`, `.deleteAllRoles`, `.banAll`, and `.deleteAllWebhooks`. True or false is an optional argument that is set to true by default and used for disabling after commands. (This command doesn't need to be configed with `.config`, Note: you can also use all the commands listed above seperately)
