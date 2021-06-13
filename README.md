@@ -5,7 +5,7 @@ Join our discord if you need help, see plans for the future updates, suggestions
 
 We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
-Python version 3.8.0 or higher is required if you are going to run the file from source code.
+Python version 3.9.0 or higher is required if you are going to run the file from source code.
 
 [All 51 commands](manual.md)
 
