@@ -67,7 +67,7 @@ All commands are not case sensitive.
 * description: Shows all the bans in the server that you are connected to.
 * params: {pageNumber=1}
 
-### `unbans`
+### `unban`
 
 * aliases: No command * aliases provided.
 * description: Unbans a banned user in the server.
