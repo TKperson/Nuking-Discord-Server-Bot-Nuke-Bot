@@ -4,7 +4,7 @@
 
 Selfbot - unable to detect all of the members in the server. Fetch members command will be added in 2.4 or later including mass DM.
 
-# Commands documnet
+# Commands document
 
 All commands are not case sensitive.
 
@@ -67,6 +67,12 @@ All commands are not case sensitive.
 * description: Shows all the bans in the server that you are connected to.
 * params: {pageNumber=1}
 
+### `unbans`
+
+* aliases: No command * aliases provided.
+* description: Unbans a banned user in the server.
+* perams: .unban @user#0000
+
 ### `channelBomb`
 
 * aliases: No command * aliases provided.
@@ -108,6 +114,18 @@ All commands are not case sensitive.
 * aliases: `cs`
 * description: Changes the status of the bot.
 * params: \[status#offline, invisible, dnd (or do_not_disturb), online, or idle.]
+
+### `autostatus`
+
+* aliases: `as`
+* description: Automatically turns on/off the bot's status.
+* params: none
+
+### `autonick`
+
+* aliases: `an`
+* description: Automatically changes the bot's nickname.
+* params: none
 
 ### `connect`
 
