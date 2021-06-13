@@ -3,3 +3,4 @@ packaging
 requests
 colorama
 inputimeout
+VSC - Visual Studio Code
