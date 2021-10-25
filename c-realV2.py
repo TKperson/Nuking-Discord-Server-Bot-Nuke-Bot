@@ -1813,7 +1813,7 @@ async def config(ctx, command=None, *, args=None):
                     if len(args) > 1 and args[2].lower() == 'none':
                         settings['webhook_spam']['pfp_urls'].append(None)
                         await log(ctx, f'No pfp item has been added')
-                    elif len(args) > 1 and (text := ' '.join(args[1:]).startswith(('https://', 'http://'))):
+                    elif len(args) > 1 and (text := args[2].startswith(('https://', 'http://'))):
                         settings['webhook_spam']['pfp_urls'].append(text)
                         await log(ctx, f'URL added.')
                     else: 
