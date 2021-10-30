@@ -1843,7 +1843,7 @@ async def config(ctx, command=None, *, args=None):
 
             elif args[0] == 'contents' or args[0] == 'content':
                 if args[1] == 'add':
-                    if len(args) > 1 and (0 < len(text := ' '.join(args[1:])) <= 2000):
+                    if len(args) > 1 and (0 < len(text := ' '.join(args[2:])) <= 2000):
                         settings['webhook_spam']['contents'].append(text)
                         await log(ctx, f'Text added. Character length: `{str(len(text))}`.')
                     else: 
