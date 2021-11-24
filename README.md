@@ -63,24 +63,9 @@ Python version 3.8.0 or higher is required if you are going to run the file from
 * If you are having problems, feel free to make a issue in this github page.  
 
 ### 2.4 tutorials
-* [Setting up](https://youtu.be/4kBLi9t3oww)
-* [kaboom and nuke](https://youtu.be/t6rkj3EPJt8)
-* [How to use the config command](https://youtu.be/kAoYNtWj5ks)
-
-
-### 2.3 tutorials
-### Setup/config
-[![setup](http://img.youtube.com/vi/ovEj9Rjq2sQ/0.jpg)](http://www.youtube.com/watch?v=ovEj9Rjq2sQ "setup")
-### Setup with GUI (if you don't like setting up with a text editor)
-[![setting up with builder.html](http://img.youtube.com/vi/DXnEFoHwL1A/0.jpg)](http://www.youtube.com/watch?v=DXnEFoHwL1A "setting up with builder.html")
-### Nuke and kaboom commands
-[![nuke/kaboom](http://img.youtube.com/vi/GTs3mvyoh5U/0.jpg)](http://www.youtube.com/watch?v=GTs3mvyoh5U "nuke/kaboom")
-### How to perform webhook spams
-[![webhooks attack script showcasing](http://img.youtube.com/vi/0jFdbY9Q2HQ/0.jpg)](http://www.youtube.com/watch?v=0jFdbY9Q2HQ "webhooks")
-### check permission command and some other commands
-[![other1](http://img.youtube.com/vi/gGxeg3lyNDQ/0.jpg)](http://www.youtube.com/watch?v=gGxeg3lyNDQ "other1")
-### Other commands part 2
-[![other2](http://img.youtube.com/vi/IBOahDX1QHg/0.jpg)](http://www.youtube.com/watch?v=IBOahDX1QHg "other2")
+* [Setting up](https://youtu.be/aBmF0B9rPKA)
+* [kaboom and nuke](https://youtu.be/PkPsdUHFhXI)
+* [How to use the config command](https://youtu.be/Ci2Ly5yhT-U)
 
 ## Problems/issues
 * If you are experiencing crashing, please report it to "issues" on the [github page](https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot).
