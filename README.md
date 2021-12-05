@@ -1,6 +1,4 @@
 # Nuking Discord Server Bot/Nuke Bot
-All videos are currently down. Join our discord with the link below to see how to setup the bot.
-
 C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
 Join our discord if you need help, see plans for the future updates, suggestions, or beta testing a newer version of the bot: [https://discord.gg/REMwN7s68S](https://discord.gg/REMwN7s68S)
