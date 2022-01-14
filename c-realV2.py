@@ -90,6 +90,7 @@ def banner():
  ╚═════╝                  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝      cyxl
 '''.encode('utf8'))
 
+# Check for > 1.5.1 discord version
 if version.parse('1.5.1') > version.parse(discord.__version__):
     print('Please update your discord.py.')
     exit()
@@ -2131,7 +2132,7 @@ async def config(ctx, command=None, *, args=None):
 
 
     elif command == 'proxies':
-        await log(ctx, 'This feature has been disable for now due to unhandled slow/bad proxies.')
+        await log(ctx, 'This feature has been disabled for now due to unhandled slow/bad proxies.')
 
     elif command == 'prefix' or command == 'command_prefix':
         if args is None:
@@ -2142,7 +2143,7 @@ async def config(ctx, command=None, *, args=None):
             await log(ctx, 'Command prefix changed.')
     elif command == 'token':
         if args is None:
-            await log(ctx, 'Usage: `token <new token>` - new token for this config. Restarting the bot will be required. And remember to save the config before restarting.')
+            await log(ctx, 'Usage: `token <new token>` - new token for this config. Restarting the bot will be required. Remember to save the config before restarting.')
         else:
             settings['token'] = args
             await log(ctx, 'New token has been set.')
@@ -2226,13 +2227,13 @@ async def serverIcon(ctx, path=None):
                 await selected_server.edit(icon=discord.File(BytesIO(requests.get(f'https://cdn.discordapp.com/emojis/{path[2][:-1]}.gif?v=1').content).read()))
             else:
                 await selected_server.edit(icon=BytesIO(requests.get(f'https://cdn.discordapp.com/emojis/{path[2][:-1]}.png?v=1').content).read())
-            await log(ctx, 'Successfully changed server icon.')
+            await log(ctx, 'Successfully changed the server icon.')
         except:
             raise
     elif os.path.isfile(path): # File EX: C:\Users\user\Desktop\something.jpg or EX: .\icon\something.jpg
         with open(path, 'rb') as data:
             await selected_server.edit(icon=data.read())
-            await log(ctx, 'Successfully changed server icon.')
+            await log(ctx, 'Successfully changed the server icon.')
     else:
         try: 
             unicode_number = str(ord(path)) + ', '
@@ -2254,7 +2255,7 @@ async def serverName(ctx, *, name):
         await selected_server.edit(name=name)
         await log(ctx, f'Server name has been changed to `{name}`.')
     except discord.errors.Forbidden:
-        await log(ctx, 'Unable to change server name.')
+        await log(ctx, 'Unable to change the server name.')
         raise
     except:
         raise
