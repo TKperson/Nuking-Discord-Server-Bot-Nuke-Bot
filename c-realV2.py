@@ -1814,8 +1814,8 @@ async def config(ctx, command=None, *, args=None):
                     if len(args) > 1 and args[2].lower() == 'none':
                         settings['webhook_spam']['pfp_urls'].append(None)
                         await log(ctx, f'No pfp item has been added')
-                    elif len(args) > 1 and (text := args[2].startswith(('https://', 'http://'))):
-                        settings['webhook_spam']['pfp_urls'].append(text)
+                    elif len(args) > 1 and args[2].startswith(('https://', 'http://')):
+                        settings['webhook_spam']['pfp_urls'].append(args[2])
                         await log(ctx, f'URL added.')
                     else: 
                         await log(ctx, f'Please enter an **image URL**. Note: the link must start with http(s) protocals. Or enter `none` for no pfp.')
