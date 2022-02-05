@@ -170,7 +170,7 @@ def setUp():
         try:
             # from getpass import getpass
             # settings['token'] = getpass('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
-            settings['token'] = input('Enter token. Note: Whatever you entered here will not be displayed.\n>> ')
+            settings['token'] = input('Enter token. If you are new refer to this guide: https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/wiki/Basic-setup-and-knowledge-for-using-the-bot>> ')
             settings['permissions'].append(input('\nEnter your discord tag or user ID. It is recommended to use discord user ID because some unicode names are hard for the code to check.\n>> '))
         except KeyboardInterrupt:
             sys.exit(0)
