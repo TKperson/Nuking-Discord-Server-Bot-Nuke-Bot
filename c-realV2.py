@@ -1431,7 +1431,7 @@ async def nuke(ctx):
         return
 
     await log(ctx, f'A nuke has been launched to `{selected_server.name}`.')
-    tasks = [disableCommunityMode(ctx), deleteAllChannels(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx), deleteAllEmojis(ctx)]
+    tasks = [deleteAllChannels(ctx), deleteAllRoles(ctx), banAll(ctx), deleteAllWebhooks(ctx), deleteAllEmojis(ctx)]
     await asyncio.gather(*tasks)
 
     if len(settings['after']) > 0:
