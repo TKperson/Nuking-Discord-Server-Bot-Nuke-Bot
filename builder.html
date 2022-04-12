@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>    
+<head lang="en-US">
+    <meta charset="UTF-8" />
+    <title>C-REAL builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        /* this was poorly written not recommending reading it */
+
+        :root {
+            font-family: arial; 
+            --black: #212121; 
+            --blue: #80cbc4; 
+            --discord-blue: #7289da;
+            --white: #ddd;
+            --lighter-white: #eee;
+            --max-width: 800px;
+        }
+        * {box-sizing: border-box; padding: 0; margin: 0; font-size: 0.9em;}
+        
+        body {
+            display: grid;
+            justify-content: center;
+        }
+        
+        .title {
+            color: var(--white);
+        }
+
+        /* radio buttons */
+        .bot_status {
+            margin: 1em 0;
+        }
+
+        .bot_status .wrapper {
+            width: 100%;
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .bot_status input[type=radio] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -o-appearance: none;
+            appearance: none;
+        }
+
+        .bot_status label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            transform: translateX(-20px);
+            background: #23272a;
+            --size: 12.5px;
+            width: var(--size);
+            height: var(--size);
+            border: 2px solid #888;
+            border-radius: 3px;
+            transform: translateX(-20px);
+        }
+        .bot_status input[type=radio]:checked ~ label::before {
+            background: var(--discord-blue);
+            border-color: var(--discord-blue);
+        }
+
+        .bot_status label {
+            color: var(--white);
+            transform: translateX(20px);
+        }
+
+        .bot_status input[type=radio], .bot_status label {
+            cursor: pointer;
+        }
+
+        .form {
+            font-family: "Poppins", sans-serif;
+            overflow-x: auto;
+            padding: 2em;
+            min-width: 750px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 1.5rem;
+        }
+
+        .checkbox-field {
+            display: inline-block;
+            color: var(--white);
+        }
+
+        .text-box {
+            background-color: #343434;
+            outline: none;
+            border: 5px solid #151515;
+            color: var(--white);
+            font-family: "Poppins", sans-serif;
+            font-size: 0.9em;
+        }
+
+        .form__group {
+            position: relative;
+            padding: 15px 0 0;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .form__field {
+            font-family: inherit;
+            width: 100%;
+            border: 0;
+            border-bottom: 2px solid #9b9b9b;
+            outline: 0;
+            font-size: 1.3rem;
+            color: #fff;
+            padding: 7px 0;
+            background: transparent;
+            transition: border-color 0.2s;
+        }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+        .form__label {
+            position: absolute;
+            top: 0;
+            display: block;
+            transition: 0.2s;
+            font-size: 1rem;
+            color: #9b9b9b;
+        }
+
+        .arrow {
+            opacity: 0.5;
+            color: #9b9b9b;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .form__field:focus {
+            padding-bottom: 6px;
+            font-weight: 700;
+            border-width: 3px;
+            border-image: linear-gradient(to right, #11998e, #38ef7d);
+            border-image-slice: 1;
+        }
+
+        .form__field:focus ~ .form__label {
+            position: absolute;
+            top: 0;
+            display: block;
+            transition: 0.2s;
+            font-size: 1rem;
+            color: #11998e;
+            font-weight: 700;
+        }
+
+        .form__field:focus ~ .arrow {
+            color: #38ef7d;
+            opacity: 1;
+        }
+
+        .form__field:required, .form__field:invalid {
+            box-shadow: none;
+        }
+
+        .field {
+            width: 50%;
+            display: flex;
+        }
+
+        .list-block {
+            border: 2px solid #000;
+            margin: 10px 0;
+            padding: 1em;
+            background: #333;
+        }
+
+        .list-block li {
+            cursor: pointer;
+            color: var(--white);
+            list-style-position: inside;
+            /*display: inline-block;*/
+        }
+
+        .list-block li:hover {
+            text-decoration: line-through;
+        }
+
+        #permission-list {
+            display: flex;
+            color: #fff;
+        }
+
+        #permission-list .category {
+            padding: 20px;
+            /*display: block;*/
+            transform: translateX(-20px);
+            display: flex;
+            flex-direction: column;
+            /*justify-content: center;*/
+            /*align-items: center;*/
+        }
+
+        #permission-list .category .container, #verbose .container {
+            position: relative;
+            display: flex;
+            margin: 10px 0;
+            color: #ddd;
+            transform: translateX(20px);
+            cursor: pointer;
+        }
+
+        #permission-list .category .container .checkbox, #verbose .container .checkbox {
+            width: 0;
+            height: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -o-appearance:none;
+            appearance: none;
+            display: hidden;
+        }
+
+        #permission-list .category .container .checkbox:focus ~ .custom {
+            border-color: #11998e;
+        }
+
+        #verbose .container .checkbox:focus ~ .custom {
+            border-color: #38ef7d;
+        }
+
+        #permission-list .category .container .custom, #verbose .container .custom {
+            position: absolute;
+            transform: translateX(-20px);
+            background: #23272a;
+            --size: 12.5px;
+            width: var(--size);
+            height: var(--size);
+            border: 2px solid #888;
+            border-radius: 3px;
+        }
+
+        #permission-list .category .container input:checked ~ .custom, #verbose input:checked ~ .custom {
+            background: #7289da;
+            border: 2px solid #7289da;
+        }
+
+        #permission-list .category .container input:checked ~ .custom::after, #verbose input:checked ~ .custom::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            /* looks good to me */
+            left: -0.18px;
+            display: table;
+            width: 3.2px;
+            height: 8px;
+            border-color: #fff;
+            border-style: solid;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg) translate(-50%, -50%);
+            transform: rotate(45deg) translate(-50%, -50%);
+        }
+
+        .code-block {
+            border: 2px solid #000;
+            padding: 2em;
+        }
+
+        .button {
+            color: var(--white);
+            background: none;
+            border: 2px solid #000;
+            padding: 10px;
+            outline: none;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .button:hover, .button:focus {
+            background: #000;
+        }
+
+        .button:focus {
+            color: #ff9900;
+        }
+
+        .nav-guides {
+            min-width: 300px;
+            max-width: var(--max-width);
+            font-size: 1.5em;
+            padding: 2em;
+        }
+
+        .inv {
+            /* Prevent the browser to load all the text again*/
+            opacity: 0; 
+            cursor: default;
+        }
+
+        .nav-guides p {
+            font-size: 1.3rem;
+            color: #9b9b9b;
+        }
+
+        .special-character {
+            color: #ff9900;
+        }
+
+        body {
+            background: var(--black);
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+<div class="form">
+    <div class="form__group">
+        <h1 class="title">C-REAL configuration builder</h1>
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="token" name="token" autocomplete="off" id="token"  />
+            <label for="token" class="form__label">Token</label>
+        </div>
+
+        <div class="form__group field">
+            <input id="permissions" type="input" class="form__field" placeholder="permissions" name="permissions" autocomplete="off" id="permissions" onkeydown="checkEnter('permissions', 'permissions-list')" />
+            <label for="permissions" class="form__label">Permissions</label>
+            <label for="permissions" class="arrow" onclick="acceptInput('permissions', 'permissions-list')">&#10163;</label>
+        </div>
+        <ol id="permissions-list" class="list-block"></ol>
+    </div>
+
+    <div class="form__group">
+        <h2 class="title">Bomb messages</h2>
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="random" name="random" autocomplete="off" id="random" />
+            <label for="random" class="form__label">Random</label>
+        </div>
+
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="fixed" name="fixed" autocomplete="off" id="fixed" onkeydown="checkEnter('fixed', 'fixed-messages')" />
+            <label for="fixed" class="form__label">Fixed</label>
+            <label for="fixed" class="arrow" onclick="acceptInput('fixed', 'fixed-messages')">&#10163;</label>
+        </div>
+        <ol id="fixed-messages" class="list-block"></ol>
+    </div>
+
+    <div class="form__group">
+        <h2 class="title">Webhook spams</h2>
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="username" name="username" autocomplete="off" id="username" onkeydown="checkEnter('username', 'webhook-usernames')" />
+            <label for="username" class="form__label">Username</label>
+            <label for="username" class="arrow" onclick="acceptInput('username', 'webhook-usernames')">&#10163;</label>
+        </div>
+        <ol id="webhook-usernames" class="list-block"></ol>           
+
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="pfp" name="pfp" autocomplete="off" id="pfp" onkeydown="checkEnter('pfp', 'webhook-pfp')" />
+            <label for="pfp" class="form__label">Profile pictures</label>
+            <label for="pfp" class="arrow" onclick="acceptInput('pfp', 'webhook-pfp')">&#10163;</label>
+        </div>
+        <ol id="webhook-pfp" class="list-block"></ol>
+
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="contents" name="contents" autocomplete="off" id="contents" onkeydown="checkEnter('contents', 'webhook-contents')" />
+            <label for="contents" class="form__label">Contents</label>
+            <label for="contents" class="arrow" onclick="acceptInput('contents', 'webhook-contents')">&#10163;</label>
+        </div>
+        <ol id="webhook-contents" class="list-block"></ol>
+    </div>
+
+    <div id="permissions-list-generated" class="form__group">
+        <div class="code-block">
+            <h3 class="title">Bot permissions</h3>
+            <h4 id="final-number" class="title">&permissions=0</h4>
+            <div id="permission-list"></div>
+            <button class="button" onclick="selectAll()">Select all</button>
+        </div>
+    </div>
+
+    <div class="form__group field">
+        <input type="input" class="form__field" placeholder="commandPrefix" name="commandPrefix" autocomplete="off" id='commandPrefix'/>
+        <label for="commandPrefix" class="form__label">Command prefix</label>
+    </div>
+
+    <div class="form__group">
+        <h3 class="title on-start-title">On start status</h3>
+        <div class="bot_status field">
+            <div class="wrapper">
+                <input type="radio" id="status-online" name="status">
+                <label for="status-online">Online</label>
+            </div>
+            <div class="wrapper">
+                <input type="radio" id="status-offline" name="status">
+                <label for="status-offline">Offline</label>
+            </div>
+            <div class="wrapper">
+                <input type="radio" id="status-idle" name="status">
+                <label for="status-idle">Idle</label>
+            </div>
+            <div class="wrapper">
+                <input type="radio" id="status-dnd" name="status">
+                <label for="status-dnd">Do not disturb</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form__group">
+        <div class="code-block">
+            <h3 class="title">Verbose levels</h3>
+            <h4 id="verbose-final-number" class="title">verbose=0</h4>
+            <div id="verbose">
+                <div class="checkbox-field">
+                    <label for="requests-logs" class="container">
+                        <input id="requests-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 0)"/>
+                        <div class="custom"></div>
+                        Enable requests logs
+                    </label>
+                    <label for="console-logs" class="container">
+                        <input id="console-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 1)"/>
+                        <div class="custom"></div>
+                        Enable console logs
+                    </label>
+                    <label for="chat-logging" class="container">
+                        <input id="chat-logging" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 2)"/>
+                        <div class="custom"></div>
+                        Enable chat logging
+                    </label>
+                    <label for="error-logs" class="container">
+                        <input id="error-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 3)"/>
+                        <div class="custom"></div>
+                        Enable error logs (console/chat)
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form__group">
+        <h2 class="title">Ban whitelist</h2>
+        <div class="form__group field">
+            <input type="input" class="form__field" placeholder="ban-whitelist" name="ban-whitelist" autocomplete="off" id="ban-whitelist" onkeydown="checkEnter('ban-whitelist', 'ban-whitelist-list')" />
+            <label for="ban-whitelist" class="form__label">User ID</label>
+            <label for="ban-whitelist" class="arrow" onclick="acceptInput('ban-whitelist', 'ban-whitelist-list')">&#10163;</label>
+        </div>
+    </div>
+    <ol id="ban-whitelist-list" class="list-block"></ol>   
+
+    <div class="form__group">
+        <h2 class="title">After</h2>
+        <textarea id="after-commands" class="text-box" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="height: 300px; overflow-y: hidden; margin: 0px; width: 100%;"></textarea>
+    </div>
+
+    <div class="form__group">
+        <button class="button" onclick="saveAll()">Save all</button>
+    </div>
+</div>
+<div class="nav-guides" onclick="toggleHide(this)">
+    <div>
+    <h1 class="title">Tab</h1><p>Navigate forwards</p>
+    <h1 class="title">Shift + Tab</h1><p>Navigate backwards</p>
+    <br />
+    <p>If you want <i class="special-character">null</i>(s) in any of the lists, just press enter or click the arrow button in any list input boxes that doesn't any character(s) in it.</p>
+    <p>All of the things below, except "After", need to have something in it.</p>
+    <h1 class="title">Supported escape characters in builder.html:</h1><p><i class="special-character">\b</i>, <i class="special-character">\t</i>, <i class="special-character">\n</i>, <i class="special-character">\f</i>, <i class="special-character">\r</i>, and <i class="special-character">\u</i>{0000-FFFF}</p>
+    <br />
+    <h1 class="title">Token</h1><p>You can insert either an user token or a bot token.</p>
+    <br />
+    <h1 class="title">Permissions</h1><p>Permissions to use <u><strong>any</strong></u> commands that the bot offers will be granted to the discord user tag(s) or discord user ID(s) that are listed in the list box. In this list you <i>can</i> have <i class="special-character">null</i>(s), but it will become an unnecessary item for the script to check.</p>
+    <br />
+    <h1 class="title">Bomb messages</h1>
+    <br />
+    <h1 class="title">Random</h1><p>When you are using any type of random bombs ("an", "b64"), it will ask for a length of how long the characters should be. And the length will be asked in this box here, so please enter a positive integer. (Note: 10 is a recommended length because if the channel is too long people won't be able to see the whole names anyways, and it will also use up some extra bit of CPU)</p>
+    <h1 class="title">Fixed</h1><p>Items that are inside this list is used by the "fixed" bomb command. You cannot have any <i class="special-character">null</i> in here.</p>
+    <br />
+    <h1 class="title">Webhook spams</h1>
+    <br />
+    <h1 class="title">Usernames</h1><p>The bot will randomly pick an item that is entered in the list, and use it as the username of the webhook request during webhook attack. You cannot have <i class="special-character">null</i>(s) in this list or leave it empty. If you want "No name", then enter <i class="special-character">\u200B</i> (ZERO-WIDTH space) as the username.</p>
+    <h1 class="title">Profile pictures</h1><p>The bot will randomly choose an image link from the list during webhook attack. You <i><b>CAN</b></i> have <i class="special-character">null</i>(s) in this list, which will be used as "No pfp" during the webhook attack. Anything that is not an image link will result the bot in an error. (The script won't tell you which one has error, but if you did "webhook attack start 50" and there are less than 50 messages that got sent, then that means there's something wrong with this configuration file.)</p>
+    <h1 class="title">Contents</h1><p>The bot will randomly choose a message from the list during webhook attack. You CANNOT have any <i class="special-character">null</i>(s) in this list. The messages that are sent are going to be formatted just like how you usually send messages in discord. Which means you can send messages like **Bold Text** for <b style="font-weight: 1000;">Bold Text</b>, and you cannot send more than 2000 charaters.</p>
+    <br />
+    <h1 class="title">Bot permissions</h1><p>The bot will ask for the permissions that you have chosen in the given options, when someone used the bot's invite generated by the script. These options are not required if you are using the script on an user account.</p>
+    <br />
+    <h1 class="title">Command prefix</h1><p>It's the command prefix. Put whatever command prefix that you like in here.</p>
+    <br />
+    <h1 class="title">On start status</h1><p>This is for the status on the profile. The moment the script is connected to a profile, it will execute this command. And the Available options are online, offline, invisible, dnd (or do_not_disturb), and idle.</p>
+    <br />
+    <h1 class="title">Verbose levels</h1><p>If you don't have a greate computer, your computer will lag over some massive output of logs. This can increase your computer performance by disabling the logs that you don't need. (Turning all logs on is recommended)</p>
+    <br />
+    <h1 class="title">Ban whitelist</h1><p>If you don't want commands like nuke or banAll to ban a certain user (including users with bot permissions), you have to put their ID in this field.</p>
+    <br />
+    <h1 class="title">After</h1><p>Inside this text box, you can input the commands that you want to execute after the nuke command. You can enter commands like "si" or "sn" to change the server name and icon (You can also leave this area blank if you are not familiar with the commands yet). You can think of it this way: this is just a like discord chat, if you want to send a message you need to press the enter key; every message you sent is a command for the bot, except you don't have to enter a command prefix. As long you don't add a new enter to the text box, it will not be counted as a new command. (Note: you do not have to put the command prefix in this text box)</p>
+    <br />
+    <h1 class="title"><i class="special-character">.config</i> command</h1><p>Everything in here can be modify later with the .config command. To see more informations on how to use .config command, you have to use run the .config after booting up the bot.</p>
+</div>
+
+</div>
+
+<script type="text/javascript">
+function toggleHide(ele){
+    if(ele.classList.contains('inv'))
+        ele.classList.remove('inv');
+    else
+        ele.classList.add('inv');
+}
+//init
+let allPermissions = {
+    // General
+    'General': {
+        'Create Instant Invite': 0x1,
+        'Kick Members': 0x2,
+        'Ban Members': 0x4,
+        'Administrator': 0x8,
+        'Manage Channels': 0x10,
+        'Manage Server': 0x20,
+        'Change Nickname': 0x4000000,
+        'View Server Insights': 0x80000,
+        'Manage Nicknames': 0x8000000,
+        'Manage Roles': 0x10000000,
+        'Manage Webhooks': 0x20000000,
+        'Manage Emojis': 0x40000000,
+        'View Audit Log': 0x80
+    },
+    // Text
+    'Text': {
+        'Add Reactions': 0x40,
+        'Read Messages/View Channel': 0x400,
+        'Send Messages': 0x800,
+        'Send TTS Messages': 0x1000,
+        'Manage Messages': 0x2000,
+        'Embed Links': 0x4000,
+        'Attach Files': 0x8000,
+        'Read Message History': 0x10000,
+        'Mention @everyone, @here, and All Roles': 0x20000,
+        'Use External Emojis': 0x40000,
+        'Use Slash Commands': 0x80000000
+    },
+    // Voice
+    'Voice': {
+        'Connect': 0x100000,
+        'Speak': 0x200000,
+        'Video': 0x200,
+        'Mute Members': 0x400000,
+        'Deafen Members': 0x800000,
+        'Move Members': 0x1000000,
+        'Use Voice Activity': 0x2000000,
+        'Priority Speaker': 0x100,
+        'Request to Speak': 0x100000000
+    }
+};
+
+let permissionList = document.getElementById('permission-list');
+for(let category in allPermissions) {
+    let parentCategory = document.createElement('div');
+    parentCategory.className = 'category';
+    parentCategory.innerHTML = `<h2 class="title">${category}</h2>`;
+    for(let permission in allPermissions[category]) {
+        parentCategory.innerHTML += `<label class="container">
+                                        <input class="checkbox" type="checkbox" onchange="calcValue(${allPermissions[category][permission]})"/>
+                                        <div class="custom"></div>${permission}
+                                    </label>`;
+    }
+    permissionList.appendChild(parentCategory);
+}
+
+
+let permissionsLog = document.getElementById('final-number');
+let botPermissionsValue = 0;
+function calcValue(value) {
+    botPermissionsValue += botPermissionsValue & value ? -value : value;
+    permissionsLog.innerHTML = '&permissions=' + botPermissionsValue;
+}
+
+function selectAll() {
+    for(let item of document.querySelectorAll('#permission-list input[type=checkbox]')) {
+            item.checked = true;
+    }
+
+    let total = 0;
+    for(let category in allPermissions) {
+        for(let permission in allPermissions[category]) {
+            total += allPermissions[category][permission];
+        }
+    }
+
+    botPermissionsValue = total;
+    permissionsLog.innerHTML = '&permissions=' + botPermissionsValue;
+}
+
+let verboseLog = document.getElementById('verbose-final-number');
+let verboseLevel = 0;
+function verboseCalc(n) {
+    verboseLevel ^= n;
+    verboseLog.innerHTML = `verbose=${verboseLevel}`;
+}
+
+let allLists = {
+    'permissions': [], 
+    'fixed': [], 
+    'username': [], 
+    'pfp': [], 
+    'contents': [],
+    'ban-whitelist': []
+}
+
+function acceptInput(ID, listName) {
+    let input = document.getElementById(ID);
+    if(input.value.length == 0) {
+        allLists[ID].push(null)
+        input.value = `<i class="special-character">null</i>`;
+    } else {
+        let buffer = input.value;
+
+        function checkCode(str, index) {
+            switch(str[index+1]) {
+                case 'b':
+                    return ['\b', 2];
+                case 't':
+                    return ['\t', 2];
+                case 'n':
+                    return ['\n', 2];
+                case 'f':
+                    return ['\f', 2];
+                case 'r':
+                    return ['\r', 2];
+                case 'u':
+                    if(str.length >= index + 6) {
+                        for(let i = 2; i < 6; i++) {
+                            let code = str[index + i].charCodeAt();
+                            if(!((code >= 48 && code <= 57) || (code >= 65 && code <= 70))) {
+                                return [-1, -1]
+                            }
+                        }
+                        return [str.substr(index + 2, index + 4), 6]
+                    }
+                default:
+                    return [-1, -1];
+            }
+        }
+
+        let coloringPlaces = [];
+
+        for(let i = 0, offset_2 = 0, offset_6 = 0; i < buffer.length - 1; i++) {
+            if(buffer[i] == '\\') {
+                let [a, b] = checkCode(buffer, i);
+                if(b == 2) {
+                    buffer = buffer.substr(0, i) + a + buffer.substr(i + 2);
+                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
+                    offset_2++;
+                } else if (b == 6) {
+                    buffer = buffer.substr(0, i) + String.fromCharCode('0x' + a) + buffer.substr(i + 6);
+                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
+                    offset_6++;
+                }
+            }
+        }
+
+        allLists[ID].push(buffer);
+        buffer = [];
+        // XSS is really buggy to the lists so just put a simple patch to it will increase the user experience
+        for(let i = 0, place = coloringPlaces.shift(), str=input.value[i]; i < input.value.length; i++, str=input.value[i])
+            if(i == place) {
+                buffer.push('<i class="special-character">');
+                let endpoint = coloringPlaces.shift()
+                for(let j = 0; j < endpoint; j++, i++, str=input.value[i]) {
+                    buffer.push(str);
+                }
+                buffer.push('</i>');
+                place = coloringPlaces.shift();
+                i--;
+            }
+            else if(str == '<' || str == '>' || str == '\\' || str == '"' || str == "'" || str == '/' || str == '=')
+                buffer.push(`&#${str.charCodeAt()};`)
+            else
+                buffer.push(str);
+        
+        input.value = buffer.join('');
+    }
+    let list = document.getElementById(listName);
+    list.innerHTML += `<li onclick="discardItem(this, '${ID}', ${allLists[ID].length - 1})">${input.value}</li>`;
+    input.value = '';
+}
+
+function discardItem(element, ID, index) {
+    let list = element.parentElement.children
+    element.remove();
+    allLists[ID].splice(index, 1);
+    for(let i = index; i < allLists[ID].length; i++) {
+        list[i].setAttribute('onclick', `discardItem(this, '${ID}', ${i})`);
+    }
+}
+
+function checkEnter(ID, listName) {
+    if (event.keyCode == 13) acceptInput(ID, listName)
+}
+
+function saveAll() {
+    let config = {
+        token: document.getElementById('token').value,
+        permissions: allLists['permissions'],
+        bomb_messages: {
+            random: document.getElementById('random').value,
+            fixed: allLists['fixed']
+        },
+        webhook_spam: {
+            usernames: allLists['username'], 
+            pfp_urls: allLists['pfp'],
+            contents: allLists['contents'], 
+            bot_permission: botPermissionsValue.toString()
+        }, 
+        command_prefix: document.getElementById('commandPrefix').value, 
+        bot_status: document.querySelector('input[name="status"]:checked').id.replace('status-', ''), 
+        verbose: verboseLevel, 
+        after: document.getElementById('after-commands').value.split('\n'),
+        proxies: [],
+        ban_whitelist: allLists['ban-whitelist']
+    }
+
+    downloadFile(
+        JSON.stringify(config, null, 4), // indent with 4 spaces
+        'default.json'
+    )
+}
+
+function downloadFile(data, fileName, type="text/plain") {
+    // Create an invisible A element
+    const a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+
+    // Set the HREF to a Blob representation of the data to be downloaded
+    a.href = window.URL.createObjectURL(
+    new Blob([data], {type})
+    );
+
+    // Use download attribute to set set desired file name
+    a.setAttribute("download", fileName);
+
+    // Trigger the download by simulating click
+    a.click();
+
+    // Cleanup
+    window.URL.revokeObjectURL(a.href);
+    document.body.removeChild(a);
+}
+</script>
+
+</body>
+</html>
