@@ -1,5 +1,5 @@
 # Nuking Discord Server Bot/Nuke Bot
-## Made by cyxl and tkperson
+## Made by tkperson and cyxl
 C-REAL is currently the **FASTEST** and **FREE** open source nuke bot out here. All commands will be focused on nuking-related.
 
 Join our discord if you need help, see plans for the future updates, suggestions, or beta testing a newer version of the bot: [https://discord.gg/FwGWvwv4mW](https://discord.gg/FwGWvwv4mW)
