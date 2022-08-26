@@ -3,7 +3,7 @@
 """
 MIT License
 
-Copyright (c) 2020 - 2021
+Copyright (c) 2020 - 2022
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -2407,29 +2407,11 @@ def silence_event_loop_closed(func):
     return wrapper
 _ProactorBasePipeTransport.__del__ = silence_event_loop_closed(_ProactorBasePipeTransport.__del__)
 
-# PrivilegedIntents fixed fail :')
-
-# async def login():
-#     global client
-#     try:
-#         await client.start(settings['token'], bot=not is_selfbot)
-#     except discord.PrivilegedIntentsRequired:
-#         print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
-#         # exit()
-#         client._connection = client._get_state(
-#                                 intents=client.intents.default()
-#                                 ) # reset intents to default
-#         input('lol')
-#         await login()
-#     except Exception as e:
-#         print(e)
-#     finally:
-#         sys.stdout.write('Exiting...               \n')
-
-# asyncio.run(login()) # if login failed because of the privileged intents then ask if user wants to turn off the intents
-
 try:
-    client.run(settings['token'], bot=not is_selfbot)
+    if is_selfbot:
+        print('Selfbot is no longer supported')
+        exit()
+    client.run(settings['token'])
 except discord.PrivilegedIntentsRequired:
     print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
     exit()
