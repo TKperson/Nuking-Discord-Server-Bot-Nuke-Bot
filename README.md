@@ -35,11 +35,6 @@ Python version 3.8.0 or higher is required if you are going to run the file from
 
 * TKperson: I got the idea of creating the C-REAL bot from [Cerealwithnomilk](https://www.youtube.com/channel/UCxX7O68badw2sBbcvQK0wBQ); the bot is named after this guy.
 
-## Immigrate from verision 2.3.x to 2.4.0
-1. Make a new folder named "data" next to your c-realv2.exe or c-realV2.py file
-2. put your old default.json into the data folder
-3. start running the bot again.
-
 ## Why did my computer say it's a dangerous file/containing virus?
 * I'm going to make myself clear here - it's not a virus.
 * There is another way for people that don't trust the released versions, and dont't want to download python to run the bot. Use https://repl.it/, make an account, choose "new repl" in the top left corner, choose python, click "create repl", copy and paste the [source code](https://raw.githubusercontent.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot/master/c-realV2.py) into repl, and click on the run button at the top.  
@@ -55,7 +50,7 @@ Python version 3.8.0 or higher is required if you are going to run the file from
 ## Guides
 ### 2.4 setup
 * Run the .exe or the .py
-* You will see the "Enter token" message. You can enter a selfbot token or normal bot token
+* You will see the "Enter token" message. You can only enter a bot token because selfbot is no longer supported.
 * Next you will see "Enter user ID or tag", you should enter the user ID or tag that you wanted to command the bot with. All command permissions will be granted to the user with the ID or tag you entered here.
 * If you want to know what commmands are there, then run `.help`
 * If you want to config any settings like the after commands or the webhook spam commands, you have to use `.config`. For more information on how to config will be in the `.config` command.
