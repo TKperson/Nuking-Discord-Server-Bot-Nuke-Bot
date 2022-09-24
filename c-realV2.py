@@ -1031,7 +1031,7 @@ async def unban(ctx, *, name):
     if not await hasTarget(ctx):
         return
 
-    member_ = containing([s.user for s in await selected_server.bans()], nameIdHandler(name))
+    member_ = containing([s.user async for s in selected_server.bans()], nameIdHandler(name))
     if member_ is None:
         await log(ctx, f'Unable to find user `{name}` in server `{selected_server.name}`.')
         return
