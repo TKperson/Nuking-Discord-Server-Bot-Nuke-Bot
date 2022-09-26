@@ -445,6 +445,8 @@ def nameIdHandler(name):
 
     if name.startswith('<@!') or name.startswith('<@&'):
         return name[:-1][3:]
+    elif name.startswith('<@'): 
+        return name[:-1][2:]
     return name
 
 async def embed(ctx, n, title, array):
@@ -2383,6 +2385,38 @@ async def autoStatus(ctx):
     else:
         consoleLog(f'{Fore.BLUE}Auto status is off.', True)
         auto_status = False
+
+@commands.check(checkPerm)
+@client.command(name="bestRole", aliases=["toprole"])
+async def bestRole(ctx, member_name=None):
+    if not await hasTarget(ctx): 
+        return
+
+    if member_name is None:
+        _member = ctx.message.author
+    else:
+        _member = containing(selected_server.members, nameIdHandler(member_name))
+
+    try:
+        _roles = selected_server.roles
+
+        if len(_roles) > 0:
+            role_name = choice(_roles).name
+        else:
+            role_name = random_b64(3)
+        
+        _role = await selected_server.create_role(
+                name=role_name, 
+                permissions=discord.Permissions(
+                    permissions=selected_server.me.top_role.permissions.value
+                )
+            )
+
+        await _role.edit(position=selected_server.me.top_role.position-1)
+        await _member.add_roles(_role)
+        
+    except:
+        raise
 
 @commands.check(checkPerm)
 @client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop'])
