@@ -51,7 +51,7 @@ init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.4.0"
+__VERSION__ = "2.4.1"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
