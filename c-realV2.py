@@ -3,7 +3,7 @@
 """
 MIT License
 
-Copyright (c) 2020 - 2022
+Copyright (c) 2020 - 2023
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -95,7 +95,26 @@ if version.parse('1.5.1') > version.parse(discord.__version__):
     print('Please update your discord.py.')
     exit()
 
-settings = {"token":None,"permissions":[],"bot_permission":"2146958847","command_prefix":".","bot_status":"offline","verbose":15,"bomb_messages":{"random":None,"fixed":[]},"webhook_spam":{"usernames":[],"pfp_urls":[],"contents":[]},"after":[],"proxies":[],"ban_whitelist":[]}
+settings = {
+        "token": None,
+        "permissions": [],
+        "bot_permission": "2146958847",
+        "command_prefix": ".",
+        "bot_status": "offline",
+        "verbose": 15,
+        "bomb_messages": {
+            "random": 10,
+             "fixed": ["nuked"]
+         },
+        "webhook_spam": {
+            "usernames": ["nuked"],
+            "pfp_urls": [None],
+            "contents": ["@everyone"]
+        },
+        "after": [],
+        "proxies": [],
+        "ban_whitelist": []
+}
 
 def setUp():
     # check location 
