@@ -2,7 +2,7 @@
 ## Made by tkperson and cyxl
 C-REAL is currently the **FASTEST** and **FREE** open source self-hosted nuke bot out here. All commands will be focused on nuking-related.
 
-Join our discord if you need help, see plans for the future updates, suggestions, or beta testing a newer version of the bot: [https://discord.gg/FwGWvwv4mW](https://discord.gg/FwGWvwv4mW)
+Issues are closed because we are not active in there. Join our discord if you need help, see plans for the future updates, suggestions, or beta testing a newer version of the bot: [https://discord.gg/FwGWvwv4mW](https://discord.gg/FwGWvwv4mW)
 
 We have combined threading, queue, requests, and discord.py API to make the commands run as fast as possible. If you are seeing rate limiting logged in your console while using this script, then that is simply because <ins>it runs too fast</ins>.
 
