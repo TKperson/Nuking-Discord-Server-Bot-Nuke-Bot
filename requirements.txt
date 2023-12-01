@@ -3,4 +3,3 @@ packaging
 requests
 colorama
 inputimeout
-simplejson
