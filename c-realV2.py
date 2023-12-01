@@ -39,10 +39,8 @@ from io import BytesIO
 from pathlib import Path
 from math import ceil
 from copy import deepcopy
-if sys.platform == 'linux':
-    import simplejson as json
-else:
-    import json
+import json
+
 # style
 from colorama import init, Fore
 
@@ -236,24 +234,21 @@ def checkToken(token=None):
 
     global is_selfbot, headers 
     try:
+        if 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
+            is_selfbot = True
+    except (requests.exceptions.InvalidHeader, json.decoder.JSONDecodeError):
+        pass
+
+    is_selfbot = False
+    try:
         headers = {'authorization': token, 'content-type': 'application/json'}
         print('Checking selfbot token.', end='\r')
+        headers['authorization'] = 'Bot ' + token
+        print('Checking normal bot token.', end='\r')
         if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
-            # This is the hardest thing that I have tried to find in my life took me ages to know "Bot <token>" is actually the bot's authorization
-            # Reading source codes is always a good thing :)
-            headers['authorization'] = 'Bot ' + token
-            print('Checking normal bot token.', end='\r')
-            if not 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
-                print('Invalid token is being used.')
-                exit()
-            else:
-                is_selfbot = False
-    # except requests.exceptions.ProxyError:
-    #     print('Bad proxy is being used. You can try to change a proxy or restart the bot.')
-    #     exit()
-    # except requests.exceptions.ConnectTimeout:
-    #     print(f'Proxy reached maximum load time: timeout is {timeout} seconds long.')
-    #     exit()
+            print('Invalid token is being used.')
+            exit()
+
     except requests.exceptions.ConnectionError:
         print('You should probably consider connecting to the internet before using any discord related stuff. If you are connected to wifi and still seeing this message, then maybe try turn off your VPN/proxy/TOR node. If you are still seeing this message or you just don\'t what to turn off vpn, you can try to use websites like repl/heroku/google cloud to host the bot for you. The source code is on https://github.com/TKperson/Nuking-Discord-Server-Bot-Nuke-Bot.')
         exit()
@@ -582,23 +577,6 @@ def configIsSaved():
     # global settings_copy, settings # idk why python did this but after adding this for my 3.8.5 python it works
     return settings_copy == settings
 
-# class discordMember:
-#     def __init__(self, name, id_, discriminator=None, channel_id=None):
-#         self.name = name
-#         self.id = id_
-#         self.discriminator = discriminator
-#         self.channel_id = channel_id
-# server_members = []
-
-# def copyMember(author):
-#     server_members.append(discordMember(author['username'], author['id'], author['discriminator']))
-
-# def autoFindChannel():
-#     for channel in selected_server.text_channels:
-#         for name in ['join', 'welcome', 'incoming']:
-#             if name in channel.name:
-#                 return channel.id
-#     return None
 ######### Commands ##########
 
 ######### Listing  ##########
@@ -681,88 +659,6 @@ async def members(ctx, command='1', *, args=None):
         return
     print(len(selected_server.members))
     await embed(ctx, command, 'Members', selected_server.members)
-
-    # global server_members
-
-    # if command.isdigit():
-    #     if is_selfbot:
-    #         await embed(ctx, command, 'Members', server_members)
-    #     else:
-    #         await embed(ctx, command, 'Members', selected_server.members)
-    # else:
-    #     # def gFetchableChannel(channel_id): # check if the channel is good for fectching channel
-    #     #     pass
-    #     if command == 'fetch':
-    #         global fetching_members
-    #         args = args.split()
-
-    #         if not is_selfbot:
-    #             await log(ctx, f'Fetch command is only made for selfbot; since you are using normal bots, all members in the server `{selected_server.name}` has already be fetched. Try `{settings["command_prefix"]}members` to see all the fetched members.')
-    #             return
-
-    #         if args[0].lower() == 'auto':
-    #             channel_id = autoFindChannel()
-    #             if channel_id is None:
-    #                 await log(ctx, f'Unable to find welcome channels. You have to enter the welcome channel\'s in server `{selected_server.name}` manually.')
-    #                 return
-    #         elif args[0].lower() == 'stop':
-    #             fetching_members = False
-    #             await log(ctx, 'Fetching stopped.')
-    #             return
-    #         elif args[0].isdigit():
-    #             channel_id = args[0]
-    #         else:
-    #             await log(ctx, 'Invalid argument: You can only enter `fetch auto` or `fetch <channel_id>`.')
-    #             return
-    #         # Making sure channel_id is a string
-    #         channel_id = str(channel_id)
-
-    #         if len(args) < 3:
-    #             cooldown = 0
-    #         elif args[2].isdigit():
-    #             cooldown = int(args[2])
-    #         else:
-    #             await log(ctx, 'Please set a positive integer for the cooldown time of fetching every 100 messages. Use `0` if you don\'t want a cooldown.')
-    #             return
-
-    #         if args[1].lower() == 'fast':
-    #             fetching_members = True
-    #             url = f'https://discord.com/api/v8/channels/{channel_id}/messages?limit=100'
-    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{settings["command_prefix"]}members`\nStop fetching: `{settings["command_prefix"]}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
-    #             while fetching_members:
-    #                 r = requests.get(url, headers=headers, proxies=randomProxy('https'), timeout=timeout).json()
-    #                 if len(r) == 0:
-    #                     break
-    #                 for message in r:
-    #                     if message['mentions']: # len(message['content']) > 0 and 
-    #                         for mention in message['mentions']:
-    #                             copyMember(mention)
-    #                     elif len(message['attachments']) > 0:
-    #                         pass # no handler for images
-    #                     elif len(message['embeds']) > 0:
-    #                         pass # no handlers for embeds mentions
-    #                     else:
-    #                         copyMember(message['author'])
-    #                 url = f'https://discord.com/api/v8/channels/{channel_id}/messages?before={r[-1]["id"]}&limit=100'
-    #                 if cooldown > 0:
-    #                     await asyncio.sleep(cooldown)
-
-    #         elif args[1].lower() == 'all':
-    #             await log(ctx, f'```Fetching has started.\nCheck progress: `{settings["command_prefix"]}members`\nStop fetching: `{settings["command_prefix"]}members fetch stop`.\nCooldown: `{cooldown}` seconds.\nNote: duplicated users will only get removed after the fetching stops.```')
-    #             pass
-    #         else:
-    #             await log(ctx, 'You need to choose a fetching operation. Options are `all` or `fast`.')
-
-    #         # Removing duplicates
-
-    #         if len(server_members) > 1:
-    #             temp = []
-    #             temp.append(server_members[0])
-    #             for member_ in server_members:
-    #                 for i in temp:
-    #                     temp.append(member_)
-
-    #             server_members = temp
 
 @commands.check(checkPerm)
 @client.command(name='bans')
@@ -1275,41 +1171,6 @@ async def roleBomb(ctx, n, method):
 
     q.join()
     consoleLog('Done role bombing.', True)
-
-# @commands.check(checkPerm)
-# @client.command(name='massDM', aliases=['md'])
-# async def massDM(ctx, command, *, args=None):
-#     if len(server_members) == 0:
-#         await log(ctx, 'You don\'t have anything anyone to dm with :(. Fetch some members.')
-#         return
-
-#     if args is not None:
-#         args = args.split()
-
-#     if command == 'channels' or command == 'channel':
-#         if args is None:
-#             args = []
-#             args.append('1')
-#         members_ = []
-#         for i in range(len(server_members)):
-#             if members_[i].channel_id is not None:
-#                 members_[i].id = members_[i].channel_id
-
-#         await embed(ctx, args[0], 'MassDM targets', members_)
-#     elif command == 'load':
-#         for member_ in server_members:
-#             print(member_.name)
-#             if int(member_.id) == client.user.id:
-#                 continue
-#             # asdf = requests.post('https://discordapp.com/api/v8/users/@me/channels', headers=headers, json={'recipient_id': member_.id}, proxies=randomProxy('https'), timeout=timeout).json()
-#             member_.__init__(member_.name, member_.id, member_.discriminator, client.get_user(member_.id).dm_channel.id)
-#     elif command == 'start':
-#         massDM_channels = [i.channel_id for i in server_members if i.channel_id is not None]
-#         if len(massDM_channels) == 0:
-#             await log(ctx, 'You don\'t have any DM loaded.')
-#             return
-#         for channel_id in massDM_channels:
-#             q.put((f'https://discordapp.com/api/v8/channels{channel_id}/messages', headers))
 
 ######### webhooks ##########
 @commands.check(checkPerm)
