@@ -236,6 +236,7 @@ def checkToken(token=None):
     try:
         if 'id' in requests.get(url='https://discord.com/api/v8/users/@me', timeout=timeout, headers=headers).json():
             is_selfbot = True
+            return
     except (requests.exceptions.InvalidHeader, json.decoder.JSONDecodeError):
         pass
 
