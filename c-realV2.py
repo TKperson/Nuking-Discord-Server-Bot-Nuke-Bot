@@ -2328,7 +2328,8 @@ try:
         exit()
     client.run(settings['token'])
 except discord.PrivilegedIntentsRequired:
-    print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
+    print(chr(27) + "[2J")
+    print('PrivilegedIntentsRequired: Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
     exit()
 except Exception as e:
     print(e)
