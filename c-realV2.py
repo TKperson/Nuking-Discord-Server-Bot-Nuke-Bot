@@ -26,7 +26,8 @@ SOFTWARE.
 Don't use the bot on real servers or use it to spam because this is breaking
 discord's ToS, and you will be resulted in an account deletion.
 """
-# discord
+
+
 import discord, sys, requests, os, time
 from discord.ext import commands
 import asyncio
@@ -49,7 +50,7 @@ init(autoreset=True)
 
 # 
 __TITLE__ = "C-REAL"
-__VERSION__ = "2.4.1"
+__VERSION__ = "2.4.2"
 __AUTHOR__ = "TKperson"
 __LICENSE__ = "MIT"
 
@@ -69,6 +70,7 @@ timeout = 6
 fetching_members = False
 bad_filename_map = dict((ord(char), None) for char in '<>:"\\/|?*')
 grant_all_permissions = False
+
 # normal functions==============
 def exit():
     try:
@@ -80,12 +82,12 @@ def exit():
 def banner():
     """Handler for non-unicode consoles"""
     sys.stdout.buffer.write(f'''\
- ██████╗                  ██████╗ ███████╗ █████╗ ██╗     
-██╔════╝                  ██╔══██╗██╔════╝██╔══██╗██║   Version: {__VERSION__}
-██║         █████╗        ██████╔╝█████╗  ███████║██║     Made by:
-██║         ╚════╝        ██╔══██╗██╔══╝  ██╔══██║██║       TKperson
-╚██████╗                  ██║  ██║███████╗██║  ██║███████╗    and
- ╚═════╝                  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝      cyxl
+ ██████                ██████  ███████  █████  ██    
+██                     ██   ██ ██      ██   ██ ██  Version: {__VERSION__}
+██          █████      ██████  █████   ███████ ██    Made by:
+██                     ██  ██  ██      ██   ██ ██      TKperson, nerd-bear
+ ██████                ██   ██ ███████ ██   ██ ███████    and
+                                                                  cyxl
 '''.encode('utf8'))
 
 # Check for > 1.5.1 discord version
@@ -218,12 +220,6 @@ def updateVerbose():
     want_log_message = verbose & 1 << 2
     want_log_errors  = verbose & 1 << 3
 updateVerbose()
-
-# def randomProxy(protocol):
-#     # As long it works fine then i'm using this method
-#     if proxies is None or len(proxies) == 0:
-#         return None
-#     return {protocol: choice(proxies)}
 
 is_selfbot = True
 headers = {}
