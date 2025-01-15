@@ -1,754 +1,1181 @@
 <!DOCTYPE html>
-<html>    
-<head lang="en-US">
-    <meta charset="UTF-8" />
-    <title>C-REAL builder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-        /* this was poorly written not recommending reading it */
-
-        :root {
-            font-family: arial; 
-            --black: #212121; 
-            --blue: #80cbc4; 
-            --discord-blue: #7289da;
-            --white: #ddd;
-            --lighter-white: #eee;
-            --max-width: 800px;
-        }
-        * {box-sizing: border-box; padding: 0; margin: 0; font-size: 0.9em;}
-        
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config Builder</title>
+    <style>
         body {
-            display: grid;
-            justify-content: center;
-        }
-        
-        .title {
-            color: var(--white);
-        }
-
-        /* radio buttons */
-        .bot_status {
-            margin: 1em 0;
-        }
-
-        .bot_status .wrapper {
-            width: 100%;
-            display: flex;
-            white-space: nowrap;
-        }
-
-        .bot_status input[type=radio] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            -o-appearance: none;
-            appearance: none;
-        }
-
-        .bot_status label::before {
-            content: "";
-            display: inline-block;
-            position: absolute;
-            transform: translateX(-20px);
-            background: #23272a;
-            --size: 12.5px;
-            width: var(--size);
-            height: var(--size);
-            border: 2px solid #888;
-            border-radius: 3px;
-            transform: translateX(-20px);
-        }
-        .bot_status input[type=radio]:checked ~ label::before {
-            background: var(--discord-blue);
-            border-color: var(--discord-blue);
-        }
-
-        .bot_status label {
-            color: var(--white);
-            transform: translateX(20px);
-        }
-
-        .bot_status input[type=radio], .bot_status label {
-            cursor: pointer;
-        }
-
-        .form {
-            font-family: "Poppins", sans-serif;
-            overflow-x: auto;
-            padding: 2em;
-            min-width: 750px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0 10px 10px 10px; /* Remove top padding */
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            font-size: 1.5rem;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .dark-mode h1,
+        .dark-mode label {
+        color: #4AF626;
+        }
+        @keyframes rgbAnimation {
+            0% { color: red; }
+            33% { color: green; }
+            66% { color: blue; }
+            100% { color: red; }
         }
 
-        .checkbox-field {
-            display: inline-block;
-            color: var(--white);
+        h1 {
+            animation: rgbAnimation 5s infinite;
         }
-
-        .text-box {
-            background-color: #343434;
-            outline: none;
-            border: 5px solid #151515;
-            color: var(--white);
-            font-family: "Poppins", sans-serif;
-            font-size: 0.9em;
-        }
-
-        .form__group {
-            position: relative;
-            padding: 15px 0 0;
-            margin-top: 10px;
+        .form-group {
+            margin-bottom: 15px;
             width: 100%;
+            max-width: 500px;
         }
-
-        .form__field {
-            font-family: inherit;
-            width: 100%;
-            border: 0;
-            border-bottom: 2px solid #9b9b9b;
-            outline: 0;
-            font-size: 1.3rem;
-            color: #fff;
-            padding: 7px 0;
-            background: transparent;
-            transition: border-color 0.2s;
-        }
-
-        .form__field::placeholder {
-            color: transparent;
-        }
-
-        .form__field:placeholder-shown ~ .form__label {
-            font-size: 1.3rem;
-            cursor: text;
-            top: 20px;
-        }
-
-        .form__label {
-            position: absolute;
-            top: 0;
+        label {
             display: block;
-            transition: 0.2s;
-            font-size: 1rem;
-            color: #9b9b9b;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
         }
-
-        .arrow {
-            opacity: 0.5;
-            color: #9b9b9b;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .form__field:focus {
-            padding-bottom: 6px;
-            font-weight: 700;
-            border-width: 3px;
-            border-image: linear-gradient(to right, #11998e, #38ef7d);
-            border-image-slice: 1;
-        }
-
-        .form__field:focus ~ .form__label {
-            position: absolute;
-            top: 0;
-            display: block;
-            transition: 0.2s;
-            font-size: 1rem;
-            color: #11998e;
-            font-weight: 700;
-        }
-
-        .form__field:focus ~ .arrow {
-            color: #38ef7d;
-            opacity: 1;
-        }
-
-        .form__field:required, .form__field:invalid {
-            box-shadow: none;
-        }
-
-        .field {
-            width: 50%;
-            display: flex;
-        }
-
-        .list-block {
-            border: 2px solid #000;
-            margin: 10px 0;
-            padding: 1em;
-            background: #333;
-        }
-
-        .list-block li {
-            cursor: pointer;
-            color: var(--white);
-            list-style-position: inside;
-            /*display: inline-block;*/
-        }
-
-        .list-block li:hover {
-            text-decoration: line-through;
-        }
-
-        #permission-list {
-            display: flex;
-            color: #fff;
-        }
-
-        #permission-list .category {
-            padding: 20px;
-            /*display: block;*/
-            transform: translateX(-20px);
-            display: flex;
-            flex-direction: column;
-            /*justify-content: center;*/
-            /*align-items: center;*/
-        }
-
-        #permission-list .category .container, #verbose .container {
-            position: relative;
-            display: flex;
-            margin: 10px 0;
-            color: #ddd;
-            transform: translateX(20px);
-            cursor: pointer;
-        }
-
-        #permission-list .category .container .checkbox, #verbose .container .checkbox {
-            width: 0;
-            height: 0;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            -o-appearance:none;
-            appearance: none;
-            display: hidden;
-        }
-
-        #permission-list .category .container .checkbox:focus ~ .custom {
-            border-color: #11998e;
-        }
-
-        #verbose .container .checkbox:focus ~ .custom {
-            border-color: #38ef7d;
-        }
-
-        #permission-list .category .container .custom, #verbose .container .custom {
-            position: absolute;
-            transform: translateX(-20px);
-            background: #23272a;
-            --size: 12.5px;
-            width: var(--size);
-            height: var(--size);
-            border: 2px solid #888;
-            border-radius: 3px;
-        }
-
-        #permission-list .category .container input:checked ~ .custom, #verbose input:checked ~ .custom {
-            background: #7289da;
-            border: 2px solid #7289da;
-        }
-
-        #permission-list .category .container input:checked ~ .custom::after, #verbose input:checked ~ .custom::after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            /* looks good to me */
-            left: -0.18px;
-            display: table;
-            width: 3.2px;
-            height: 8px;
-            border-color: #fff;
-            border-style: solid;
-            border-width: 0 2px 2px 0;
-            -webkit-transform: rotate(45deg) translate(-50%, -50%);
-            transform: rotate(45deg) translate(-50%, -50%);
-        }
-
-        .code-block {
-            border: 2px solid #000;
-            padding: 2em;
-        }
-
-        .button {
-            color: var(--white);
-            background: none;
-            border: 2px solid #000;
+        input[type="text"], select, textarea {
+            width: calc(150% - 70px); /* Increase width to 1.5 times and accommodate the button */
             padding: 10px;
-            outline: none;
-            transition: 0.2s;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input::placeholder, textarea::placeholder {
+            color: #888;
+        }
+        .dark-mode input::placeholder, .dark-mode textarea::placeholder {
+            color: #888;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
-
-        .button:hover, .button:focus {
-            background: #000;
+        button:hover {
+            background-color: #0056b3;
         }
-
-        .button:focus {
-            color: #ff9900;
+        #output {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
         }
-
-        .nav-guides {
-            min-width: 300px;
-            max-width: var(--max-width);
-            font-size: 1.5em;
-            padding: 2em;
+        .dark-mode {
+            background-color: #050505;
+            color: #f4f4f9;
         }
-
-        .inv {
-            /* Prevent the browser to load all the text again*/
-            opacity: 0; 
-            cursor: default;
+        .dark-mode input[type="text"], .dark-mode select, .dark-mode textarea {
+            background-color: #555;
+            color: #f4f4f9;
+            border: 1px solid #4AF626;
         }
-
-        .nav-guides p {
-            font-size: 1.3rem;
-            color: #9b9b9b;
+        .dark-mode button {
+            background-color: #0056b3;
         }
-
-        .special-character {
-            color: #ff9900;
+        .dark-mode button:hover {
+            background-color: #003f7f;
         }
-
-        body {
-            background: var(--black);
+        .dark-mode #output {
+            background: #444;
+            border: 1px solid #666;
+        }
+        .switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+        .switch input {
+            display: none;
+        }
+        .slider {
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            transition: 0.3s;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+        .mode-text {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .light-mode .switch {
+            font-size: 36px; /* 2x the size */
+        }
+        .light-mode .slider {
+            width: 80px; /* 2x the size */
+            height: 40px; /* 2x the size */
+            border-radius: 40px; /* 2x the size */
+        }
+        .light-mode .slider::before {
+            width: 36px; /* 2x the size */
+            height: 36px; /* 2x the size */
+            top: 2px; /* Adjusted for 2x size */
+            left: 2px; /* Adjusted for 2x size */
+        }
+        input:checked + .light-mode .slider::before {
+            transform: translateX(40px); /* Adjusted for 2x size */
+        }
+        .light-mode-message {
+            display: none;
+            color: red;
+            font-size: 36px; /* Make the text bigger */
+            margin-top: 10px;
+        }
+        .light-mode .light-mode-message {
+            display: block;
+        }
+        .required {
+            color: red;
+            margin-left: 5px;
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .list-item span {
+            flex-grow: 1;
+        }
+        .list-item-number {
+            margin-right: 10px;
+        }
+        .remove-btn {
+            background-color: lightgrey;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .input-group button {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 10px;
+            width: 60px; /* Fixed width for the button */
+        }
+        .input-group input:not(:placeholder-shown) + button {
+            background-color: #0056b3;
+        }
+        @keyframes rainbow {
+            0% { background-color: red; color: white; }
+            16% { background-color: orange; color: black; }
+            33% { background-color: yellow; color: black; }
+            50% { background-color: green; color: white; }
+            66% { background-color: blue; color: white; }
+            83% { background-color: indigo; color: white; }
+            100% { background-color: violet; color: white; }
+        }
+        .rainbow-button {
+            animation: rainbow 5s infinite;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 20px 40px; /* Increase padding for a bigger button */
+            font-size: 20px; /* Increase font size */
+        }
+        .blue-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .blue-button:hover {
+            background-color: #0056b3;
+        }
+        .blue-text {
+            color: #007bff;
+        }
+        .white-text {
+            color: white;
+        }
+        .description-box {
+            display: none;
+            position: absolute;
+            width: 500px; /* Increased width */
+            padding: 20px;
+            background-color: #464a52; /* Blue-gray background */
+            border: 1px solid #464a52;
+            border-radius: 10px; /* Rounded corners for bubble effect */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 20px; /* Increased font size */
+            color: #ccc;
+            left: 150px; /* Moved more to the right */
+            z-index: 1000; /* Ensure it is above other elements */
+        }
+        .description-box.visible {
+            display: block;
+        }
+        .upload-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .upload-button:hover {
+            background-color: #218838;
+        }
+        .hidden-input {
+            display: none;
+        }
+        .sublist {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .sublist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .sublist-item .toggle-btn {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px;
+            width: 60px; /* Fixed width for the button */
+            margin-left: 10px; /* Add space between the on/off button and the textbox */
+        }
+        .sublist-item .toggle-btn.active {
+            background-color: #28a745;
+        }
+        .sublist-item .description {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%); /* Center vertically next to the textbox */
+            left: -340px; /* Adjusted to position the description on the left */
+            width: 300px;
+            padding: 10px;
+            background-color: #464a52;
+            border: 1px solid #464a52;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #ccc;
+            z-index: 1;
+        }
+        .sublist-item:hover .description {
+            display: block;
+        }
+        .move-btn {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 5px;
+        }
+        .draggable {
+            cursor: move;
+            margin-right: 10px;
+        }
+        .sublist-item span {
+            margin-right: 10px; /* Add space between the name and the textbox */
+        }
+        .sublist-item .add-btn {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 10px;
+            margin-left: 10px;
+        }
+        .sublist-item .add-btn.active {
+            background-color: #28a745;
+        }
+        .single-value-input {
+            width: calc(100% - 70px); /* Adjust width to accommodate the button */
+        }
+        .single-value-input + button {
+            margin-left: 10px;
         }
     </style>
 </head>
-<body>
-<div class="form">
-    <div class="form__group">
-        <h1 class="title">C-REAL configuration builder</h1>
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="token" name="token" autocomplete="off" id="token"  />
-            <label for="token" class="form__label">Token</label>
-        </div>
-
-        <div class="form__group field">
-            <input id="permissions" type="input" class="form__field" placeholder="permissions" name="permissions" autocomplete="off" id="permissions" onkeydown="checkEnter('permissions', 'permissions-list')" />
-            <label for="permissions" class="form__label">Permissions</label>
-            <label for="permissions" class="arrow" onclick="acceptInput('permissions', 'permissions-list')">&#10163;</label>
-        </div>
-        <ol id="permissions-list" class="list-block"></ol>
+<body class="dark-mode">
+    <div class="switch">
+        <span class="mode-text" id="modeText">Switch to Light Mode</span>
+        <input type="checkbox" id="darkModeSwitch" checked>
+        <label for="darkModeSwitch" class="slider"></label>
     </div>
-
-    <div class="form__group">
-        <h2 class="title">Bomb messages</h2>
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="random" name="random" autocomplete="off" id="random" />
-            <label for="random" class="form__label">Random</label>
-        </div>
-
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="fixed" name="fixed" autocomplete="off" id="fixed" onkeydown="checkEnter('fixed', 'fixed-messages')" />
-            <label for="fixed" class="form__label">Fixed</label>
-            <label for="fixed" class="arrow" onclick="acceptInput('fixed', 'fixed-messages')">&#10163;</label>
-        </div>
-        <ol id="fixed-messages" class="list-block"></ol>
+    <div class="light-mode-message">This is disgusting go back to dark mode fool</div>
+    <div class="description-box" id="descriptionBoxToken">
+        Enter your bot token here. The bot token is a unique identifier for your bot and is used to authenticate your bot with the Discord API. Keep it secret and do not share it with anyone.
     </div>
-
-    <div class="form__group">
-        <h2 class="title">Webhook spams</h2>
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="username" name="username" autocomplete="off" id="username" onkeydown="checkEnter('username', 'webhook-usernames')" />
-            <label for="username" class="form__label">Username</label>
-            <label for="username" class="arrow" onclick="acceptInput('username', 'webhook-usernames')">&#10163;</label>
-        </div>
-        <ol id="webhook-usernames" class="list-block"></ol>           
-
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="pfp" name="pfp" autocomplete="off" id="pfp" onkeydown="checkEnter('pfp', 'webhook-pfp')" />
-            <label for="pfp" class="form__label">Profile pictures</label>
-            <label for="pfp" class="arrow" onclick="acceptInput('pfp', 'webhook-pfp')">&#10163;</label>
-        </div>
-        <ol id="webhook-pfp" class="list-block"></ol>
-
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="contents" name="contents" autocomplete="off" id="contents" onkeydown="checkEnter('contents', 'webhook-contents')" />
-            <label for="contents" class="form__label">Contents</label>
-            <label for="contents" class="arrow" onclick="acceptInput('contents', 'webhook-contents')">&#10163;</label>
-        </div>
-        <ol id="webhook-contents" class="list-block"></ol>
+    <div class="description-box" id="descriptionBoxPermissions">
+        Enter the user IDs or tags of users who should have permissions to use the bot. You need at least one here.
     </div>
-
-    <div id="permissions-list-generated" class="form__group">
-        <div class="code-block">
-            <h3 class="title">Bot permissions</h3>
-            <h4 id="final-number" class="title">&permissions=0</h4>
-            <div id="permission-list"></div>
-            <button class="button" onclick="selectAll()">Select all</button>
+    <div class="description-box" id="descriptionBoxMessages">
+        Enter the fixed bomb words or phrases here. These words or phrases will be used during the bombing commands: channelBomb, categoryBomb, roleBomb. The option for messages in webhook spam (in the actual Discord chat) are in the next line. <br><br>Examples:<br> skiddie123 was here! <br> nukedbozos!
+    </div>
+    <div class="description-box" id="descriptionBoxWebhookContent">
+        Enter the content for webhook spam messages. These messages will be sent by the webhook in all the channels. <br><br>Examples:<br> @everyone<br> imagine getting nuked by a bunch of skiddies<br> join discord.gg/abcdefg for toes!
+    </div>
+    <div class="description-box" id="descriptionBoxWebhookPictures">
+        Enter the URLs for webhook spam profile pictures. These pictures will be used as the profile pictures by the webhooks spamming messages. Make sure these these are the links to the picture it self, ending in .png. <br><br> Go to https://imgur.com/upload , drop the image, and when it's done uploading, right click the image and click open in new tab. Use that link as the URL. <br><br>It should look like https://i.imgur.com/mtUJlYn.png
+    </div>
+    <div class="description-box" id="descriptionBoxWebhookUsernames">
+        Enter the usernames for webhook spam. These usernames will be used by the webhooks spamming messages. <br><br>Examples:<br> nuking bot 69<br> skidderino123<br> hackedlolol
+    </div>
+    <div class="description-box" id="descriptionBoxWebhookMessageAmount">
+        Enter the amount of messages to be sent by the webhook. Try to keep it less than 400 or it will be very laggy for your computer. <br><br>Examples:<br> 200 <br> 250 <br> 100
+    </div>
+    <div class="description-box" id="descriptionBoxAfterCommands">
+        Enter the commands to be executed after the nuke below. These commands will run in sequence.
+    </div>
+    <div class="description-box" id="descriptionBoxBanWhitelist">
+        (Optional) Enter the user IDs to be whitelisted from bans. These users will not be banned during the nuke.
+    </div>
+    <div class="description-box" id="descriptionBoxCommandPrefix">
+        Enter the command prefix here. The default command prefix is " . ". The command prefix is used to invoke commands in the bot via Discord.
+    </div>
+    <h1>C-Real Configuration Builder</h1>
+    <form id="configForm">
+        <div class="form-group">
+            <label for="token">Bot Token:<span class="required">*</span> <span class="required">required</span></label>
+            <input type="text" id="token" name="token" placeholder="Enter bot token" required>
         </div>
-    </div>
 
-    <div class="form__group field">
-        <input type="input" class="form__field" placeholder="commandPrefix" name="commandPrefix" autocomplete="off" id='commandPrefix'/>
-        <label for="commandPrefix" class="form__label">Command prefix</label>
-    </div>
-
-    <div class="form__group">
-        <h3 class="title on-start-title">On start status</h3>
-        <div class="bot_status field">
-            <div class="wrapper">
-                <input type="radio" id="status-online" name="status">
-                <label for="status-online">Online</label>
+        <div class="form-group">
+            <label for="permissions">Permissions User IDs:<span class="required">*</span> <span class="required">required</span></label>
+            <div class="input-group">
+            <input type="text" id="permissionsInput" placeholder="eg., 314853603695394817">
+            <button type="button" onclick="addPermission()">Add</button>
             </div>
-            <div class="wrapper">
-                <input type="radio" id="status-offline" name="status">
-                <label for="status-offline">Offline</label>
-            </div>
-            <div class="wrapper">
-                <input type="radio" id="status-idle" name="status">
-                <label for="status-idle">Idle</label>
-            </div>
-            <div class="wrapper">
-                <input type="radio" id="status-dnd" name="status">
-                <label for="status-dnd">Do not disturb</label>
-            </div>
-        </div>
-    </div>
+            <div id="permissionsList"></div>
 
-    <div class="form__group">
-        <div class="code-block">
-            <h3 class="title">Verbose levels</h3>
-            <h4 id="verbose-final-number" class="title">verbose=0</h4>
-            <div id="verbose">
-                <div class="checkbox-field">
-                    <label for="requests-logs" class="container">
-                        <input id="requests-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 0)"/>
-                        <div class="custom"></div>
-                        Enable requests logs
-                    </label>
-                    <label for="console-logs" class="container">
-                        <input id="console-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 1)"/>
-                        <div class="custom"></div>
-                        Enable console logs
-                    </label>
-                    <label for="chat-logging" class="container">
-                        <input id="chat-logging" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 2)"/>
-                        <div class="custom"></div>
-                        Enable chat logging
-                    </label>
-                    <label for="error-logs" class="container">
-                        <input id="error-logs" type="checkbox" class="checkbox" onclick="verboseCalc(1 << 3)"/>
-                        <div class="custom"></div>
-                        Enable error logs (console/chat)
-                    </label>
+        <style>
+            .custom-checkbox {
+            display: flex;
+            align-items: center;
+            position: relative;
+            }
+            .custom-checkbox input {
+            display: none;
+            }
+            .custom-checkbox .slider {
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            margin-left: 10px;
+            }
+            .custom-checkbox .slider::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            transition: 0.3s;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            }
+            .custom-checkbox input:checked + .slider::before {
+            transform: translateX(20px);
+            }
+            .custom-checkbox input:checked + .slider {
+            background-color: #007bff;
+            }
+        </style>
+
+        <div class="form-group">
+            <label for="status">Initial Bot Status (not nuking):</label>
+            <select id="status" name="status">
+                <option value="offline">Offline</option>
+                <option value="online">Online</option>
+                <option value="idle">Idle</option>
+                <option value="dnd">Do Not Disturb</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="messages">Fixed Bomb Words:</label>
+            <div class="input-group">
+                <input type="text" id="messagesInput" placeholder="eg., nukedbozo">
+                <button type="button" onclick="addMessage()">Add</button>
+            </div>
+            <div id="messagesList"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="webhookContent">Webhook Spam Messages:</label>
+            <div class="input-group">
+                <input type="text" id="webhookContentInput" placeholder="eg., @everyone, nuked by me!">
+                <button type="button" onclick="addWebhookContent()">Add</button>
+            </div>
+            <div id="webhookContentList"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="webhookPictures">Webhook Spam PFPs:</label>
+            <div class="input-group">
+                <input type="text" id="webhookPicturesInput" placeholder="eg., https://i.imgur.com/ab.png">
+                <button type="button" onclick="addWebhookPictures()">Add</button>
+            </div>
+            <div id="webhookPicturesList"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="webhookUsernames">Webhook Spam Usernames:</label>
+            <div class="input-group">
+                <input type="text" id="webhookUsernamesInput" placeholder="eg., nuking bot 69">
+                <button type="button" onclick="addWebhookUsernames()">Add</button>
+            </div>
+            <div id="webhookUsernamesList"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="webhookMessageAmount">Webhook Message Amount (Dont do too many, 200 is good):</label>
+            <input type="text" id="webhookMessageAmountInput" placeholder="Enter amount">
+        </div>
+
+        <div class="form-group">
+            <label for="afterCommands">After Commands:</label>
+            <div class="input-group">
+            <input type="text" id="no" placeholder="Read Description" style="width: calc(100% - 70px);">
+            <!-- <button type="button" onclick="addAfterCommand()">Add</button> -->
+            </div>
+            <div id="afterCommandsList"></div>
+            <div class="sublist" id="sublist">
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>unban</span>
+                    <input type="text" id="unbanInput" placeholder="User ID">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <button type="button" class="add-btn" onclick="addSublistItem('unban')">Add</button>
+                    <div id="unbanList"></div>
+                    <div class="description">Unbans specified users (User IDs)</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>bestRole</span>
+                    <input type="text" id="bestRoleInput" placeholder="User ID">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <button type="button" class="add-btn" onclick="addSublistItem('bestRole')">Add</button>
+                    <div id="bestRoleList"></div>
+                    <div class="description">Gives best possible role to specified users(User IDs)</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>autoStatus</span>
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this); statustrue = this.classList.contains('active');">Off</button>
+                    <div class="description">Automatically changes status of the bot so it moves around in the user side bar making it harder to ban</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>autoNick</span>
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this); nicktrue = this.classList.contains('active');">Off</button>
+                    <div class="description">Automatically changes nickname of the bot so it moves around in the user side bar making it harder to ban</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>serverName</span>
+                    <input type="text" id="serverNameInput" class="single-value-input" placeholder="Name of server">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <div id="serverNameList"></div>
+                    <div class="description">Changes server name</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>serverIcon</span>
+                    <input type="text" id="serverIconInput" class="single-value-input" placeholder="Image URL, like webhook spam PFPs above">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <div id="serverIconList"></div>
+                    <div class="description">Changes server icon. Must be a link to an image, ending in png! Same process as webhook spam PFPs. </div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>addVoiceChannel</span>
+                    <input type="text" id="addVoiceChannelInput" placeholder="Name of voice channel">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <button type="button" class="add-btn" onclick="addSublistItem('addVoiceChannel')">Add</button>
+                    <div id="addVoiceChannelList"></div>
+                    <div class="description">Adds voice channels with specified name. Helpful for talking to the server owner in voice chat after you nuked their server!</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>channelBomb</span>
+                    <input type="text" id="channelBombInput" class="single-value-input" placeholder="Number of channels to add using Fixed Words as list">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <div id="channelBombList"></div>
+                    <div class="description">Adds specified amount of amount of text channels. The names from fixed bomb words above will be used.</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>categoryBomb</span>
+                    <input type="text" id="categoryBombInput" class="single-value-input" placeholder="Number of categories to add using Fixed Words as list">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <div id="categoryBombList"></div>
+                    <div class="description">Adds specified amount of categories. The names from fixed bomb words above will be used.</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>roleBomb</span>
+                    <input type="text" id="roleBombInput" class="single-value-input" placeholder="Number of roles to add using Fixed Words as list">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <div id="roleBombList"></div>
+                    <div class="description">Adds specified amount of roles. The names from fixed bomb words above will be used.</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>addChannel</span>
+                    <input type="text" id="addChannelInput" placeholder="Name of text channel">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <button type="button" class="add-btn" onclick="addSublistItem('addChannel')">Add</button>
+                    <div id="addChannelList"></div>
+                    <div class="description">Adds singular text channel with specified name.</div>
+                </div>
+                <div class="sublist-item" draggable="true">
+                    <span class="draggable">☰</span>
+                    <span>ban</span>
+                    <input type="text" id="banInput" placeholder="User ID">
+                    <button type="button" class="toggle-btn" onclick="toggleButton(this)">Off</button>
+                    <button type="button" class="add-btn" onclick="addSublistItem('ban')">Add</button>
+                    <div id="banList"></div>
+                    <div class="description">Bans specific user. Not very useful because .nuke already bans all.</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="form__group">
-        <h2 class="title">Ban whitelist</h2>
-        <div class="form__group field">
-            <input type="input" class="form__field" placeholder="ban-whitelist" name="ban-whitelist" autocomplete="off" id="ban-whitelist" onkeydown="checkEnter('ban-whitelist', 'ban-whitelist-list')" />
-            <label for="ban-whitelist" class="form__label">User ID</label>
-            <label for="ban-whitelist" class="arrow" onclick="acceptInput('ban-whitelist', 'ban-whitelist-list')">&#10163;</label>
+        <div class="form-group">
+            <label for="banWhitelist">(Optional) Ban Whitelist User IDs:</label>
+            <div class="input-group">
+                <input type="text" id="banWhitelistInput" placeholder="eg., 314853603695394817">
+                <button type="button" onclick="addBanWhitelist()">Add</button>
+            </div>
+            <div id="banWhitelistList"></div>
         </div>
-    </div>
-    <ol id="ban-whitelist-list" class="list-block"></ol>   
 
-    <div class="form__group">
-        <h2 class="title">After</h2>
-        <textarea id="after-commands" class="text-box" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="height: 300px; overflow-y: hidden; margin: 0px; width: 100%;"></textarea>
-    </div>
+        <button type="button" class="blue-button" onclick="confirmGenerateConfig()">Generate Configuration</button>
 
-    <div class="form__group">
-        <button class="button" onclick="saveAll()">Save all</button>
-    </div>
-</div>
-<div class="nav-guides" onclick="toggleHide(this)">
-    <div>
-    <h1 class="title">Tab</h1><p>Navigate forwards</p>
-    <h1 class="title">Shift + Tab</h1><p>Navigate backwards</p>
-    <br />
-    <p>If you want <i class="special-character">null</i>(s) in any of the lists, just press enter or click the arrow button in any list input boxes that doesn't any character(s) in it.</p>
-    <p>All of the things below, except "After", need to have something in it.</p>
-    <h1 class="title">Supported escape characters in builder.html:</h1><p><i class="special-character">\b</i>, <i class="special-character">\t</i>, <i class="special-character">\n</i>, <i class="special-character">\f</i>, <i class="special-character">\r</i>, and <i class="special-character">\u</i>{0000-FFFF}</p>
-    <br />
-    <h1 class="title">Token</h1><p>You can insert either an user token or a bot token.</p>
-    <br />
-    <h1 class="title">Permissions</h1><p>Permissions to use <u><strong>any</strong></u> commands that the bot offers will be granted to the discord user tag(s) or discord user ID(s) that are listed in the list box. In this list you <i>can</i> have <i class="special-character">null</i>(s), but it will become an unnecessary item for the script to check.</p>
-    <br />
-    <h1 class="title">Bomb messages</h1>
-    <br />
-    <h1 class="title">Random</h1><p>When you are using any type of random bombs ("an", "b64"), it will ask for a length of how long the characters should be. And the length will be asked in this box here, so please enter a positive integer. (Note: 10 is a recommended length because if the channel is too long people won't be able to see the whole names anyways, and it will also use up some extra bit of CPU)</p>
-    <h1 class="title">Fixed</h1><p>Items that are inside this list is used by the "fixed" bomb command. You cannot have any <i class="special-character">null</i> in here.</p>
-    <br />
-    <h1 class="title">Webhook spams</h1>
-    <br />
-    <h1 class="title">Usernames</h1><p>The bot will randomly pick an item that is entered in the list, and use it as the username of the webhook request during webhook attack. You cannot have <i class="special-character">null</i>(s) in this list or leave it empty. If you want "No name", then enter <i class="special-character">\u200B</i> (ZERO-WIDTH space) as the username.</p>
-    <h1 class="title">Profile pictures</h1><p>The bot will randomly choose an image link from the list during webhook attack. You <i><b>CAN</b></i> have <i class="special-character">null</i>(s) in this list, which will be used as "No pfp" during the webhook attack. Anything that is not an image link will result the bot in an error. (The script won't tell you which one has error, but if you did "webhook attack start 50" and there are less than 50 messages that got sent, then that means there's something wrong with this configuration file.)</p>
-    <h1 class="title">Contents</h1><p>The bot will randomly choose a message from the list during webhook attack. You CANNOT have any <i class="special-character">null</i>(s) in this list. The messages that are sent are going to be formatted just like how you usually send messages in discord. Which means you can send messages like **Bold Text** for <b style="font-weight: 1000;">Bold Text</b>, and you cannot send more than 2000 charaters.</p>
-    <br />
-    <h1 class="title">Bot permissions</h1><p>The bot will ask for the permissions that you have chosen in the given options, when someone used the bot's invite generated by the script. These options are not required if you are using the script on an user account.</p>
-    <br />
-    <h1 class="title">Command prefix</h1><p>It's the command prefix. Put whatever command prefix that you like in here.</p>
-    <br />
-    <h1 class="title">On start status</h1><p>This is for the status on the profile. The moment the script is connected to a profile, it will execute this command. And the Available options are online, offline, invisible, dnd (or do_not_disturb), and idle.</p>
-    <br />
-    <h1 class="title">Verbose levels</h1><p>If you don't have a greate computer, your computer will lag over some massive output of logs. This can increase your computer performance by disabling the logs that you don't need. (Turning all logs on is recommended)</p>
-    <br />
-    <h1 class="title">Ban whitelist</h1><p>If you don't want commands like nuke or banAll to ban a certain user (including users with bot permissions), you have to put their ID in this field.</p>
-    <br />
-    <h1 class="title">After</h1><p>Inside this text box, you can input the commands that you want to execute after the nuke command. You can enter commands like "si" or "sn" to change the server name and icon (You can also leave this area blank if you are not familiar with the commands yet). You can think of it this way: this is just a like discord chat, if you want to send a message you need to press the enter key; every message you sent is a command for the bot, except you don't have to enter a command prefix. As long you don't add a new enter to the text box, it will not be counted as a new command. (Note: you do not have to put the command prefix in this text box)</p>
-    <br />
-    <h1 class="title"><i class="special-character">.config</i> command</h1><p>Everything in here can be modify later with the .config command. To see more informations on how to use .config command, you have to use run the .config after booting up the bot.</p>
-</div>
-
-</div>
-
-<script type="text/javascript">
-function toggleHide(ele){
-    if(ele.classList.contains('inv'))
-        ele.classList.remove('inv');
-    else
-        ele.classList.add('inv');
-}
-//init
-let allPermissions = {
-    // General
-    'General': {
-        'Create Instant Invite': 0x1,
-        'Kick Members': 0x2,
-        'Ban Members': 0x4,
-        'Administrator': 0x8,
-        'Manage Channels': 0x10,
-        'Manage Server': 0x20,
-        'Change Nickname': 0x4000000,
-        'View Server Insights': 0x80000,
-        'Manage Nicknames': 0x8000000,
-        'Manage Roles': 0x10000000,
-        'Manage Webhooks': 0x20000000,
-        'Manage Emojis': 0x40000000,
-        'View Audit Log': 0x80
-    },
-    // Text
-    'Text': {
-        'Add Reactions': 0x40,
-        'Read Messages/View Channel': 0x400,
-        'Send Messages': 0x800,
-        'Send TTS Messages': 0x1000,
-        'Manage Messages': 0x2000,
-        'Embed Links': 0x4000,
-        'Attach Files': 0x8000,
-        'Read Message History': 0x10000,
-        'Mention @everyone, @here, and All Roles': 0x20000,
-        'Use External Emojis': 0x40000,
-        'Use Slash Commands': 0x80000000
-    },
-    // Voice
-    'Voice': {
-        'Connect': 0x100000,
-        'Speak': 0x200000,
-        'Video': 0x200,
-        'Mute Members': 0x400000,
-        'Deafen Members': 0x800000,
-        'Move Members': 0x1000000,
-        'Use Voice Activity': 0x2000000,
-        'Priority Speaker': 0x100,
-        'Request to Speak': 0x100000000
-    }
-};
-
-let permissionList = document.getElementById('permission-list');
-for(let category in allPermissions) {
-    let parentCategory = document.createElement('div');
-    parentCategory.className = 'category';
-    parentCategory.innerHTML = `<h2 class="title">${category}</h2>`;
-    for(let permission in allPermissions[category]) {
-        parentCategory.innerHTML += `<label class="container">
-                                        <input class="checkbox" type="checkbox" onchange="calcValue(${allPermissions[category][permission]})"/>
-                                        <div class="custom"></div>${permission}
-                                    </label>`;
-    }
-    permissionList.appendChild(parentCategory);
-}
-
-
-let permissionsLog = document.getElementById('final-number');
-let botPermissionsValue = 0;
-function calcValue(value) {
-    botPermissionsValue += botPermissionsValue & value ? -value : value;
-    permissionsLog.innerHTML = '&permissions=' + botPermissionsValue;
-}
-
-function selectAll() {
-    for(let item of document.querySelectorAll('#permission-list input[type=checkbox]')) {
-            item.checked = true;
-    }
-
-    let total = 0;
-    for(let category in allPermissions) {
-        for(let permission in allPermissions[category]) {
-            total += allPermissions[category][permission];
-        }
-    }
-
-    botPermissionsValue = total;
-    permissionsLog.innerHTML = '&permissions=' + botPermissionsValue;
-}
-
-let verboseLog = document.getElementById('verbose-final-number');
-let verboseLevel = 0;
-function verboseCalc(n) {
-    verboseLevel ^= n;
-    verboseLog.innerHTML = `verbose=${verboseLevel}`;
-}
-
-let allLists = {
-    'permissions': [], 
-    'fixed': [], 
-    'username': [], 
-    'pfp': [], 
-    'contents': [],
-    'ban-whitelist': []
-}
-
-function acceptInput(ID, listName) {
-    let input = document.getElementById(ID);
-    if(input.value.length == 0) {
-        allLists[ID].push(null)
-        input.value = `<i class="special-character">null</i>`;
-    } else {
-        let buffer = input.value;
-
-        function checkCode(str, index) {
-            switch(str[index+1]) {
-                case 'b':
-                    return ['\b', 2];
-                case 't':
-                    return ['\t', 2];
-                case 'n':
-                    return ['\n', 2];
-                case 'f':
-                    return ['\f', 2];
-                case 'r':
-                    return ['\r', 2];
-                case 'u':
-                    if(str.length >= index + 6) {
-                        for(let i = 2; i < 6; i++) {
-                            let code = str[index + i].charCodeAt();
-                            if(!((code >= 48 && code <= 57) || (code >= 65 && code <= 70))) {
-                                return [-1, -1]
-                            }
-                        }
-                        return [str.substr(index + 2, index + 4), 6]
-                    }
-                default:
-                    return [-1, -1];
-            }
-        }
-
-        let coloringPlaces = [];
-
-        for(let i = 0, offset_2 = 0, offset_6 = 0; i < buffer.length - 1; i++) {
-            if(buffer[i] == '\\') {
-                let [a, b] = checkCode(buffer, i);
-                if(b == 2) {
-                    buffer = buffer.substr(0, i) + a + buffer.substr(i + 2);
-                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
-                    offset_2++;
-                } else if (b == 6) {
-                    buffer = buffer.substr(0, i) + String.fromCharCode('0x' + a) + buffer.substr(i + 6);
-                    coloringPlaces.push(i + offset_2 + offset_6 * 5, b);
-                    offset_6++;
+        <script>
+            function confirmGenerateConfig() {
+                if (confirm("Are you sure you want to generate a config with these settings?")) {
+                    generateConfig();
                 }
             }
-        }
+        </script>
+        <button type="button" class="upload-button" onclick="document.getElementById('uploadInput').click()">Upload Config</button>
+        <input type="file" id="uploadInput" class="hidden-input" accept=".json" onchange="uploadConfig(event)">
+    </form>
 
-        allLists[ID].push(buffer);
-        buffer = [];
-        // XSS is really buggy to the lists so just put a simple patch to it will increase the user experience
-        for(let i = 0, place = coloringPlaces.shift(), str=input.value[i]; i < input.value.length; i++, str=input.value[i])
-            if(i == place) {
-                buffer.push('<i class="special-character">');
-                let endpoint = coloringPlaces.shift()
-                for(let j = 0; j < endpoint; j++, i++, str=input.value[i]) {
-                    buffer.push(str);
-                }
-                buffer.push('</i>');
-                place = coloringPlaces.shift();
-                i--;
-            }
-            else if(str == '<' || str == '>' || str == '\\' || str == '"' || str == "'" || str == '/' || str == '=')
-                buffer.push(`&#${str.charCodeAt()};`)
-            else
-                buffer.push(str);
+    <div id="output" hidden>
+        <h3>Generated Configuration</h3>
+        <h3>Go to same folder as where C-REAL is located, then make a new folder called data and place in there. Make sure to restart the code. <br> <br> .../data/default.json</h3>
+        <pre id="configOutput"></pre>
+        <h3>Join Discord if you need help: <a href="https://discord.gg/6v98EHcssV" target="_blank" rel="noopener">https://discord.gg/6v98EHcssV</a></h3>
+        <button type="button" class="rainbow-button" onclick="downloadConfig()">Download Config</button>
+
         
-        input.value = buffer.join('');
-    }
-    let list = document.getElementById(listName);
-    list.innerHTML += `<li onclick="discardItem(this, '${ID}', ${allLists[ID].length - 1})">${input.value}</li>`;
-    input.value = '';
-}
+    </div>
 
-function discardItem(element, ID, index) {
-    let list = element.parentElement.children
-    element.remove();
-    allLists[ID].splice(index, 1);
-    for(let i = index; i < allLists[ID].length; i++) {
-        list[i].setAttribute('onclick', `discardItem(this, '${ID}', ${i})`);
-    }
-}
+    <script>
+        function addSublistItem(type) {
+            const input = document.getElementById(`${type}Input`);
+            const list = document.getElementById(`${type}List`);
+            if (input.value.trim()) {
+                if (['channelBomb', 'categoryBomb', 'roleBomb', 'serverName', 'serverIcon'].includes(type)) {
+                    list.innerHTML = ''; // Clear existing items for single-value inputs
+                }
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-function checkEnter(ID, listName) {
-    if (event.keyCode == 13) acceptInput(ID, listName)
-}
+        function addPermission() {
+            const input = document.getElementById('permissionsInput');
+            const list = document.getElementById('permissionsList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-function saveAll() {
-    let config = {
-        token: document.getElementById('token').value,
-        permissions: allLists['permissions'],
-        bomb_messages: {
-            random: document.getElementById('random').value,
-            fixed: allLists['fixed']
-        },
-        webhook_spam: {
-            usernames: allLists['username'], 
-            pfp_urls: allLists['pfp'],
-            contents: allLists['contents'], 
-            bot_permission: botPermissionsValue.toString()
-        }, 
-        command_prefix: document.getElementById('commandPrefix').value, 
-        bot_status: document.querySelector('input[name="status"]:checked').id.replace('status-', ''), 
-        verbose: verboseLevel, 
-        after: document.getElementById('after-commands').value.split('\n'),
-        proxies: [],
-        ban_whitelist: allLists['ban-whitelist']
-    }
+        function addAfterCommand() {
+            const input = document.getElementById('afterCommandsInput');
+            const list = document.getElementById('afterCommandsList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-    downloadFile(
-        JSON.stringify(config, null, 4), // indent with 4 spaces
-        'default.json'
-    )
-}
+        function addBanWhitelist() {
+            const input = document.getElementById('banWhitelistInput');
+            const list = document.getElementById('banWhitelistList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-function downloadFile(data, fileName, type="text/plain") {
-    // Create an invisible A element
-    const a = document.createElement("a");
-    a.style.display = "none";
-    document.body.appendChild(a);
+        function addMessage() {
+            const input = document.getElementById('messagesInput');
+            const list = document.getElementById('messagesList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-    // Set the HREF to a Blob representation of the data to be downloaded
-    a.href = window.URL.createObjectURL(
-    new Blob([data], {type})
-    );
+        function addWebhookContent() {
+            const input = document.getElementById('webhookContentInput');
+            const list = document.getElementById('webhookContentList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-    // Use download attribute to set set desired file name
-    a.setAttribute("download", fileName);
+        function addWebhookPictures() {
+            const input = document.getElementById('webhookPicturesInput');
+            const list = document.getElementById('webhookPicturesList');
+            const url = input.value.trim();
+            if (url && url.endsWith('.png')) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${url}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            } else {
+                alert('Go to https://imgur.com/upload , drop the image, and when it\'s done uploading, right click the image and click open in new tab. Use that link as the URL. \nIt should look like https://i.imgur.com/mtUJlYn.png . \nEnsure it ends in .png');
+            }
+        }
 
-    // Trigger the download by simulating click
-    a.click();
+        function addWebhookUsernames() {
+            const input = document.getElementById('webhookUsernamesInput');
+            const list = document.getElementById('webhookUsernamesList');
+            if (input.value.trim()) {
+                const itemNumber = list.children.length + 1;
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `<span class="list-item-number">${itemNumber}.</span><span>${input.value.trim()}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                list.appendChild(item);
+                input.value = '';
+                closeOutput();
+            }
+        }
 
-    // Cleanup
-    window.URL.revokeObjectURL(a.href);
-    document.body.removeChild(a);
-}
-</script>
+        function removeItem(button) {
+            const list = button.parentElement.parentElement;
+            button.parentElement.remove();
+            Array.from(list.children).forEach((item, index) => {
+                item.querySelector('.list-item-number').textContent = `${index + 1}.`;
+            });
+            closeOutput();
+        }
 
+        function handleKeyPress(event, addFunction) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                addFunction();
+            }
+        }
+
+        document.getElementById('permissionsInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addPermission);
+        });
+
+        document.getElementById('messagesInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addMessage);
+        });
+
+        document.getElementById('webhookContentInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addWebhookContent);
+        });
+
+        document.getElementById('webhookPicturesInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addWebhookPictures);
+        });
+
+        document.getElementById('webhookUsernamesInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addWebhookUsernames);
+        });
+
+        document.getElementById('banWhitelistInput').addEventListener('keypress', function(event) {
+            handleKeyPress(event, addBanWhitelist);
+        });
+
+        document.getElementById('permissionsInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxPermissions');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('permissionsInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxPermissions').classList.remove('visible');
+        });
+
+        document.getElementById('no').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxAfterCommands');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('no').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxAfterCommands').classList.remove('visible');
+        });
+
+        document.getElementById('banWhitelistInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxBanWhitelist');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('banWhitelistInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxBanWhitelist').classList.remove('visible');
+        });
+
+        document.getElementById('messagesInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxMessages');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('messagesInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxMessages').classList.remove('visible');
+        });
+
+        document.getElementById('webhookContentInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxWebhookContent');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('webhookContentInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxWebhookContent').classList.remove('visible');
+        });
+
+        document.getElementById('webhookPicturesInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxWebhookPictures');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('webhookPicturesInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxWebhookPictures').classList.remove('visible');
+        });
+
+        document.getElementById('webhookUsernamesInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxWebhookUsernames');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('webhookUsernamesInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxWebhookUsernames').classList.remove('visible');
+        });
+
+        document.getElementById('webhookMessageAmountInput').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxWebhookMessageAmount');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('webhookMessageAmountInput').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxWebhookMessageAmount').classList.remove('visible');
+        });
+
+        document.getElementById('token').addEventListener('focus', function() {
+            const box = document.getElementById('descriptionBoxToken');
+            box.style.top = this.getBoundingClientRect().top + window.scrollY + 30 + 'px'; // Adjusted position
+            box.classList.add('visible');
+        });
+        document.getElementById('token').addEventListener('blur', function() {
+            document.getElementById('descriptionBoxToken').classList.remove('visible');
+        });
+
+        document.getElementById('darkModeSwitch').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+            document.body.classList.toggle('light-mode', !this.checked);
+            const modeText = document.getElementById('modeText');
+            modeText.textContent = this.checked ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+            closeOutput();
+        });
+
+        let statustrue = false;
+        let nicktrue = false;
+
+        function generateConfig() {
+            const form = document.getElementById('configForm');
+            
+            if (!form.token.value.trim() || !document.getElementById('permissionsList').children.length) {
+                alert("Please fill out the Bot Token and User Permissions ID fields.");
+                return;
+            }
+
+            const permissions = Array.from(document.getElementById('permissionsList').children).map(item => item.children[1].textContent.trim());
+            const afterCommands = Array.from(document.getElementById('afterCommandsList').children).map(item => item.children[1].textContent.trim());
+            const banWhitelist = Array.from(document.getElementById('banWhitelistList').children).map(item => item.children[1].textContent.trim());
+            const messages = Array.from(document.getElementById('messagesList').children).map(item => item.children[1].textContent.trim());
+            const webhookContent = Array.from(document.getElementById('webhookContentList').children).map(item => item.children[1].textContent.trim());
+            let webhookPictures = Array.from(document.getElementById('webhookPicturesList').children).map(item => item.children[1].textContent.trim());
+            const webhookUsernames = Array.from(document.getElementById('webhookUsernamesList').children).map(item => item.children[1].textContent.trim());
+
+            // Remove null values if there are other values in webhookPictures
+            if (webhookPictures.length > 1) {
+                webhookPictures = webhookPictures.filter(picture => picture !== null);
+            }
+
+            const addChannel = document.getElementById('addChannelList') ? Array.from(document.getElementById('addChannelList').children).map(item => `addChannel ${item.children[1].textContent.trim()}`) : [];
+            const addVoiceChannel = document.getElementById('addVoiceChannelList') ? Array.from(document.getElementById('addVoiceChannelList').children).map(item => `addVoiceChannel ${item.children[1].textContent.trim()}`) : [];
+            const ban = document.getElementById('banList') ? Array.from(document.getElementById('banList').children).map(item => `ban ${item.children[1].textContent.trim()}`) : [];
+            const unban = document.getElementById('unbanList') ? Array.from(document.getElementById('unbanList').children).map(item => `unban ${item.children[1].textContent.trim()}`) : [];
+            const channelBomb = document.getElementById('channelBombList') ? Array.from(document.getElementById('channelBombList').children).map(item => {
+                const value = item.children[1] ? item.children[1].textContent.trim() : '';
+                return value ? `channelBomb ${value} fixed` : `channelBomb ${value}`;
+            }) : [];
+            const categoryBomb = document.getElementById('categoryBombList') ? Array.from(document.getElementById('categoryBombList').children).map(item => {
+                const value = item.children[1] ? item.children[1].textContent.trim() : '';
+                return value ? `categoryBomb ${value} fixed` : `categoryBomb ${value}`;
+            }) : [];
+            const roleBomb = document.getElementById('roleBombList') ? Array.from(document.getElementById('roleBombList').children).map(item => {
+                const value = item.children[1] ? item.children[1].textContent.trim() : '';
+                return value ? `roleBomb ${value} fixed` : `roleBomb ${value}`;
+            }) : [];
+            const bestRole = document.getElementById('bestRoleList') ? Array.from(document.getElementById('bestRoleList').children).map(item => `bestRole ${item.children[1].textContent.trim()}`) : [];
+            const serverName = document.getElementById('serverNameList') ? Array.from(document.getElementById('serverNameList').children).map(item => `serverName ${item.children[1].textContent.trim()}`) : [];
+            const serverIcon = document.getElementById('serverIconList') ? Array.from(document.getElementById('serverIconList').children).map(item => `serverIcon ${item.children[1].textContent.trim()}`) : [];
+
+            let activeCommands = [
+                ...unban, ...bestRole,
+                ...serverName, ...serverIcon, ...addVoiceChannel,
+                ...channelBomb, ...categoryBomb, ...roleBomb, ...addChannel, ...ban, ...(statustrue ? ['autoStatus'] : []),
+                ...(nicktrue ? ['autoNick'] : []),
+            ].filter(command => {
+                const commandType = command.split(' ')[0];
+                const input = document.getElementById(`${commandType}Input`);
+                const toggleBtn = input ? input.nextElementSibling : null;
+                return toggleBtn && toggleBtn.classList.contains('active');
+            });
+            // Handle specific commands with toggle buttons
+            const specificCommands = ['autoStatus', 'autoNick','serverName','serverIcon','channelBomb', 'categoryBomb', 'roleBomb'];
+            specificCommands.forEach(command => {
+                const input = document.getElementById(`${command}Input`);
+                const toggleBtn = input ? input.nextElementSibling : null;
+                if (toggleBtn && toggleBtn.classList.contains('active')) {
+                    activeCommands.push(`${command} ${input.value.trim()}`);
+                }
+            });
+            activeCommands = [
+                ...unban,
+                ...bestRole,
+                ...addVoiceChannel,
+                ...(statustrue ? ['autoStatus'] : []),
+                ...(nicktrue ? ['autoNick'] : []),
+                ...serverName,
+                ...serverIcon,
+                ...channelBomb,
+                ...categoryBomb,
+                ...roleBomb,
+                ...addChannel,
+                ...ban
+            ];
+            activeCommands = [
+                ...unban, ...bestRole,
+                ...(statustrue ? ['autoStatus'] : []),
+                ...(nicktrue ? ['autoNick'] : []),
+                ...serverName, ...serverIcon, ...addVoiceChannel,
+                ...channelBomb, ...categoryBomb, ...roleBomb, ...addChannel, ...ban,
+                ...specificCommands.map(command => {
+                    const input = document.getElementById(`${command}Input`);
+                    return input ? `${command} ${input.value.trim()}` : '';
+                }).filter(command => command)
+            ].filter(command => {
+                const commandType = command.split(' ')[0];
+                const input = document.getElementById(`${commandType}Input`);
+                const toggleBtn = input ? input.nextElementSibling : null;
+                return toggleBtn && toggleBtn.classList.contains('active');
+            });
+            
+            const config = {
+                token: form.token.value.trim(),
+                permissions: permissions,
+                bot_permission: "2147483647",
+                command_prefix: ".", // Default command prefix
+                bot_status: form.status.value || "offline",
+                verbose: 15,
+                bomb_messages: {},
+                webhook_spam: {},
+                after: [
+                    ...activeCommands
+                ],
+                proxies: [],
+                ban_whitelist: banWhitelist
+            };
+            
+            if (statustrue) {
+                config.after.unshift('autoStatus');
+            }
+            if (nicktrue) {
+                config.after.unshift('autoNick');
+            }
+            if (messages.length) {
+                config.bomb_messages.fixed = messages;
+            }
+
+            if (webhookUsernames.length) {
+                config.webhook_spam.usernames = webhookUsernames;
+            }
+
+            if (webhookPictures.length) {
+                config.webhook_spam.pfp_urls = webhookPictures;
+            }
+
+            if (webhookContent.length) {
+                config.webhook_spam.contents = webhookContent;
+            }
+
+            const webhookMessageAmount = document.getElementById('webhookMessageAmountInput').value.trim();
+            if (webhookMessageAmount) {
+                config.after.push(`webhook create 50`);
+                config.after.push(`webhook attack all`);
+                config.after.push(`webhook attack start ${webhookMessageAmount}`);
+            }
+
+
+            const output = document.getElementById('output');
+            const configOutput = document.getElementById('configOutput');
+            configOutput.textContent = JSON.stringify(config, null, 2);
+            output.hidden = false;
+
+            // Smooth scroll to the bottom of the page
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function closeOutput() {
+            document.getElementById('output').hidden = true;
+        }
+
+        document.getElementById('configForm').addEventListener('input', closeOutput);
+        document.getElementById('configForm').addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-btn')) {
+                closeOutput();
+            }
+        });
+
+        function downloadConfig() {
+            const config = document.getElementById('configOutput').textContent;
+            const blob = new Blob([config], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'default.json';
+            a.click();
+        }
+
+        function uploadConfig(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const config = JSON.parse(e.target.result);
+                    const form = document.getElementById('configForm');
+                    const tokenInput = document.getElementById('token');
+
+                    // Temporarily disable form validation
+                    form.noValidate = true;
+
+                    tokenInput.value = config.token || '';
+                    document.getElementById('status').value = config.bot_status || 'offline';
+
+                    fillList('permissionsList', config.permissions);
+                    fillList('afterCommandsList', config.after);
+                    fillList('banWhitelistList', config.ban_whitelist);
+                    fillList('messagesList', config.bomb_messages.fixed);
+                    fillList('webhookContentList', config.webhook_spam.contents);
+                    fillList('webhookPicturesList', config.webhook_spam.pfp_urls.filter(picture => picture !== null));
+                    fillList('webhookUsernamesList', config.webhook_spam.usernames);
+
+                    // Reset the input value to allow re-uploading the same file
+                    event.target.value = '';
+
+                    // Re-enable form validation
+                    form.noValidate = false;
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function fillList(elementId, items) {
+            const list = document.getElementById(elementId);
+            list.innerHTML = '';
+            if (items && items.length) {
+                items.forEach((item, index) => {
+                    const listItem = document.createElement('div');
+                    listItem.className = 'list-item';
+                    listItem.innerHTML = `<span class="list-item-number">${index + 1}.</span><span>${item}</span><button class="remove-btn" onclick="removeItem(this)">x</button>`;
+                    list.appendChild(listItem);
+                });
+            }
+        }
+
+        function toggleButton(button) {
+            button.classList.toggle('active');
+            button.textContent = button.classList.contains('active') ? 'On' : 'Off';
+            moveActiveItemsToTop();
+        }
+
+        function moveActiveItemsToTop() {
+            const sublist = document.getElementById('sublist');
+            const items = Array.from(sublist.children);
+            const activeItems = items.filter(item => item.querySelector('.toggle-btn').classList.contains('active'));
+            const inactiveItems = items.filter(item => !item.querySelector('.toggle-btn').classList.contains('active'));
+            sublist.innerHTML = '';
+            activeItems.forEach(item => sublist.appendChild(item));
+            inactiveItems.forEach(item => sublist.appendChild(item));
+        }
+
+        function handleInputChange(event) {
+            const input = event.target;
+            const toggleBtn = input.nextElementSibling;
+            if (toggleBtn && !toggleBtn.classList.contains('active') && !input.classList.contains('add-btn')) {
+                toggleBtn.classList.add('active');
+                toggleBtn.textContent = 'On';
+            }
+        }
+
+        document.querySelectorAll('.sublist-item input').forEach(input => {
+            input.addEventListener('input', handleInputChange);
+        });
+
+        document.addEventListener('DOMContentLoaded', moveActiveItemsToTop);
+
+        const sublist = document.getElementById('sublist');
+        let draggedItem = null;
+
+        sublist.addEventListener('dragstart', function (e) {
+            draggedItem = e.target;
+            setTimeout(function () {
+                e.target.style.display = 'none';
+            }, 0);
+        });
+
+        sublist.addEventListener('dragend', function (e) {
+            draggedItem.style.display = 'flex';
+            draggedItem = null;
+        }, 0);
+
+        sublist.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+
+        sublist.addEventListener('dragenter', function (e) {
+            e.preventDefault();
+            if (e.target.classList.contains('sublist-item')) {
+                e.target.style.borderTop = '2px solid #555';
+            }
+        });
+
+        sublist.addEventListener('dragleave', function (e) {
+            if (e.target.classList.contains('sublist-item')) {
+                e.target.style.borderTop = '';
+            }
+        });
+
+        sublist.addEventListener('drop', function (e) {
+            if (e.target.classList.contains('sublist-item')) {
+                e.target.style.borderTop = '';
+                sublist.insertBefore(draggedItem, e.target);
+            }
+        });
+    </script>
 </body>
 </html>
