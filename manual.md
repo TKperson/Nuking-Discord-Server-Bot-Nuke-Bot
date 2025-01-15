@@ -18,7 +18,7 @@ All commands are not case sensitive.
 
 \[] - no arguement is needed
 
-# descriptions will be written out soon...
+# use builder.html for simple configuration building
 ### `addChannel`
 
 * aliases: `aCh`, `aChannel`
@@ -220,7 +220,7 @@ All commands are not case sensitive.
 ### `kaboom`
 
 * aliases: No command * aliases provided.
-* description: Combines the channelBomb, categoryBomb, and the categoryBomb all into one command.
+* description: Combines the channelBomb, roleBomb, and the categoryBomb all into one command.
 * params: \[numberOfBombs#The number of channels, categories, and roles you want to create] \[bombType#It can only be b64, an, or fixed]
 
 ### `leave`
@@ -255,7 +255,7 @@ All commands are not case sensitive.
 
 ### `off`
 
-* aliases: `logout`, `logoff`, `shutdown`, `stop`
+* aliases: `logout`, `logoff`, `shutdown`, `stop`, `quit`
 * description: Turns off the bot.
 * params: \[]
 

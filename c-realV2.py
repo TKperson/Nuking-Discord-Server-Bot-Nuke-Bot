@@ -3,7 +3,7 @@
 """
 MIT License
 
-Copyright (c) 2020 - 2023
+Copyright (c) 2020 - 2025
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -197,8 +197,9 @@ def setUp():
 
     print('\nTips:')
     print('The default command_prefix is: .')
-    print(f'Your currect command_prefix is: {settings["command_prefix"]}')
+    print(f'Your current command_prefix is: {settings["command_prefix"]}')
     print(f'Use {settings["command_prefix"]}config to config the settings and more info about how to config.\n')
+    print('You can download and use builder.html in the Github repository to help you with configuring.')
     
     print('Join our discord https://discord.gg/FwGWvwv4mW')
 
@@ -1069,7 +1070,7 @@ def requestMaker():
         #     consoleLog(f'Proxy "{proxy}" did not respond to a request. Trying...')
         #     q.put((requesting, url, headers, payload))
         except requests.exceptions.ConnectTimeout:
-            consoleLog(f'Reached maximum load time: timeout is {timeout} seconds long {proxy}')
+            consoleLog(f'Reached maximum load time: timeout is {timeout} seconds long {proxy}') # type: ignore
             q.put((requesting, url, headers, payload))
         except Exception as e:
             consoleLog(f'Unexpected error: {str(e)}')
@@ -1442,7 +1443,7 @@ async def config(ctx, command=None, *, args=None):
         )
         embed.add_field(name='Items', value=names, inline=True)
         embed.set_footer(text=f'{n+1}/{str(ceil(item_length / per_page))}\n' + 
-                        ('Config is saved' if configIsSaved() else '(*)Config is not saved'))   
+                        ('Config is saved' if configIsSaved() else '**(*)Config is not saved!**'))   
 
         await ctx.send(embed=embed)
 
@@ -1481,7 +1482,7 @@ async def config(ctx, command=None, *, args=None):
         embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
         embed.add_field(name='Usage', value=f'Use `{settings["command_prefix"]}config <feature>` to get more information about how to config that feature.\n\n`{settings["command_prefix"]}config save <file name>` to save the current config. If you save the config as `default.json` the bot next time will directly start with whatever is in that `.json` file.', inline=False)
 
-        embed.set_footer(text='Config is saved' if configIsSaved() else '(*)Config is not saved')
+        embed.set_footer(text='Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
         await ctx.send(embed=embed)
         return
 
@@ -1511,7 +1512,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`permissions add <userTag or userID> [userTag or userID] [user...` - grant permissions to the given user(s)\n\n`permissions remove <line number> [line number] [line...` - remove line(s) from the list\n\n`permissions list [page number]` - list all users that are in the permission list', inline=False)
 
-            embed.set_footer(text=('Config is saved' if configIsSaved() else '(*)Config is not saved'))
+            embed.set_footer(text=('Config is saved' if configIsSaved() else '**(*)Config is not saved!**'))
 
             await ctx.send(embed=embed)
 
@@ -1585,7 +1586,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Types', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`bomb_messages fixed add <command>` - add contents to the back of the list\n\n`bomb_messages fixed remove <line number> [line number] [line...` - remove line(s) from the list\n\n`bomb_messages fixed list [page number]` - list contents that are in the content list\n\n`bomb_messages random <character length>` - sets character length for bomb commands like `{settings["command_prefix"]}kaboom 100 b64`(b64 = base64) ', inline=False)
 
-            embed.set_footer(text='Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text='Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
 
         else:
@@ -1656,7 +1657,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Types', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`webhook_spam <type> add <command>` - add contents to the back of the list\n\n`webhook_spam <type> remove <line number> [line number] [line...` - remove line(s) from the list\n\n`webhook_spam <type> list [page number]` - list contents that are in the content list', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
 
             await ctx.send(embed=embed)
 
@@ -1778,7 +1779,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`after add <command>` - add command to the back of the command list\n\n`after remove <line number> [line number] [line...` - remove line(s) in the command list\n\n`after insert <line number> <command>` - insert command after the given line. Note: use `insert 0 <command>` to insert the command to the first line\n\n`after list [page number]` - list commands that are in the command list', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
 
         else: 
@@ -1836,7 +1837,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Features', value='bot_status', inline=True)
             embed.add_field(name='Usage', value=f'`bot_status <on start status>` - set the on start status. Available on start status are `online`, `offline`, `idle`, and `dnd` or `do_not_disturb`. By default it is set to `offline`.', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
         else:
             if (args := args.lower()) in ['online', 'offline', 'idle', 'dnd', 'do_not_disturb']:
@@ -1857,7 +1858,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Features', value='bot_permission', inline=True)
             embed.add_field(name='Usage', value=f'`bot_permission <value>` - set permissions value to the given number. Use this [permission calculator](https://wizbot.cc/permissions-calculator/?v=0) to help you calculate the values. Note: if you are going to use that calculator all you need is to copy the number that is display at the top, and then use this command.', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
         else:
             if args.isdigit() and 0 <= int(args) <= 2146958847:
@@ -1947,7 +1948,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Logs', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`verbose <value>` - enable and disable the logs. Subtracting the values below from the current verbose to disable the log(s) you want, and adding the values will enable them. For example if I want to disable "Log any error" I will subtract 8 from 15 to get 7 and use 7 as the new verbose value to set, if I want to disable more like "Log response from request" I will substract 1 from 7 to get 6. To enable them back just add 8 and 1 to the current verbose value.\n\n`1` - Log response from requests\n`2` - Log messages in console\n`4`- Log messages in discord chat\n`8` - Log any errors.', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
         else:
             if args.isdigit() and 0 <= (args := int(args)) <= 15:
@@ -1978,7 +1979,7 @@ async def config(ctx, command=None, *, args=None):
             embed.add_field(name='Features', value='\n'.join(features_list), inline=True)
             embed.add_field(name='Usage', value=f'`ban_whitelist add <command>` - add user to the back of the command list\n\n`ban_whitelist remove <line number> [line number] [line...` - remove line(s) in the ban whitelist\n\n`ban_whitelist list [page number]` - list users that are in the ban whitelist', inline=False)
 
-            embed.set_footer(text=f'Config is saved' if configIsSaved() else '(*)Config is not saved')
+            embed.set_footer(text=f'Config is saved' if configIsSaved() else '**(*)Config is not saved!**')
             await ctx.send(embed=embed)
 
         else:
@@ -2019,7 +2020,7 @@ async def config(ctx, command=None, *, args=None):
 
     elif command == 'prefix' or command == 'command_prefix':
         if args is None:
-            await log(ctx, f'Use `` {command_prefix}config command_prefix <command_prefix> ``')
+            await log(ctx, f'Use `` {settings["command_prefix"]}config command_prefix <command_prefix> ``')
         else:
             settings['command_prefix'] = client.command_prefix = args
 
@@ -2300,11 +2301,12 @@ async def bestRole(ctx, member_name=None):
         raise
 
 @commands.check(checkPerm)
-@client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop'])
+@client.command(name='off', aliases=['logout', 'logoff', 'shutdown', 'stop', 'quit'])
 async def off(ctx):
     ### Discord takes too long to realize if the bot is offline people might get confused about the not turning off the bot vs discord takes time to update
+    await log(ctx, 'Exiting...')
     await changeStatus(None, 'offline')
-    await client.logout()
+    await client.close()
 
 ###### Closing handler ######
 
@@ -2328,7 +2330,8 @@ try:
         exit()
     client.run(settings['token'])
 except discord.PrivilegedIntentsRequired:
-    print('PrivilegedIntentsRequired: This field is required to request for a list of members in the discord server that the bot is connected to. Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('PrivilegedIntentsRequired: Watch https://youtu.be/DXnEFoHwL1A?t=44 to see how to turn on the required field.')
     exit()
 except Exception as e:
     print(e)
